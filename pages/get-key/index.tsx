@@ -9,28 +9,32 @@ import {headers} from "next/headers";
 export default function GetKey(){
     const [key,setKey] = useState("Xin chờ đợi...")
     const router = useRouter()
-    useEffect(()=>{
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // @ts-ignore
+    useEffect( () => {
 
-        if (router.isReady){
-
-            let ip = fetch('http://ip-api.com/json/?fields=61439')
-            if (ip){
-                ip = ip.query
-                apis().post(urls().URL_GET_KEY,{
-                    ip: ip,
-                    code: library().base64Decode(router.query.code)
-                }).then(response => {
-                    if (response.status == constants().SUCCESS){
-                        setKey("Key: \n\n" + response.body.key)
-                    }else{
-                        setKey(response.message?response.message:"Nhận key thất bại")
-                    }
-                })
-            }
-
+        if (router.isReady) {
+            getKey()
         }
 
     },[router])
+
+    const getKey = async () => {
+        await fetch('http://ip-api.com/json/?fields=61439')
+       .then(respone => {
+            const ip = respone.body?.query | undefined
+            apis().post(urls().URL_GET_KEY, {
+                ip: ip,
+                code: library().base64Decode(router.query.code)
+            }).then(response => {
+                if (response.status == constants().SUCCESS) {
+                    setKey("Key: \n\n" + response.body.key)
+                } else {
+                    setKey(response.message ? response.message : "Nhận key thất bại")
+                }
+            })
+        })
+    }
     return <>
         <div className={styles.key}>
             {key}
