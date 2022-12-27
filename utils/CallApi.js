@@ -86,7 +86,9 @@ export default function CallApi(){
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'content-type': 'application/json; charset=utf-8',
-        'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+        'Access-Control-Allow-Headers': 'origin, x-requested-with',
+        'Access-Control-Request-Method':'GET',
+        'Origin':'aigoox.com',
         ...header_
       },
       params: params_
