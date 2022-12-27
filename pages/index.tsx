@@ -18,7 +18,7 @@ export default function Home() {
   const [text,setText] = useState("Đang chuẩn bị key...")
 
   async function verifyKey() {
-    await fetch('https://api.ipify.org?format=json').then(respone => {
+    let request = await fetch('https://api.ipify.org?format=json').then(respone => {
       if (respone.ok) {
         // @ts-ignore
         let ip = respone.body.ip
@@ -48,6 +48,8 @@ export default function Home() {
       setText("Nhận key thất bại!")
       setLoading(false)
     })
+
+    console.log("KQ",request)
 
   }
 
