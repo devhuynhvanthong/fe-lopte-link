@@ -85,8 +85,8 @@ export default function CallApi(){
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'access-control-allow-origin,authorization',
-        'Access-Control-Allow-Methods': 'GET, POST, HEAD, OPTIONS',
+        'content-type': 'application/json; charset=utf-8',
+        'Access-Control-Allow-Headers': 'Authorization, Content-Type',
         ...header_
       },
       params: params_
