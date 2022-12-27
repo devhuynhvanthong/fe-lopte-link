@@ -20,6 +20,7 @@ export default function GetKey(){
     },[router])
 
     const getKey = async () => {
+        await fetch('https://api.ipify.org?format=json')
         await fetch('http://ip-api.com/json/?fields=61439')
        .then(respone => {
            let ip = respone.body
