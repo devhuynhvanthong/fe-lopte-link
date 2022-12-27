@@ -1,0 +1,118 @@
+.btnGetKey{
+    color: #ffffff;
+    border: 1px solid #B21065;
+    border-radius: 35px;
+    text-shadow: 0 -1px 0 #EFB7DE;
+    padding: 20px 40px;
+    font-size: 30px;
+    cursor: pointer;
+    background-image:
+    linear-gradient(to bottom,
+        #fff9,
+        transparent 50%, transparent 90%,
+        #f5CBBC99),
+    repeating-linear-gradient(60deg,
+        #bc058255 0, #bc058255 10px,
+        transparent 10px, transparent 20px),
+    linear-gradient(to bottom,
+        #EE08A6, #EE6C8F);
+    box-shadow:
+        0 12px 0 #0005,
+        0 5px 0 #BD1360,
+        0 5px 0 12px #fff,
+        0 0 30px 20px #893066;
+    transition: .4s;
+    font-family: "Times New Roman";
+}
+
+.textNoti{
+    color: white;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.btnGetKey:active{
+    color: #bfceb6;
+    box-shadow:
+            0 0px 0 #0005,
+            0 0px 0 #BD1360,
+            0 0px 0 12px #fff,
+            0 0 30px 20px #893066;
+    transform: translateY(5px);
+}
+
+.spin{
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+}
+
+.butonGroup{
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%,50%);
+}
+
+
+.key{
+    text-align: center;
+    background-color: white;
+    color: red;
+    width: fit-content;
+    height: fit-content;
+    padding: 3vh 3vw;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 30px;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.formInputKey{
+    text-align: center;
+    background-color: #0b85e8;
+    border-radius: 20px;
+    padding: 20px;
+    width: 50%;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.formData{
+    text-align: center;
+    width: 70%;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.labelData{
+    font-size: 50px;
+    color: white;
+    margin-bottom: 20px !important;
+}
+
+.labelAdd{
+    font-size: 20px;
+    color: white;
+    margin-bottom: 10px !important;
+}
+
+
+.btnAdd{
+    margin-top: 10px !important;
+}
+
+.wapper{
+    width: 100%;
+    min-height: 90vh;
+}
+
+.wapperAdmin{
+    width: 100%;
+    min-height: 100vh;
+}
