@@ -13,9 +13,9 @@ export default function GetKey(){
 
         if (router.isReady){
 
-            fetch('http://ip-api.com/json/?fields=61439')
-            apis().get('http://ip-api.com/json/?fields=61439').then(respone=> {
-                const ip = respone.query
+            let ip = fetch('http://ip-api.com/json/?fields=61439')
+            if (ip){
+                ip = ip.query
                 apis().post(urls().URL_GET_KEY,{
                     ip: ip,
                     code: library().base64Decode(router.query.code)
@@ -26,7 +26,8 @@ export default function GetKey(){
                         setKey(response.message?response.message:"Nhận key thất bại")
                     }
                 })
-            })
+            }
+
         }
 
     },[router])
