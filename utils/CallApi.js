@@ -87,7 +87,7 @@ export default function CallApi(){
         'Access-Control-Allow-Origin': 'https://gamelopte.aigoox.com/',
         'Access-Control-Allow-Headers': 'origin, x-requested-with',
         'Access-Control-Request-Method':'GET',
-        'Origin':'aigoox.com',
+        'Referer':'aigoox.com',
         ...header_
       },
       params: params_
