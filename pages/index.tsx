@@ -10,20 +10,19 @@ import constants from  '../utils/Constants'
 import {useRouter} from "next/router";
 import {Spin} from "antd";
 import React, {useState} from "react";
-import {verify} from "crypto";
 
 export default function Home() {
   const router = useRouter()
   const [isLoading,setLoading] = useState(false)
   const [text,setText] = useState("Đang chuẩn bị key...")
 
-  async function verifyKey() {
-    await fetch('http://ip-api.com/json/?fields=61439').then(respone => {
-      if (respone) {
-        let ip = respone.body
-        // @ts-ignore
-        ip = ip.query | undefined
+  function handleClickGetKey() {
+    setLoading(true)
+    if(!isLoading){
 
+      let ip = fetch('http://ip-api.com/json/?fields=61439')
+      if (ip) {
+        ip = ip.query
         setText("Đang chuẩn bị key....")
         apis().post(urls().URL_VERIFY_KEY, {
           ip: ip
@@ -41,17 +40,6 @@ export default function Home() {
         })
       }
 
-    }).catch((e) => {
-      setText("Nhận key thất bại!")
-      setLoading(false)
-    })
-
-  }
-
-  function handleClickGetKey() {
-    setLoading(true)
-    if(!isLoading){
-      verifyKey()
     }
   }
 
