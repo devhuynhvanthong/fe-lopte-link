@@ -19,7 +19,7 @@ export default function Home() {
 
   async function verifyKey() {
     await fetch('https://api.ipify.org?format=json').then(respone => {
-      if (respone) {
+      if (respone.ok) {
         // @ts-ignore
         let ip = respone.body.ip
 
