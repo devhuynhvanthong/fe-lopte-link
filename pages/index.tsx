@@ -24,7 +24,7 @@ export default function Home() {
         let ip = respone.body.ip
 
         console.log([
-            ip,respone.body
+            ip,respone.body,respone.json()
         ])
         
         setText("Đang chuẩn bị key....")
