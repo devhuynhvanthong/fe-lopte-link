@@ -17,37 +17,36 @@ export default function Home() {
   const [isLoading,setLoading] = useState(false)
   const [text,setText] = useState("Đang chuẩn bị key...")
 
-  function verifyKey() {
-    apis().get('https://api.ipify.org?format=json').then(respone => {
-      if (respone) {
-        // @ts-ignore
-        let ip = respone.ip
-
-        console.log([
-            ip,respone.ip,respone.json()
-        ])
-
-        setText("Đang chuẩn bị key....")
-        apis().post(urls().URL_VERIFY_KEY, {
-          ip: ip
-        }).then(response => {
-          if (response.status == constants().SUCCESS) {
-            console.log("aaa" + library().base64Encode(response.body.code))
-            router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code))
-            setText("Nhận key thành công")
-          } else {
-            setText("Nhận key thất bại!")
-          }
-        }).catch((e) => {
-          setText("Nhận key thất bại!")
-          setLoading(false)
+  async function verifyKey() {
+    await fetch('https://api.ipify.org?format=json')
+        .then(function (response){
+          return response.json()
         })
-      }
+        .then(function(json) {
+        if (json.ok) {
+          let ip = json.ip
 
-    }).catch((e) => {
-      setText("Nhận key thất bại!")
-      setLoading(false)
-    })
+          setText("Đang chuẩn bị key....")
+          apis().post(urls().URL_VERIFY_KEY, {
+            ip: ip
+          }).then(response => {
+            if (response.status == constants().SUCCESS) {
+              console.log("aaa" + library().base64Encode(response.body.code))
+              router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code))
+              setText("Nhận key thành công")
+            } else {
+              setText("Nhận key thất bại!")
+            }
+          }).catch((e) => {
+            setText("Nhận key thất bại!")
+            setLoading(false)
+          })
+        }
+
+      }).catch((e) => {
+        setText("Nhận key thất bại!")
+        setLoading(false)
+      })
 
   }
 
