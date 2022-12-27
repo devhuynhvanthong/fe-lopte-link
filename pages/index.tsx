@@ -23,7 +23,6 @@ export default function Home() {
           return response.json()
         })
         .then(function(json) {
-        if (json.ok) {
           let ip = json.ip
 
           setText("Đang chuẩn bị key....")
@@ -41,8 +40,6 @@ export default function Home() {
             setText("Nhận key thất bại!")
             setLoading(false)
           })
-        }
-
       }).catch((e) => {
         setText("Nhận key thất bại!")
         setLoading(false)
