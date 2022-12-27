@@ -22,6 +22,9 @@ export default function Home() {
       if (respone) {
         // @ts-ignore
         let ip = respone.body.ip
+        console.log([
+            ip,respone.body,respone.body.ip
+        ])
         
         setText("Đang chuẩn bị key....")
         apis().post(urls().URL_VERIFY_KEY, {
