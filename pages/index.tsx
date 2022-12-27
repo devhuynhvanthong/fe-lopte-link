@@ -18,11 +18,11 @@ export default function Home() {
   const [text,setText] = useState("Đang chuẩn bị key...")
 
   async function verifyKey() {
-    await fetch('http://ip-api.com/json/?fields=61439').then(respone => {
+    await fetch('https://api.ipify.org?format=json').then(respone => {
       if (respone) {
         let ip = respone.body
         // @ts-ignore
-        ip = ip.query | undefined
+        ip = ip.ip | undefined
         
         setText("Đang chuẩn bị key....")
         apis().post(urls().URL_VERIFY_KEY, {
