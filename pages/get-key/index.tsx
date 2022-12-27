@@ -21,22 +21,21 @@ export default function GetKey(){
 
     const getKey = async () => {
         await fetch('https://api.ipify.org?format=json')
-       .then(respone => {
-           if (respone){
-               let ip = respone.body
-               // @ts-ignore
-               ip = ip.ip | undefined
-               apis().post(urls().URL_GET_KEY, {
-                   ip: ip,
-                   code: library().base64Decode(router.query.code)
-               }).then(response => {
-                   if (response.status == constants().SUCCESS) {
-                       setKey("Key: \n\n" + response.body.key)
-                   } else {
-                       setKey(response.message ? response.message : "Nhận key thất bại")
-                   }
-               })
-           }
+            .then(function (response){
+                return response.json()
+            })
+            .then(function (json) {
+                let ip = json.ip
+                apis().post(urls().URL_GET_KEY, {
+                    ip: ip,
+                    code: library().base64Decode(router.query.code)
+                }).then(response => {
+                    if (response.status == constants().SUCCESS) {
+                        setKey("Key: \n\n" + response.body.key)
+                    } else {
+                        setKey(response.message ? response.message : "Nhận key thất bại")
+                    }
+                })
         })
     }
     return <>
