@@ -20,7 +20,9 @@ export default function Home() {
   async function verifyKey() {
     await fetch('http://ip-api.com/json/?fields=61439').then(respone => {
       if (respone) {
-        const ip = respone.body.query | undefined
+        let ip = respone.body
+        // @ts-ignore
+        ip = ip.query | undefined
         setText("Đang chuẩn bị key....")
         apis().post(urls().URL_VERIFY_KEY, {
           ip: ip

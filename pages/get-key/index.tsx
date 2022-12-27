@@ -22,7 +22,9 @@ export default function GetKey(){
     const getKey = async () => {
         await fetch('http://ip-api.com/json/?fields=61439')
        .then(respone => {
-            const ip = respone.body?.query | undefined
+           let ip = respone.body
+           // @ts-ignore
+           ip = ip.query | undefined
             apis().post(urls().URL_GET_KEY, {
                 ip: ip,
                 code: library().base64Decode(router.query.code)
