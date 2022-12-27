@@ -23,6 +23,7 @@ export default function Home() {
         let ip = respone.body
         // @ts-ignore
         ip = ip.query | undefined
+        
         setText("Đang chuẩn bị key....")
         apis().post(urls().URL_VERIFY_KEY, {
           ip: ip
