@@ -61,7 +61,7 @@ export default function Home() {
                 </button>
               </div>
               {
-                <div className={stylesCustom.textNoti}> {isLoading ? <div><Spin style={{color:"white", marginRight:5}} /> text</div>:""}</div>
+                <div className={stylesCustom.textNoti}> {isLoading ? <div><Spin style={{color:"white", marginRight:5}} /> {text}</div>:""}</div>
               }
             </div>
           }

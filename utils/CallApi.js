@@ -84,6 +84,7 @@ export default function CallApi(){
       url: `${url}`,
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
         ...header_
       },
       params: params_
