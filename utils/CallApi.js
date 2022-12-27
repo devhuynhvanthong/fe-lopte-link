@@ -77,17 +77,11 @@ export default function CallApi(){
     if (cookie.Get(constants.KEY_ACCESS_TOKEN,false)!=null) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${cookie.Get(constants.KEY_ACCESS_TOKEN,true)}`;
     }
-
-    let url = endpoint
     return axios({
       method: 'GET',
-      url: `${url}`,
+      url: `${endpoint}`,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://gamelopte.aigoox.com/',
-        'Access-Control-Allow-Headers': 'origin, x-requested-with',
-        'Access-Control-Request-Method':'GET',
-        'Referer':'aigoox.com',
         ...header_
       },
       params: params_

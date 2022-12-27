@@ -12,6 +12,8 @@ export default function GetKey(){
     useEffect(()=>{
 
         if (router.isReady){
+
+            fetch('http://ip-api.com/json/?fields=61439')
             apis().get('http://ip-api.com/json/?fields=61439').then(respone=> {
                 const ip = respone.query
                 apis().post(urls().URL_GET_KEY,{

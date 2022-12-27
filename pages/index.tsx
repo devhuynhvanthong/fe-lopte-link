@@ -20,23 +20,30 @@ export default function Home() {
     setLoading(true)
     if(!isLoading){
 
+      fetch('http://ip-api.com/json/?fields=61439')
       apis().get('http://ip-api.com/json/?fields=61439').then(respone=>{
-        const ip = respone.query
-        setText("Đang chuẩn bị key....")
-        apis().post(urls().URL_VERIFY_KEY,{
-          ip: ip
-        }).then(response =>{
-          if (response.status == constants().SUCCESS){
-            console.log("aaa" + library().base64Encode(response.body.code))
-            router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code))
-            setText("Nhận key thành công")
-          }else{
+        if (respone) {
+          const ip = respone.query
+          setText("Đang chuẩn bị key....")
+          apis().post(urls().URL_VERIFY_KEY,{
+            ip: ip
+          }).then(response =>{
+            if (response.status == constants().SUCCESS){
+              console.log("aaa" + library().base64Encode(response.body.code))
+              router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code))
+              setText("Nhận key thành công")
+            }else{
+              setText("Nhận key thất bại!")
+            }
+          }).catch((e)=>{
             setText("Nhận key thất bại!")
-          }
-        }).catch((e)=>{
-          setText("Nhận key thất bại!")
-          setLoading(false)
-        })
+            setLoading(false)
+          })
+        }
+
+      }).catch((e)=>{
+        setText("Nhận key thất bại!")
+        setLoading(false)
       })
 
     }
