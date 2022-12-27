@@ -84,8 +84,7 @@ export default function CallApi(){
       url: `${url}`,
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'content-type': 'application/json; charset=utf-8',
+        'Access-Control-Allow-Origin': 'https://gamelopte.aigoox.com/',
         'Access-Control-Allow-Headers': 'origin, x-requested-with',
         'Access-Control-Request-Method':'GET',
         'Origin':'aigoox.com',
