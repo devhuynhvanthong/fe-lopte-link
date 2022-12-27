@@ -6,10 +6,9 @@ import constants from  '../../utils/Constants'
 import {useRouter} from "next/router";
 import styles from '../../styles/index.module.css'
 import {headers} from "next/headers";
-const GetKey = () => {
-    const router = useRouter()
+export default function GetKey(){
     const [key,setKey] = useState("Xin chờ đợi...")
-
+    const router = useRouter()
     useEffect(()=>{
 
         if (router.isReady){
@@ -28,12 +27,10 @@ const GetKey = () => {
             })
         }
 
-    },[router.isReady])
+    },[router])
     return <>
         <div className={styles.key}>
             {key}
         </div>
     </>
 }
-
-export default GetKey()
