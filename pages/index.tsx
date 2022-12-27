@@ -17,34 +17,37 @@ export default function Home() {
   const [isLoading,setLoading] = useState(false)
   const [text,setText] = useState("Đang chuẩn bị key...")
 
-  async function verifyKey() {
-    let request = await fetch('https://api.ipify.org?format=json')
-    if (request.ok) {
-      // @ts-ignore
-      let ip = request.body.ip
+  function verifyKey() {
+    apis().get('https://api.ipify.org?format=json').then(respone => {
+      if (respone) {
+        // @ts-ignore
+        let ip = respone.ip
 
-      setText("Đang chuẩn bị key....")
-      apis().post(urls().URL_VERIFY_KEY, {
-        ip: ip
-      }).then(response => {
-        if (response.status == constants().SUCCESS) {
-          console.log("aaa" + library().base64Encode(response.body.code))
-          router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code))
-          setText("Nhận key thành công")
-        } else {
+        console.log([
+            ip,respone.ip,respone.json()
+        ])
+
+        setText("Đang chuẩn bị key....")
+        apis().post(urls().URL_VERIFY_KEY, {
+          ip: ip
+        }).then(response => {
+          if (response.status == constants().SUCCESS) {
+            console.log("aaa" + library().base64Encode(response.body.code))
+            router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code))
+            setText("Nhận key thành công")
+          } else {
+            setText("Nhận key thất bại!")
+          }
+        }).catch((e) => {
           setText("Nhận key thất bại!")
-        }
-      }).catch((e) => {
-        setText("Nhận key thất bại!")
-        setLoading(false)
-      })
-    }else {
+          setLoading(false)
+        })
+      }
+
+    }).catch((e) => {
       setText("Nhận key thất bại!")
       setLoading(false)
-    }
-
-
-    console.log("KQ",request)
+    })
 
   }
 
