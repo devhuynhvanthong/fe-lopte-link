@@ -81,10 +81,14 @@ export default function Admin(){
         apis().post(url().URL_ADD_KEY,{
             code: input
         }).then(response=>{
-            if (response.status==constants().SUCCESS){
-                alert("Thêm dữ liệu thành công!")
-                loadingData()
-            }else{
+            if (response){
+                if (response.status==constants().SUCCESS){
+                    alert("Thêm dữ liệu thành công!")
+                    loadingData()
+                }else{
+                    alert(response.message)
+                }
+            }else {
                 alert("Thêm dữ liệu thất bại!")
             }
         })
@@ -127,9 +131,11 @@ export default function Admin(){
                     alert("Xóa key thành công!")
                     loadingData()
                 }else{
-                    alert(response.message)
+                    alert("Xóa key thất bại!")
                 }
             }else {
+
+                console.log(response)
                 alert("Xóa key thất bại!")
             }
         })
