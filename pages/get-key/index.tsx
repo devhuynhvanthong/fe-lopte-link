@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import apis from '../../utils/CallApi'
 import urls from  '../../utils/Urls'
 import library from '../../utils/Library'
@@ -6,15 +6,18 @@ import constants from  '../../utils/Constants'
 import {useRouter} from "next/router";
 import styles from '../../styles/index.module.css'
 import {headers} from "next/headers";
+import stylesCustom from "../../styles/index.module.css";
 export default function GetKey(){
     const [key,setKey] = useState("Xin chờ đợi...")
     const router = useRouter()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // @ts-ignore
     useEffect( () => {
 
         if (router.isReady) {
-            getKey()
+            if (router.query.code){
+                getKey()
+            }else {
+                setKey("Nhận key thất bại!")
+            }
         }
 
     },[router])
@@ -38,9 +41,27 @@ export default function GetKey(){
                 })
         })
     }
+
+    function handleClickGetKey() {
+        setTimeout(function() {
+            router.push("/")
+        }, 250);
+
+    }
+
     return <>
-        <div className={styles.key}>
-            {key}
+        <div>
+            <div className={styles.keyGroup}>
+                <div className={styles.key}>{key}</div>
+            </div>
+            <div className={styles.btnGetNewKeyGroup}>
+                <button
+                    onClick={()=>handleClickGetKey()}
+                    className={styles.btnGetNewKey}>
+                    Nhận Key Mới
+                </button>
+            </div>
         </div>
+
     </>
 }

@@ -71,11 +71,11 @@ export default function CallApi(){
         console.log(err);
       });
   };
-  const get = async (endpoint, params_ = {}, header_ = "") => {
+  const get = async (endpoint, params_ = {}, header_ = {}) => {
     const cookie = Cookies()
     const constants = Constants()
     if (cookie.Get(constants.KEY_ACCESS_TOKEN,false)!=null) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${cookie.Get(constants.KEY_ACCESS_TOKEN,true)}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${cookie.Get(constants.KEY_ACCESS_TOKEN)}`;
     }
     return axios({
       method: 'GET',
