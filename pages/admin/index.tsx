@@ -123,11 +123,11 @@ export default function Admin(){
     function handleDeleteKey() {
         apis().post(url().URL_REMOVE_KEY,{'id_key':idDelete}).then(response=>{
             if (response){
-                if (response.status = constants().SUCCESS){
+                if (response.status == constants().SUCCESS){
                     alert("Xóa key thành công!")
                     loadingData()
                 }else{
-                    alert("Xóa key thất bại!")
+                    alert(response.message)
                 }
             }else {
                 alert("Xóa key thất bại!")
