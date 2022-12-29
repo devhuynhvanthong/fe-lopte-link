@@ -156,7 +156,7 @@
     transition: .4s;
     position: absolute;
     margin: 0 auto;
-    top: 50%;
+    bottom: 10%;
     left: 50%;
     transform: translate(-50%,-50%);
     font-family: "Times New Roman", serif;
