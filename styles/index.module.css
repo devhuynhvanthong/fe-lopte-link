@@ -1,4 +1,5 @@
 .btnGetKey{
+    width: 100%;
     color: #ffffff;
     border: 1px solid #B21065;
     border-radius: 35px;
@@ -22,7 +23,7 @@
         0 5px 0 12px #fff,
         0 0 30px 20px #893066;
     transition: .4s;
-    font-family: "Times New Roman";
+    font-family: "Times New Roman", sans-serif;
 }
 
 .textNoti{
@@ -86,8 +87,7 @@
     text-align: center;
     width: 70%;
     position: relative;
-    margin: 0 auto;
-    margin-top: 50px;
+    margin: 50px auto 0;
 }
 
 .labelData{
@@ -114,7 +114,6 @@
 
 .wapperAdmin{
     width: 100%;
-    min-height: 100vh;
 }
 
 .keysGroup{
@@ -159,7 +158,7 @@
     bottom: 10%;
     left: 50%;
     transform: translate(-50%,-50%);
-    font-family: "Times New Roman", serif;
+    font-family: "Times New Roman", sans-serif;
     height: fit-content;
 }
 .btnLogin:active{
