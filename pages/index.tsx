@@ -106,7 +106,7 @@ export default function Home() {
                 }}>Chọn game</p>
                 <Cascader
                     allowClear={false}
-                    onChange={(value)=>setSelectCategory(value)}
+                    onChange={(value:any)=>setSelectCategory(value)}
                     value={selectCategory}
                     placeholder={"Choose Game"}
                     options={category}
