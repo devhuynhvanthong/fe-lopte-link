@@ -33,7 +33,11 @@ export default function Library(){
   }
 
   const base64Decode = (data) =>{
-    return base64Decode_(data)
+    try {
+      return base64Decode_(data)
+    }catch (e){
+      return false
+    }
   }
 
   const encryptData = (data, key) =>{

@@ -5,40 +5,34 @@ import library from '../../utils/Library'
 import constants from  '../../utils/Constants'
 import {useRouter} from "next/router";
 import styles from '../../styles/index.module.css'
-import {headers} from "next/headers";
+import Logo from '../../componentns/logo'
 import stylesCustom from "../../styles/index.module.css";
 export default function GetKey(){
-    const [key,setKey] = useState("Xin chờ đợi...")
+    const [key,setKey] = useState("Please wait...")
     const router = useRouter()
+    const sha256 = require('sha256')
     useEffect( () => {
 
         if (router.isReady) {
             if (router.query.code){
                 getKey()
             }else {
-                setKey("Nhận key thất bại!")
+                setKey("Receiving key failed!")
             }
         }
 
     },[router])
 
     const getKey = async () => {
-        await fetch('https://api.ipify.org?format=json')
-            .then(function (response){
-                return response.json()
-            })
-            .then(function (json) {
-                let ip = json.ip
-                apis().post(urls().URL_GET_KEY, {
-                    ip: ip,
-                    code: library().base64Decode(router.query.code)
-                }).then(response => {
-                    if (response.status == constants().SUCCESS) {
-                        setKey("Key: \n\n" + response.body.key)
-                    } else {
-                        setKey(response.message ? response.message : "Nhận key thất bại")
-                    }
-                })
+        apis().post(urls().URL_GET_KEY, {
+            info: library().base64Decode(router.query.v),
+            code: library().base64Decode(router.query.code)
+        }).then(response => {
+            if (response.status == constants().SUCCESS) {
+                setKey(response.body.key)
+            } else {
+                setKey(response.message ? response.message : "Receiving key failed!")
+            }
         })
     }
 
@@ -51,6 +45,7 @@ export default function GetKey(){
 
     return <>
         <div>
+            <Logo className={stylesCustom.logo}/>
             <div className={styles.keyGroup}>
                 <div className={styles.key}>{key}</div>
             </div>
@@ -58,7 +53,7 @@ export default function GetKey(){
                 <button
                     onClick={()=>handleClickGetKey()}
                     className={styles.btnGetNewKey}>
-                    Nhận Key Mới
+                    Get new key
                 </button>
             </div>
         </div>

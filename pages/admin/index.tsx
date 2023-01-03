@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import library from '../../utils/Library'
-import {Alert, Button, Input, Modal, Table, Tooltip,notification} from 'antd';
+import {Alert, Button, Input, Modal, Table, Tooltip, notification, Spin} from 'antd';
 import url from '../../utils/Urls'
 import {useRouter} from "next/router";
 import apis from '../../utils/CallApi'
 import {inspect} from "util";
 import styles from '../../styles/index.module.css'
 import constants from "../../utils/Constants";
-import {DeleteTwoTone} from "@ant-design/icons";
+import {DeleteTwoTone, FileAddFilled} from "@ant-design/icons";
 export default function Admin(){
     const router = useRouter()
     const [isMobile,setMobile] = useState(false)
@@ -18,7 +18,18 @@ export default function Admin(){
     const [permission_,setPermisiion] = useState(true)
     const [idDelete,setIdDelete] = useState(undefined)
     const [isShowModel,setShowModel] = useState(false)
-
+    const [file,setFile] = useState(undefined)
+    const [isDisable,setDisable] = useState(true)
+    const [totalKey,setTotalKey] = useState(0)
+    const [totalKeySened,setTotalKeySened] = useState(0)
+    const [totalExist,setTotalExist] = useState(0)
+    const [totalSuccess,setTotalSuccess] = useState(0)
+    const [totalProccess,setTotalProccess] = useState(0)
+    const [totalError,setTotalError] = useState(0)
+    const [isCloseModelAdd,setCloseModelAdd] = useState(false)
+    const [status,setStatus] = useState("")
+    const [fail,setFail] = useState("")
+    const [isRespone,setResponse] = useState(false)
     useEffect(()=>{
         if(!library().checkLogin()){
            router.push('https://accounts.aigoox.com/login?domain=Z2FtZWxvcHRlX3NoYXJlZA==&session=expired')
@@ -78,20 +89,50 @@ export default function Admin(){
         }
     ]
     function handleAdd() {
-        apis().post(url().URL_ADD_KEY,{
-            code: input
-        }).then(response=>{
-            if (response){
-                if (response.status==constants().SUCCESS){
-                    alert("Thêm dữ liệu thành công!")
-                    loadingData()
-                }else{
-                    alert(response.message)
-                }
-            }else {
-                alert("Thêm dữ liệu thất bại!")
+        setDisable(true)
+        setResponse(false)
+        setTotalError(0)
+        setFail("")
+        setTotalKeySened(0)
+        setTotalSuccess(0)
+        setTotalKey(0)
+        let arrayData: string[] = []
+        let arr_ = input.replaceAll("\n",",").split(",")
+
+        arr_.map( function (value_,index_){
+            if(index_ % 3==0){
+                arrayData.push(value_)
             }
         })
+
+        // @ts-ignore
+        setTotalKey(arrayData.length)
+        apis().post(url().URL_ADD_KEY,{
+            code: JSON.stringify(arrayData)
+        }).then(response=>{
+            console.log("Response",response)
+            setResponse(true)
+            if (response){
+                if (response.status==constants().SUCCESS){
+                    const data = response.body.data
+                    setFail("")
+                    setTotalSuccess(data.total_success)
+                    setTotalProccess(data.total_processed)
+                    setTotalKeySened(data.total_key)
+                    setTotalExist(data.total_error.total_exist)
+                    setTotalError(data.total_error.total_error)
+                }else{
+                    setFail("Thêm dữ liệu thất bại")
+                }
+            }else {
+                setFail("Thêm dữ liệu thất bại")
+            }
+        }).catch((e) => {
+            setFail("Thêm dữ liệu thất bại")
+        })
+        loadingData()
+        setDisable(false)
+        setCloseModelAdd(true)
     }
 
 
@@ -152,9 +193,19 @@ export default function Admin(){
                         <div className={styles.formInputKey}>
                             <div>
                                 <span className={styles.labelAdd}>Thêm key mới!</span>
-                                <Input onChange={(e)=>setInput(e.target.value)} onPressEnter={()=>handleAdd()} placeholder="Nhập giá trị key..." />
+                                <div>
+                                    <textarea
+                                        className={styles.inputKEy}
+                                        onChange={(e)=>{
+                                            setInput(e.target.value)
+                                            setDisable(e.target.value==""?true:false)
+                                        }}
+                                        placeholder="Nhập giá trị key..." />
+                                </div>
                             </div>
-                            <Button onClick={()=>handleAdd()} className={styles.btnAdd}>Thêm mới</Button>
+                            <div>
+                                <Button onClick={()=>handleAdd()} className={styles.btnAdd} disabled={isDisable}>Thêm mới</Button>
+                            </div>
                         </div>
                         <div className={styles.formData}>
                             <span className={styles.labelData}>Danh sách key</span>
@@ -177,7 +228,6 @@ export default function Admin(){
                     <div>
                         <img
                             style={{
-                                width: 'auto',
                                 height: '60vh',
                                 position: 'absolute',
                                 left: '50%',
@@ -186,7 +236,7 @@ export default function Admin(){
                                 border: '2px solid #B21065',
                                 borderRadius: 30
                             }}
-                            src='/permission.jpg'/>
+                            src='/permission.jpg' alt={"Accept Permission"}/>
                         <div >
                             <button
                                 onClick={()=>handleClickLogin()}
@@ -206,6 +256,72 @@ export default function Admin(){
             onCancel={()=>setShowModel(false)}
         >
             <p>Bạn chắt chắn muốn xóa key này?</p>
+        </Modal>
+        <Modal
+            onCancel={()=>{
+                loadingData()
+                setTotalKey(0)
+                setDisable(false)
+                setCloseModelAdd(false)
+            }}
+            maskClosable={isRespone}
+            closable={isRespone}
+            title={<span style={{
+                userSelect:"none",
+                fontSize:"1.1em",}}><Spin size={"default"}/> Thêm dữ liệu mới</span>}
+            centered
+            open={totalKey > 0}
+            footer={
+            <span style={{
+                userSelect:"none"
+            }}>{
+               "Thành công: " + totalSuccess + " / " + totalKey
+            }</span>
+            }>
+            {
+                isRespone ?
+                    <div>
+                        {
+                            fail == ""?
+                                <div style={{
+                                    position:"relative"
+                                }}>
+                                    <div>
+                                    <span style={{
+                                        fontSize: "1em"
+                                    }}><b>- Tổng Key nhập vào: </b>{totalKey}</span>
+                                            </div>
+                                            <div>
+                                     <span style={{
+                                         fontSize: "1em"
+                                     }}><b>- Tổng Key gửi đi: </b>{totalKeySened}</span>
+                                            </div>
+                                            <div>
+                                     <span style={{
+                                         fontSize: "1em"
+                                     }}><b>- Tổng Key được sử lý: </b>{totalProccess}</span>
+                                            </div>
+                                            <div>
+                                     <span style={{
+                                         fontSize: "1em"
+                                     }}><b>- Tổng Key lỗi: </b>{totalError}</span>
+                                            </div>
+                                            <div>
+                                     <span style={{
+                                         fontSize: "1em"
+                                     }}><b>- Tổng Key đã tồn tại: </b>{totalExist}</span>
+                                            </div>
+                                    </div>: <span style={{fontSize:'1.3em'}}>{fail}</span>
+                            }
+                        </div>
+                    :
+                    <div style={{textAlign: "center"}}>
+                        <div>
+                            <Spin size={"large"}/>
+                        </div>
+                        <span style={{fontSize:'1.3em'}}>Đang trong quá trình tải lên...</span>
+                    </div>
+            }
         </Modal>
     </>
 }
