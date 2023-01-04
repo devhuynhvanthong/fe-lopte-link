@@ -48,13 +48,14 @@ export default function GetKey(){
             <Logo className={stylesCustom.logo}/>
             <div className={styles.keyGroup}>
                 <div className={styles.key}>{key}</div>
+
+            </div>
+
+            <div className={styles.btnGetNewKeyGroup}>
                 <div className={styles.textDescription}>
                     <p style={{fontSize:'1em'}}>Coppy the key and paste in the app to Login</p>
                     <p style={{fontSize:'0.8em', marginTop:'5px'}}>Sao chép key và dán vào ứng dụng để Login</p>
                 </div>
-            </div>
-
-            <div className={styles.btnGetNewKeyGroup}>
                 <button
                     onClick={()=>handleClickGetKey()}
                     className={styles.btnGetNewKey}>
