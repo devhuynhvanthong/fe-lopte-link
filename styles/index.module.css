@@ -1,5 +1,5 @@
 .btnGetKey{
-    width: 100%;
+    width: max-content;
     color: #ffffff;
     border: 1px solid #B21065;
     border-radius: 35px;
@@ -72,23 +72,20 @@
 
 .textDescription{
     position: absolute;
-    width: 100%;
+    width: max-content;
+    max-width: 90vw;
     left: 50%;
-    top: 55%;
-    transform: translate(-50%,-50%);
+    margin-top: 20px;
+    transform: translateX(-50%);
     font-style: italic;
     color: white;
     text-align: center;
 }
 .key{
     color: red;
-    width: fit-content;
+    width: max-content;
     height: fit-content;
     padding: 3vh 3vw;
-    position: absolute;
-    left: 50%;
-    top: 35%;
-    transform: translate(-50%,-35%);
     border-radius: 30px;
     font-size: 25px;
     text-align: center;
@@ -177,10 +174,16 @@
     vertical-align: middle;
 }
 .keyGroup{
-    width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    margin: 0 auto;
+    transform: translate(-50%,-35%);
+    width: max-content;
 }
 
 .btnGetNewKey {
+    width: max-content;
     color: #ffffff;
     border: 1px solid #B21065;
     border-radius: 50px;
