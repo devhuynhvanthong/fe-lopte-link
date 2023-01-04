@@ -136,6 +136,8 @@ export default function Keys(props){
                     setTotalKeySened(data.total_key)
                     setTotalExist(data.total_error.total_exist)
                     setTotalError(data.total_error.total_error)
+
+                    loadingData()
                 }else{
                     setFail("Thêm dữ liệu thất bại")
                 }
@@ -145,7 +147,6 @@ export default function Keys(props){
         }).catch((e) => {
             setFail("Thêm dữ liệu thất bại")
         })
-        loadingData()
         setDisable(false)
     }
 
