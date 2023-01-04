@@ -85,7 +85,7 @@ export default function Home() {
 
   function handleClickGetKey() {
     if (!selectCategory){
-      alert("Hãy chọn một game")
+      alert("Please choose a game")
       return
     }
     setLoading(true)
