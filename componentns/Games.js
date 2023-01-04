@@ -97,6 +97,8 @@ export default function Games(props){
             setResponse(true)
             if (response){
                 if (response.status==constants().SUCCESS){
+
+                    loadingData()
                     alert("Thêm dữ liệu thành công")
                     setFail("")
                 }else{
@@ -108,7 +110,6 @@ export default function Games(props){
         }).catch((e) => {
             alert("Thêm dữ liệu thất bại")
         })
-        loadingData()
         setDisable(false)
     }
 
