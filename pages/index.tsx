@@ -6,7 +6,7 @@ import urls from  '../utils/Urls'
 import library from '../utils/Library'
 import constants from  '../utils/Constants'
 import {useRouter} from "next/router";
-import {Cascader, Spin} from "antd";
+import {Cascader, Spin, Alert,Space} from "antd";
 import React, {useEffect, useState} from "react";
 import Logo from '../componentns/logo'
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
   const [category,setCategory] = useState([])
   const [selectCategory,setSelectCategory] = useState(undefined)
   const sha256 = require('sha256')
-
+  const [error,setError] = useState(undefined)
   useEffect(()=>{
     apis().get(urls().URL_CATEGORY).then(response=>{
       if (response){
@@ -34,6 +34,7 @@ export default function Home() {
     })
   },[]);
   async function verifyKey() {
+
     setText("Preparing key...")
     let verify = sha256(library().getDateTime()).split('')
     let _verify = ""
@@ -69,15 +70,24 @@ export default function Home() {
         router.push('https://loptelink.com/st?api=ceca3b7645d9cfe99f8d483dcea35738cb0aa57b&url=https://gamelopte.aigoox.com/get-key?code=' + library().base64Encode(response.body.code) + "&v="+library().base64Encode(_verify))
         setText("Receive key successfully")
       } else {
-        setText("Receiving key failed!")
+        setError(response.message)
+        setTimeout(()=>{
+          setError(undefined)
+        },3000)
+        setLoading(false)
       }
     }).catch((e) => {
-      setText("Receiving key failed!")
+      // @ts-ignore
+      setError("Receiving key failed!")
       setLoading(false)
     })
   }
 
   function handleClickGetKey() {
+    if (!selectCategory){
+      alert("Hãy chọn một game")
+      return
+    }
     setLoading(true)
     if(!isLoading){
       verifyKey()
@@ -103,7 +113,7 @@ export default function Home() {
                   marginBottom: 10,
                   fontSize: '1.2em'
 
-                }}>Chọn game</p>
+                }}>Choose game...</p>
                 <Cascader
                     allowClear={false}
                     onChange={(value:any)=>setSelectCategory(value)}
@@ -121,8 +131,27 @@ export default function Home() {
             {
               <div className={stylesCustom.textNoti}> {isLoading && <div><Spin style={{color:"white", marginRight:5}} /> {text}</div>}</div>
             }
+
           </div>
         </main>
+        <Space
+            direction="vertical"
+            style={{
+              width: '100%',
+            }}
+        >
+          {error &&<Alert
+              style={{
+                position: "absolute",
+                top:'5%',
+                right:'5%',
+                transform: 'translate(-50%,-50%)'
+              }}
+              message={error}
+              type="error"
+              showIcon />}
+
+        </Space>
       </>
   )
 }

@@ -25,7 +25,14 @@
     transition: .4s;
     font-family: "Times New Roman", sans-serif;
 }
-
+.wapperAdmin{
+    display: flex;
+    width: 100%;
+}
+.bodyAdmin{
+    margin: 20px;
+    width: 100%;
+}
 .textNoti{
     color: white;
     margin-top: 30px;
@@ -117,6 +124,11 @@
     margin-top: 10px !important;
 }
 
+.btnAdd:disabled{
+    background-color: #6e6e6e;
+    border: 1px solid #5e5d5d;
+    color: #a2a2a2;
+}
 .btnImport{
     background-color: #090000;
     margin-left: 20px;
@@ -127,16 +139,18 @@
     background-color: #2c2c2c;
 }
 
-.inputKEy{
+.inputKey{
     width: 100%;
     height: 100px;
     border-radius: 10px;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 .wapper{
     width: 100%;
     min-height: 90vh;
+    padding-bottom: 50px;
 }
 
 .wapperAdmin{
