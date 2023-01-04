@@ -70,6 +70,15 @@
     transform: translate(-50%,-50%);
 }
 
+.textDescription{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    font-style: italic;
+    color: red;
+    text-align: center;
+}
 .key{
     color: red;
     width: fit-content;
