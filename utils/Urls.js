@@ -1,5 +1,5 @@
 export default function Urls(){
-    const BASE_URL = "http://127.0.0.1:8000/"
+    const BASE_URL = "https://api-gamelopte.aigoox.com/"
     const API = BASE_URL + "api/"
 
     const URL_VERIFY_KEY = API + "verify_key"
