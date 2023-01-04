@@ -239,9 +239,11 @@ export default function Keys(props){
                                     columns={columns}
                                     dataSource={data}
                                     pagination={{
+                                        showSizeChanger: false,
                                         current: curentPage,
                                         total: totalPage*10,
-                                        onChange:onChangePagination
+                                        onChange:onChangePagination,
+
                                     }}
                                 />
                             </Spin>

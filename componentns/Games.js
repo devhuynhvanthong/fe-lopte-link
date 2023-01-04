@@ -54,6 +54,12 @@ export default function Games(props){
             render: (text) => <a>{text}</a>,
         },
         {
+            title: 'Tổng key',
+            dataIndex: 'total_key',
+            key: 'total_key',
+            render: (text) => <a>{text}</a>,
+        },
+        {
             title: 'Thao tác',
             dataIndex: 'code',
             key: 'id',
