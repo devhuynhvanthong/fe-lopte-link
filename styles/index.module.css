@@ -74,10 +74,10 @@
     position: absolute;
     width: 100%;
     left: 50%;
-    bottom: 30%;
+    top: 55%;
     transform: translate(-50%,-50%);
     font-style: italic;
-    color: red;
+    color: white;
     text-align: center;
 }
 .key{

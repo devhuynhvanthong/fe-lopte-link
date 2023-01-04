@@ -48,7 +48,6 @@ export default function GetKey(){
             <Logo className={stylesCustom.logo}/>
             <div className={styles.keyGroup}>
                 <div className={styles.key}>{key}</div>
-
             </div>
 
             <div className={styles.btnGetNewKeyGroup}>
