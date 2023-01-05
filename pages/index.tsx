@@ -9,6 +9,7 @@ import {useRouter} from "next/router";
 import {Cascader, Spin, Alert,Space} from "antd";
 import React, {useEffect, useState} from "react";
 import Logo from '../componentns/logo'
+import Maintenance from '../componentns/Maintenance'
 export default function Home() {
   const router = useRouter()
   const [isLoading,setLoading] = useState(false)
@@ -17,7 +18,29 @@ export default function Home() {
   const [selectCategory,setSelectCategory] = useState(undefined)
   const sha256 = require('sha256')
   const [error,setError] = useState(undefined)
+  const [maintenance,setMaintenance] = useState("")
   useEffect(()=>{
+
+    apis().get(urls().URL_GET_CONFIG).then(response => {
+      if (response){
+        response.body.map((item: any) => {
+            if (item.code == 'maintenance'){
+              switch (item?.value.toLowerCase()){
+                case "true":
+                  setMaintenance("maintenance")
+                  break;
+                case "false":
+                  setMaintenance("non-maintenance")
+                  break;
+                default:
+                  setMaintenance("")
+              }
+              return
+            }
+        })
+      }
+    })
+
     apis().get(urls().URL_CATEGORY).then(response=>{
       if (response){
         const  data = response.body
@@ -103,36 +126,45 @@ export default function Home() {
           <link rel="icon" href="/logo99.png" />
         </Head>
         <main className={styles.main}>
-          <Logo />
+          {
+            maintenance == 'non-maintenance' &&
+              <>
+                <Logo />
+                <div className={stylesCustom.butonGroup}>
+                  <div>
+                    <div className={stylesCustom.cascader}>
+                      <p style={{
+                        color:'white',
+                        marginBottom: 10,
+                        fontSize: '1.2em'
 
-          <div className={stylesCustom.butonGroup}>
-            <div>
-              <div className={stylesCustom.cascader}>
-                <p style={{
-                  color:'white',
-                  marginBottom: 10,
-                  fontSize: '1.2em'
+                      }}>Choose game...</p>
+                      <Cascader
+                          allowClear={false}
+                          onChange={(value:any)=>setSelectCategory(value)}
+                          value={selectCategory}
+                          placeholder={"Choose Game"}
+                          options={category}
+                      />
+                    </div>
+                    <button
+                        onClick={()=>handleClickGetKey()}
+                        className={stylesCustom.btnGetKey}>
+                      Get Key
+                    </button>
+                  </div>
+                  {
+                    <div className={stylesCustom.textNoti}> {isLoading && <div><Spin style={{color:"white", marginRight:5}} /> {text}</div>}</div>
+                  }
 
-                }}>Choose game...</p>
-                <Cascader
-                    allowClear={false}
-                    onChange={(value:any)=>setSelectCategory(value)}
-                    value={selectCategory}
-                    placeholder={"Choose Game"}
-                    options={category}
-                />
-              </div>
-              <button
-                  onClick={()=>handleClickGetKey()}
-                  className={stylesCustom.btnGetKey}>
-                Get Key
-              </button>
-            </div>
-            {
-              <div className={stylesCustom.textNoti}> {isLoading && <div><Spin style={{color:"white", marginRight:5}} /> {text}</div>}</div>
-            }
+                </div>
+              </>
+          }
 
-          </div>
+          {
+            maintenance == 'maintenance' &&
+              <Maintenance />
+          }
         </main>
         <Space
             direction="vertical"
