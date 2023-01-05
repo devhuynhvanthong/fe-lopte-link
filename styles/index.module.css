@@ -314,7 +314,57 @@
 
 }
 
-
 .logo{
     margin-top: 20px;
+}
+
+.borderSetting{
+    background-color: white;
+    max-width: 100%;
+    min-width: max-content;
+    width: 50%;
+    padding: 20px;
+    margin: 20px auto 0px auto;
+    height: max-content;
+    border: 1px solid #076080;
+    border-radius: 15px;
+}
+
+.borderSetting p {
+    font-size: 1.5em;
+}
+
+.itemSetting{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.itemSetting span{
+    font-size: 1.1em;
+}
+
+.itemSettingv2{
+    margin-top: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.buttonUpdateSetting{
+    border: 1px solid blue;
+    padding: 7px 20px;
+    font-size: 1.05em;
+    border-radius: 20px;
+    background-color: #0b85e8;
+    color: white;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 20px;
+    width: max-content;
+    cursor: pointer;
+}
+.buttonUpdateSetting:hover{
+    background-color: #275577;
+    border: 1px solid #222242;
+    color: #e8e6e6;
 }
