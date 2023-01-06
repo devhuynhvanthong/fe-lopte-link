@@ -126,11 +126,6 @@ export default function Settings(props){
                 setPermisiion_(false)
             }
         })
-        console.log("AAA",[
-            typeof selectLimitKey != 'string',
-            typeof selectLimitKey,
-            selectLimitKey
-        ])
         setLoadingLimitKey(true)
         apis().post(urls().URL_UPDATE_CONFIG,{
             value: selectLimitKey,

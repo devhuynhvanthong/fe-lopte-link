@@ -99,7 +99,6 @@ export default function Games(props){
         apis().post(url().URL_ADD_CATEGORY,{
             name: input
         }).then(response=>{
-            console.log("Response",response)
             setResponse(true)
             if (response){
                 if (response.status==constants().SUCCESS){
@@ -154,8 +153,6 @@ export default function Games(props){
                     alert("Xóa key thất bại!")
                 }
             }else {
-
-                console.log(response)
                 alert("Xóa key thất bại!")
             }
         })

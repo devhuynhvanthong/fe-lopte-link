@@ -125,7 +125,6 @@ export default function Keys(props){
             code: JSON.stringify(arrayData),
             category: selectCategory
         }).then(response=>{
-            console.log("Response",response)
             setResponse(true)
             if (response){
                 if (response.status==constants().SUCCESS){
@@ -186,8 +185,6 @@ export default function Keys(props){
                     alert("Xóa key thất bại!")
                 }
             }else {
-
-                console.log(response)
                 alert("Xóa key thất bại!")
             }
         })
