@@ -33,10 +33,6 @@ export default function Settings(props){
     const [selectChooseGame,setSelectChooseGame] = useState([])
     const columnsLimitKey = [
         {
-            label: 'Bỏ tất cả giới hạn',
-            value: 'NOMAL'
-        },
-        {
             label: '1 key/ ngày',
             value: 'ONE_KEY_DAY'
         },
