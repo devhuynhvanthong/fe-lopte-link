@@ -1,6 +1,19 @@
 import React, {useEffect, useState} from "react";
 import library from '../utils/Library'
-import {Alert, Button, Input, Modal, Table, Tooltip, notification, Spin, Cascader, Skeleton, Switch} from 'antd';
+import {
+    Alert,
+    Button,
+    Input,
+    Modal,
+    Table,
+    Tooltip,
+    notification,
+    Spin,
+    Cascader,
+    Skeleton,
+    Switch,
+    Select
+} from 'antd';
 import url from '../utils/Urls'
 import {useRouter} from "next/router";
 import apis from '../utils/CallApi'
@@ -16,6 +29,8 @@ export default function Settings(props){
     const [checkedMaintenance,setCheckedMaintenance] = useState(false)
     const [loadingMaintenance,setLoadingMaintenance] = useState(false)
     const [loadingLimitKey,setLoadingLimitKey] = useState(false)
+    const [optionChooseGame,setOptionChooseGame] = useState([])
+    const [selectChooseGame,setSelectChooseGame] = useState([])
     const columnsLimitKey = [
         {
             label: 'Bỏ tất cả giới hạn',
@@ -28,6 +43,14 @@ export default function Settings(props){
         {
             label: '2 key/ ngày',
             value: 'TWO_KEY_DAY'
+        },
+        {
+            label: '1 key/ giờ',
+            value: 'ONE_KEY_HOUR'
+        },
+        {
+            label: '1 key/ 2 giờ',
+            value: 'TWO_KEY_HOUR'
         }
     ]
     useEffect(()=>{
@@ -42,6 +65,42 @@ export default function Settings(props){
                 setPermisiion_(false)
             }
         })
+
+        apis().get(urls().URL_CATEGORY).then(response=>{
+            if (response){
+                if (response.status == constants().SUCCESS){
+                    let arr = []
+                    response.body.map(item =>{
+                        arr = [...arr,{
+                            label: item.name,
+                            value: item.code
+                        }]
+                    })
+                    setOptionChooseGame(arr)
+                    apis().get(urls().URL_GET_CONFIG_VISIT).then(response=>{
+                        if (response){
+                            if (response.status == constants().SUCCESS){
+                                let arr = []
+                                response.body.map(item =>{
+                                    arr = [...arr,item.code]
+                                })
+                                setSelectChooseGame(arr)
+
+                            }else {
+                                setPermisiion_(false)
+                            }
+                        }else {
+                            setPermisiion_(false)
+                        }
+                    })
+                }else {
+                    setPermisiion_(false)
+                }
+            }else {
+                setPermisiion_(false)
+            }
+        })
+
     },[]);
 
     useEffect(()=>{
@@ -51,13 +110,11 @@ export default function Settings(props){
             setSelectLimitKey(filterLimitKey.value)
         }
         if (filterMaintenance){
-            console.log("Main",filterMaintenance.value)
             setCheckedMaintenance(filterMaintenance.value.toLowerCase() == 'true')
         }
     },[config])
 
     function handleSwitchMaintenance(checked){
-        console.log("handleSwitchMaintenance",checked,typeof selectLimitKey)
         setCheckedMaintenance(checked)
     }
 
@@ -73,20 +130,26 @@ export default function Settings(props){
                 setPermisiion_(false)
             }
         })
-        if (typeof selectLimitKey != 'string'){
-
-            setLoadingLimitKey(true)
-            apis().post(urls().URL_UPDATE_CONFIG,{
-                value: selectLimitKey[0],
-                code: 'visits'
-            }).then(response=>{
-                if (response){
-                    setLoadingLimitKey(false)
-                }else {
-                    setPermisiion_(false)
-                }
-            })
-        }
+        console.log("AAA",[
+            typeof selectLimitKey != 'string',
+            typeof selectLimitKey,
+            selectLimitKey
+        ])
+        setLoadingLimitKey(true)
+        apis().post(urls().URL_UPDATE_CONFIG,{
+            value: selectLimitKey,
+            code: 'visits',
+            category: selectChooseGame
+        }).then(response=>{
+            if (response){
+                setLoadingLimitKey(false)
+            }else {
+                setPermisiion_(false)
+            }
+        })
+    }
+    function handleChooseGame(value) {
+        setSelectChooseGame(value)
     }
 
     return <>
@@ -100,16 +163,31 @@ export default function Settings(props){
                     </div>
                     <div>
 
-                        <Spin style={{marginRight: '5px'}} spinning={loadingLimitKey} size={'small'}/>
-                        <Cascader
-                            allowClear={false}
-                            onChange={(value)=>setSelectLimitKey(value)}
-                            value={selectLimitKey}
-                            placeholder={"Chọn phương thức giới hạn"}
-                            options={columnsLimitKey}
-                        />
+                        <div>
+                            <Spin style={{marginRight: '5px'}} spinning={loadingLimitKey} size={'small'}/>
+                            <Cascader
+                                allowClear={false}
+                                onChange={(value)=>setSelectLimitKey(value)}
+                                value={selectLimitKey}
+                                placeholder={"Chọn phương thức giới hạn"}
+                                options={columnsLimitKey}
+                            />
+                        </div>
+                        <div style={{marginTop: '10px'}}>
+                            <span>Chọn game</span>
+                            <Select
+                                style={{marginTop:'5px',width: '100%'}}
+                                mode="multiple"
+                                allowClear
+                                placeholder="Chọn game"
+                                onChange={handleChooseGame}
+                                options={optionChooseGame}
+                                value={selectChooseGame}
+                            />
+                        </div>
                     </div>
                 </div>
+                <hr style={{marginTop: '10px'}}/>
                 <div className={styles.itemSetting}>
                     <div>
                         <span>Bảo trì máy chủ</span>
@@ -131,7 +209,6 @@ export default function Settings(props){
                 </div>
 
             </div>
-
         </div>
     </>
 }

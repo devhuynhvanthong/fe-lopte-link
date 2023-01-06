@@ -14,6 +14,7 @@ export default function Urls(){
     const URL_GET_ALL_KEY_USED = API + "get_all_key_useds"
     const URL_GET_CONFIG = API + "get_config"
     const URL_UPDATE_CONFIG = API + "update_config"
+    const URL_GET_CONFIG_VISIT = API + "get_config_visit"
 
     return{
         URL_GET_KEY,
@@ -27,6 +28,7 @@ export default function Urls(){
         URL_ADD_CATEGORY,
         URL_GET_ALL_KEY_USED,
         URL_GET_CONFIG,
-        URL_UPDATE_CONFIG
+        URL_UPDATE_CONFIG,
+        URL_GET_CONFIG_VISIT
     }
 }
