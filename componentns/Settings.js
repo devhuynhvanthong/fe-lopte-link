@@ -103,7 +103,7 @@ export default function Settings(props){
         const filterLimitKey = config.filter(item => item.code == 'visits')[0]
         const filterMaintenance = config.filter(item => item.code == 'maintenance')[0]
         if (filterLimitKey){
-            setSelectLimitKey(filterLimitKey.value)
+            setSelectLimitKey([filterLimitKey.value])
         }
         if (filterMaintenance){
             setCheckedMaintenance(filterMaintenance.value.toLowerCase() == 'true')
