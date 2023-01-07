@@ -128,7 +128,7 @@ export default function Settings(props){
         })
         setLoadingLimitKey(true)
         apis().post(urls().URL_UPDATE_CONFIG,{
-            value: selectLimitKey,
+            value: selectLimitKey[0],
             code: 'visits',
             category: selectChooseGame
         }).then(response=>{
