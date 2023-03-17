@@ -53,7 +53,7 @@ export default function GetKey(){
             } else {
                 setKey(response.message ? response.message : "Receiving key failed!")
             }
-        })
+        }).catch((e) => setKey(e))
     }
 
     function handleClickGetKey() {
