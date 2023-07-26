@@ -6,6 +6,7 @@ import Loading from "~/component/loading";
 import CallApi from "~/utils/apis";
 import {DOMAIN_LINK, URL_LINK} from "~/utils/Urls";
 import {IAPILink} from "~/@type/link";
+import Library from "~/utils/Library";
 export default function GetLink() {
     const router = useRouter()
     const [id, setId] = useState("")
@@ -13,6 +14,7 @@ export default function GetLink() {
     const [loading, setLoading] = useState(true)
     const [info, setInfo] = useState<IAPILink>()
     const api = CallApi()
+    const library = Library()
     function handleGetLink(id: string) {
         api.get(URL_LINK, {converted: `${DOMAIN_LINK}${id}`}).then((response) => {
             if (response.status) {
@@ -33,6 +35,7 @@ export default function GetLink() {
                 handleGetLink(router.query?.id)
             }
             setLoading(false)
+            setMobile(library.isMobile)
         }
     }, [router])
 
@@ -41,7 +44,7 @@ export default function GetLink() {
             loading ?
                 <Loading open={loading}/>
                 : isMobile ?
-                <LinkDesktop info={info} />
+                <LinkMobile info={info} />
                 : <LinkDesktop info={info} />
         }
     </div>

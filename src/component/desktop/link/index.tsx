@@ -6,7 +6,6 @@ import {TypePropLink} from "~/@type/link";
 export default function LinkDesktop ( {info} : TypePropLink) {
     const [ready, setReady] = useState(false)
     const [timeout, setTimeout] = useState(30)
-    const router = useRouter()
     return <div className={_style.wrapper}>
         <div className={_style.header}>
             <img src={'logo.png'}/>
@@ -22,6 +21,7 @@ export default function LinkDesktop ( {info} : TypePropLink) {
             </div>
             <div className={_style.containerCenter}>
                 <YoutubeComponent
+                    className={_style.containerCenterYoutube}
                     idVideo={info?.ads || ""}
                     onTime={(time) => {
                         if (30 - time < 0) {

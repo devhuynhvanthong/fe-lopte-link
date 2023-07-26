@@ -2,7 +2,7 @@ import {TypePropYoutube} from "~/@type/youtube";
 import {useEffect, useRef, useState} from "react";
 import YouTube from "react-youtube";
 import {is} from "immutable";
-export default function YoutubeComponent( {idVideo, onTime, isCount }: TypePropYoutube) {
+export default function YoutubeComponent( {idVideo, onTime, isCount, className }: TypePropYoutube) {
     const [time, setTime] = useState(0)
     const [isRunning, setIsRunning] = useState(false);
 
@@ -39,6 +39,7 @@ export default function YoutubeComponent( {idVideo, onTime, isCount }: TypePropY
     };
 
     return <YouTube
+        iframeClassName={className}
         onPause={() => {
             handlePauseResume()
         }}
