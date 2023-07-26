@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import styles from '../../styles/index.module.css'
-import Keys from "~/src/componentns/Keys";
 import {Menu, Modal} from 'antd';
 import {
     LogoutOutlined,
@@ -9,9 +8,6 @@ import {
     AppstoreOutlined,
     KeyOutlined
 } from '@ant-design/icons';
-import Games from "~/src/componentns/Games";
-import Statictis from "~/src/componentns/Statictis";
-import Settings from "~/src/componentns/Settings";
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
 export default function index(){
@@ -139,22 +135,6 @@ export default function index(){
                                 fontSize: '2em'
                             }}>{title}</label>
                             <hr style={{marginTop: '5px'}}/>
-                            {
-                                selectMenu == "1" &&
-                                <Keys setPermisiion_={setPermisiion_}/>
-                            }
-                            {
-                                selectMenu == "2" &&
-                                <Games  setPermisiion_={setPermisiion_}/>
-                            }
-                            {
-                                selectMenu == "3" &&
-                                <Statictis  setPermisiion_={setPermisiion_}/>
-                            }
-                            {
-                                selectMenu == "4" &&
-                                <Settings  setPermisiion_={setPermisiion_}/>
-                            }
                         </div>
                     </>
                 }
