@@ -41,7 +41,7 @@ export default function GetLink() {
             loading ?
                 <Loading open={loading}/>
                 : isMobile ?
-                <LinkMobile info={info} />
+                <LinkDesktop info={info} />
                 : <LinkDesktop info={info} />
         }
     </div>
