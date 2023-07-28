@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
+import Header from "~/component/Header";
 export default function Admin(){
     const router = useRouter()
     const [ready, setReady] = useState(false)
@@ -18,7 +19,7 @@ export default function Admin(){
     const [title,setTitle] = useState("Keys")
     const [isShowModel,setShowModel] = useState(false)
     const [permission_,setPermisiion_] = useState(true)
-    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode("http://localhost:3000/admin")}==&session=expired`
+    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode("https://dev-link.aigoox.com/admin")}==&session=expired`
     useEffect(()=>{
         if(!library().checkLogin()){
             router.push(urlLogin)
@@ -83,6 +84,7 @@ export default function Admin(){
     }
 
     return <>
+        <Header title={"Lopte Link - Dashboard"} />
         {
             ready && <div className={styles.wrapper}>
                 <div className={styles.wrapperAdmin}>

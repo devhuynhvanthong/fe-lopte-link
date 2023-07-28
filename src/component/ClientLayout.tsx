@@ -5,13 +5,13 @@ import {useRouter} from "next/router";
 
 const ClientLayout = ({ children }: TypePropLayout) => {
     const router = useRouter()
-    // useEffect(() => {
-    //     if (router.asPath === "/") {
-    //         router.push("https://www.gamelopte.com/")
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (router.asPath === "/") {
+            router.push("https://www.gamelopte.com/")
+        }
+    }, [])
     return <div>
-        <Header />
+        <Header title={"Lopte Link - Get Link"}/>
         {
             children
         }
