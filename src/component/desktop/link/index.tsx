@@ -1,11 +1,18 @@
 import _style from './style.module.scss'
-import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import {useState} from "react";
 import YoutubeComponent from "~/component/YoutubeComponent";
 import {TypePropLink} from "~/@type/link";
-export default function LinkDesktop ( {info} : TypePropLink) {
+import {Spin} from "antd";
+export default function LinkDesktop ( {info, getLink, isLoadingGetLink} : TypePropLink) {
     const [ready, setReady] = useState(false)
     const [timeout, setTimeout] = useState(30)
+
+    function handleGetLink() {
+        if (timeout <= 0) {
+            getLink()
+        }
+    }
+
     return <div className={_style.wrapper}>
         <div className={_style.header}>
             <img src={'logo.png'}/>
@@ -42,11 +49,14 @@ export default function LinkDesktop ( {info} : TypePropLink) {
                 </div>
                 {
                     ready ?
-                        <a href={info?.source}>
-                            <div className={_style.containerCenterSubmit}>
-                                <span>Get Link</span>
-                            </div>
-                        </a>
+                        <div
+                            onClick={handleGetLink}
+                            className={_style.containerCenterSubmit}>
+                            <span>Get Link</span>
+                            <Spin
+                                className={_style.customSpin}
+                                spinning={isLoadingGetLink} />
+                        </div>
                         : <div className={_style.containerCenterWaiting}>
                             <span>Please wait...</span>
                         </div>

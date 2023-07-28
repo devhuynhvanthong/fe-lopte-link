@@ -23,7 +23,6 @@ export default function YoutubeComponent( {idVideo, onTime, isCount, className }
     }, [isCount])
 
     useEffect(()  => {
-        console.log(time)
         if (onTime) {
             onTime(time)
         }

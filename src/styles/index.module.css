@@ -25,7 +25,7 @@
     transition: .4s;
     font-family: "Times New Roman", sans-serif;
 }
-.wapperAdmin{
+.wrapperAdmin{
     display: flex;
     width: 100%;
 }
@@ -170,13 +170,15 @@
     margin-bottom: 20px;
 }
 
-.wapper{
+.wrapper{
     width: 100%;
-    min-height: 90vh;
+    position: absolute;
     padding-bottom: 50px;
+    background: #0a3646;
+    height: 100%;
 }
 
-.wapperAdmin{
+.wrapperAdmin{
     width: 100%;
 }
 

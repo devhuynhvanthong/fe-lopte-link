@@ -1,5 +1,4 @@
 
-// @ts-ignore
 import Cookie from "js-cookie"
 import Library from "./Library"
 import Constants from "~/utils/Constants";
@@ -15,7 +14,7 @@ export default function Cookies  () {
             expires:30,
             secure: true,
             sameSite:'strict',
-            //domain: 'aigoox.com'
+            domain: 'aigoox.com'
         })
     }
 
@@ -28,8 +27,8 @@ export default function Cookies  () {
             if(!isParseJson){
                 return input
             }
-            const output = JSON.parse(library.base64Decode(input))
-            return output.accsessToken
+            const output = JSON.parse(input)
+            return output.access_token
         }else{
             return null
         }
