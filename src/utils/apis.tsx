@@ -4,9 +4,9 @@ import Cookies from "~/utils/Cookies";
 export default function CallApi() {
     const API_URL = process.env.REACT_APP_API_URL
     const cookie = Cookies()
-    const post = async(endpoint: string, body = {}, header_ = { }) => {
-        if (cookie.getAccessToken()) {
-            axios.defaults.headers.common.Authorization = cookie.getAccessToken()
+    const post = async(endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
+        if (cookie.getAccessToken() && isAuth) {
+            axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
         return axios({
             method: 'POST',
@@ -25,14 +25,14 @@ export default function CallApi() {
             })
     }
 
-    const put = async(endpoint: string, body = null) => {
-        if (cookie.getAccessToken()) {
-            axios.defaults.headers.common.Authorization = cookie.getAccessToken()
+    const put = async(endpoint: string, body  = {}, header_ = {}, isAuth: boolean = true) => {
+        if (cookie.getAccessToken() && isAuth) {
+            axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
         return axios({
             method: 'PUT',
-            url: `${API_URL}/${endpoint}`,
-            data: body,
+            url: `${endpoint}`,
+            data: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -45,14 +45,14 @@ export default function CallApi() {
                 console.log(err)
             })
     }
-    const deleteApi = async(endpoint: string, body = null) => {
-        if (cookie.getAccessToken()) {
-            axios.defaults.headers.common.Authorization = cookie.getAccessToken()
+    const deleteApi = async(endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
+        if (cookie.getAccessToken() && isAuth) {
+            axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
         return axios({
             method: 'DELETE',
-            url: `${API_URL}/${endpoint}`,
-            data: body,
+            url: `${endpoint}`,
+            data: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -65,9 +65,9 @@ export default function CallApi() {
                 console.log(err)
             })
     }
-    const get = async(endpoint: string, params_ = {}, header_ = {}) => {
-        if (cookie.getAccessToken()) {
-            axios.defaults.headers.common.Authorization = cookie.getAccessToken()
+    const get = async(endpoint: string, params_ = {}, header_ = {}, isAuth: boolean = true) => {
+        if (cookie.getAccessToken() && isAuth) {
+            axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
         return axios({
             method: 'GET',

@@ -17,7 +17,11 @@ export default function GetLink() {
     const api = CallApi()
     const library = Library()
     function handleGetAds(id: string) {
-        api.get(URL_ADS, {converted: `${DOMAIN_LINK}${id}`}).then((response) => {
+        api.get(URL_ADS,
+            {converted: `${DOMAIN_LINK}${id}`},
+            {},
+            false
+        ).then((response) => {
             if (response.status) {
                 const body = response.body
                 setInfo(body)
@@ -27,7 +31,10 @@ export default function GetLink() {
 
     function handleGetLink() {
         setLoadingGetLink(true)
-        api.get(URL_LINK, {code: info?.code}).then((response) => {
+        api.get(URL_LINK,
+            {code: info?.code},
+            {},false
+            ).then((response) => {
             if (response.status) {
                 const body = response.body
                 if (body) {

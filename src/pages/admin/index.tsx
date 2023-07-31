@@ -11,15 +11,18 @@ import {
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
 import Header from "~/component/Header";
+import Link from "./link";
+import Ads from "~/pages/admin/ads";
+import Setting from "~/pages/admin/setting";
 export default function Admin(){
     const router = useRouter()
     const [ready, setReady] = useState(false)
     const [isMobile,setMobile] = useState(false)
     const [selectMenu,setSelectMenu] = useState("1")
-    const [title,setTitle] = useState("Keys")
+    const [title,setTitle] = useState("Link")
     const [isShowModel,setShowModel] = useState(false)
     const [permission_,setPermisiion_] = useState(true)
-    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode("https://dev-link.aigoox.com/admin")}==&session=expired`
+    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode("http://localhost:3000/admin")}==&session=expired`
     useEffect(()=>{
         if(!library().checkLogin()){
             router.push(urlLogin)
@@ -82,6 +85,19 @@ export default function Admin(){
             router.push(urlLogin)
         },300)
     }
+    function RenderBody() {
+        return <div className={styles.wrapperAdminBody}>
+            {
+                selectMenu === "1"
+                    ? <Link />
+                    : selectMenu === "2"
+                        ? <Ads />
+                        : selectMenu === "3"
+                            ? <Setting />
+                            : <span/>
+            }
+        </div>
+    }
 
     return <>
         <Header title={"Lopte Link - Dashboard"} />
@@ -115,12 +131,12 @@ export default function Admin(){
 
                             </div>
                             <div className={styles.bodyAdmin}>
-
                                 <label style={{
                                     color: 'white',
                                     fontSize: '2em'
                                 }}>{title}</label>
-                                <hr style={{marginTop: '5px'}}/>
+                                <hr style={{marginTop: '5px', marginBottom: "20px"}}/>
+                                <RenderBody />
                             </div>
                         </>
                     }
