@@ -1,6 +1,6 @@
 import _style from './style.module.scss'
 import {Form, Input, Modal, notification, Popconfirm, Spin, Table, Tooltip} from "antd";
-import {TableType, TypeData} from "~/@type/table";
+import {TableTypeLink, TypeData} from "~/@type/table";
 import {ColumnsType} from "antd/es/table";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
@@ -8,15 +8,15 @@ import { URL_LINK, URL_LINKS} from "~/utils/Urls";
 import CallApi from "~/utils/apis";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
-import {IAPILink, IAPIPropsAddLink} from "~/@type/link";
+import {IAPILink, IAPIPropsAddLink, TypePropsMenu} from "~/@type/link";
 import {TypePropsModalLink} from "~/@type/modal.d";
 import ShortText from "~/component/ShortText";
 import { NotificationPlacement } from 'antd/es/notification/interface';
 import {VALIDATE_ADD_SUCCESS, VALIDATE_DELETE_SUCCESS, VALIDATE_EXIST_DATA} from "~/utils/validate";
 import {Exception} from "sass";
 import Loading from "~/component/loading";
-export default function Link() {
-    const [data, setData] = useState<TypeData>({data: [], totalPage: 0})
+export default function Link({ notify, context} : TypePropsMenu) {
+    const [data, setData] = useState<TypeData<TableTypeLink>>({data: [], totalPage: 0})
     const api = CallApi()
     const [formData] = Form.useForm()
     const router = useRouter()
@@ -26,7 +26,7 @@ export default function Link() {
     const handleLoadingData = useCallback(() => {
         api.get(URL_LINKS, {page_offset: router.query.page_offset || 1}).then((response) => {
             if (response?.status == constants.SUCCESS) {
-                const data: TypeData = response.body
+                const data: TypeData<TableTypeLink> = response.body
                 setData({
                     totalPage: data.totalPage,
                     // @ts-ignore
@@ -48,17 +48,15 @@ export default function Link() {
                 })
             }
         })
-    }, [router.query])
-    const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+    }, [])
     const typeNoti = {success: "success",failed: "failed",info: "info"}
-    const [notify, contextHolder] = notification.useNotification();
-    const Context = React.createContext({ name: 'Default' });
+
     const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
         switch (type) {
             case typeNoti.success: {
                 notify.success({
                     message: "Thành công",
-                    description: <Context.Consumer>{() => message}</Context.Consumer>,
+                    description: <context.Consumer>{() => message}</context.Consumer>,
                     // @ts-ignore
                     place,
                 })
@@ -67,7 +65,7 @@ export default function Link() {
             case typeNoti.failed: {
                 notify.error({
                     message: "Thất bại",
-                    description: <Context.Consumer>{() => message}</Context.Consumer>,
+                    description: <context.Consumer>{() => message}</context.Consumer>,
                     // @ts-ignore
                     place,
                 });
@@ -76,7 +74,7 @@ export default function Link() {
             case typeNoti.info: {
                 notify.info({
                     message: "Thông báo",
-                    description: <Context.Consumer>{() => message}</Context.Consumer>,
+                    description: <context.Consumer>{() => message}</context.Consumer>,
                     // @ts-ignore
                     place,
                 });
@@ -97,7 +95,7 @@ export default function Link() {
     useEffect(() => {
         handleLoadingData()
     }, [])
-    const column: ColumnsType<TableType> = [
+    const column: ColumnsType<TableTypeLink> = [
         {
             key: "stt",
             title: "STT",
@@ -209,9 +207,7 @@ export default function Link() {
             </Modal>
         </>
     }
-    return <Context.Provider value={contextValue}>
-        {contextHolder}
-        <div className={_style.wrapper}>
+    return <div className={_style.wrapper}>
             <div className={_style.contentAction}>
                 <div
                     onClick={() => {
@@ -237,5 +233,4 @@ export default function Link() {
                 show={showModal}
             />
         </div>
-    </Context.Provider>
 }

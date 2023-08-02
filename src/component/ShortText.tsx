@@ -2,18 +2,19 @@ import {Tooltip} from "antd";
 
 interface TypeProps {
     value: string,
-    click?: boolean
+    click?: boolean,
+    lenght?: number
 }
-export default function ShortText({ value, click }: TypeProps) {
+export default function ShortText({ value, click, lenght = 40 }: TypeProps) {
     return <>
         {
-            value.length >= 41 ?
+            value?.toString().length || 0 >= lenght + 1 ?
                 <Tooltip title={value}>
                     <span>
                         {
                             click ?
-                                <a target={'_blank'} href={value} rel="noreferrer">{value.substring(0, 40) + "..."}</a>
-                                : value.substring(0, 40) + "..."
+                                <a target={'_blank'} href={value} rel="noreferrer">{value.substring(0, lenght) + "..."}</a>
+                                : value.substring(0, lenght) + "..."
                         }
                     </span>
                 </Tooltip>

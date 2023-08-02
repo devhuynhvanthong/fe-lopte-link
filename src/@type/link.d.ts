@@ -1,3 +1,6 @@
+import {NotificationInstance} from "antd/es/notification/interface";
+import React from "react";
+
 export interface TypePropLink {
     info?: IAPILink,
     getLink: () => void,
@@ -13,4 +16,9 @@ export interface IAPILink {
 }
 export interface IAPIPropsAddLink {
     source: string
+}
+
+export interface TypePropsMenu {
+    notify: NotificationInstance
+    context: React.Context<any>
 }

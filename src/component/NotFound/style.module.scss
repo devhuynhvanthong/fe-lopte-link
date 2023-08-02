@@ -1,0 +1,30 @@
+.wrapper {
+  height: 100%;
+  background-color: white;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-items: center;
+  justify-content: center;
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    img {
+      width: 700px !important;
+      height: auto;
+    }
+    label {
+      font-weight: bold;
+      font-size: 50px;
+    }
+    span {
+      font-size: 30px;
+    };
+  }
+}

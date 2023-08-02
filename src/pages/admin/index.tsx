@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import styles from '../../styles/index.module.css'
-import {Menu, Modal} from 'antd';
+import {Menu, Modal, notification} from 'antd';
 import {
     LogoutOutlined,
     SettingOutlined,
@@ -89,17 +89,21 @@ export default function Admin(){
         return <div className={styles.wrapperAdminBody}>
             {
                 selectMenu === "1"
-                    ? <Link />
+                    ? <Link notify={notify} context={Context}/>
                     : selectMenu === "2"
-                        ? <Ads />
+                        ? <Ads notify={notify} context={Context}/>
                         : selectMenu === "3"
-                            ? <Setting />
+                            ? <Setting notify={notify} context={Context}/>
                             : <span/>
             }
         </div>
     }
+    const [notify, contextHolder] = notification.useNotification();
+    const Context = React.createContext({ name: 'Default' });
+    const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+    return <Context.Provider value={contextValue}>
 
-    return <>
+        {contextHolder}
         <Header title={"Lopte Link - Dashboard"} />
         {
             ready && <div className={styles.wrapper}>
@@ -115,6 +119,7 @@ export default function Admin(){
                                 }}
                             >
                                 <Menu
+                                    selectedKeys={[selectMenu]}
                                     style={{
                                         borderRadius: '20px',
                                         padding: '10px'
@@ -178,5 +183,5 @@ export default function Admin(){
                 </div>
             </div>
         }
-    </>
+    </Context.Provider>
 }
