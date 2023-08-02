@@ -14,6 +14,7 @@ import Header from "~/component/Header";
 import Link from "./link";
 import Ads from "~/pages/admin/ads";
 import Setting from "~/pages/admin/setting";
+import {DOMAIN_LINK_DEV} from "~/utils/Urls";
 export default function Admin(){
     const router = useRouter()
     const [ready, setReady] = useState(false)
@@ -22,7 +23,7 @@ export default function Admin(){
     const [title,setTitle] = useState("Link")
     const [isShowModel,setShowModel] = useState(false)
     const [permission_,setPermisiion_] = useState(true)
-    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode("http://localhost:3000/admin")}==&session=expired`
+    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
     useEffect(()=>{
         if(!library().checkLogin()){
             router.push(urlLogin)
