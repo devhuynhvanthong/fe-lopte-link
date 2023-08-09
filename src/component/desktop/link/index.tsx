@@ -3,9 +3,9 @@ import {useState} from "react";
 import YoutubeComponent from "~/component/YoutubeComponent";
 import {TypePropLink} from "~/@type/link";
 import {Spin} from "antd";
-export default function LinkDesktop ( {info, getLink, isLoadingGetLink} : TypePropLink) {
+export default function LinkDesktop ( {info, getLink, isLoadingGetLink, timeConfig} : TypePropLink) {
     const [ready, setReady] = useState(false)
-    const [timeout, setTimeout] = useState(30)
+    const [timeout, setTimeout] = useState(timeConfig)
 
     function handleGetLink() {
         if (timeout <= 0) {
@@ -31,10 +31,10 @@ export default function LinkDesktop ( {info, getLink, isLoadingGetLink} : TypePr
                     className={_style.containerCenterYoutube}
                     idVideo={info?.ads || ""}
                     onTime={(time) => {
-                        if (30 - time < 0) {
+                        if (timeConfig - time < 0) {
                             setReady(true)
                         }else {
-                            setTimeout(30 - time)
+                            setTimeout(timeConfig - time)
                         }
                     }}
                     isCount={!ready}

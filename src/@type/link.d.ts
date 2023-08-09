@@ -1,10 +1,12 @@
 import {NotificationInstance} from "antd/es/notification/interface";
 import React from "react";
+import {typeNotify} from "~/pages/_app";
 
 export interface TypePropLink {
     info?: IAPILink,
     getLink: () => void,
-    isLoadingGetLink: boolean
+    isLoadingGetLink: boolean,
+    timeConfig: number
 }
 
 export interface IAPILink {
@@ -19,6 +21,6 @@ export interface IAPIPropsAddLink {
 }
 
 export interface TypePropsMenu {
-    notify: NotificationInstance
-    context: React.Context<any>
+    openNotification: (message: string, type: string) => void,
+    typeNotify: typeof typeNotify
 }

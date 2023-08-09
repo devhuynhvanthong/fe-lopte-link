@@ -1,10 +1,10 @@
 import _style from './style.module.scss'
-import {Form, Input, Modal, notification, Popconfirm, Spin, Table, Tooltip} from "antd";
+import {Form, Input, Modal, notification, Popconfirm, Spin, Table, Tooltip, Typography} from "antd";
 import {TableTypeLink, TypeData} from "~/@type/table";
 import {ColumnsType} from "antd/es/table";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import { URL_LINK, URL_LINKS} from "~/utils/Urls";
+import {URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
 import CallApi from "~/utils/apis";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
@@ -15,7 +15,9 @@ import { NotificationPlacement } from 'antd/es/notification/interface';
 import {VALIDATE_ADD_SUCCESS, VALIDATE_DELETE_SUCCESS, VALIDATE_EXIST_DATA} from "~/utils/validate";
 import {Exception} from "sass";
 import Loading from "~/component/loading";
-export default function Link({ notify, context} : TypePropsMenu) {
+import SearchComponent from "~/component/SearchComponent";
+import Header from "~/component/Header";
+export default function Link({ openNotification, typeNotify } : TypePropsMenu) {
     const [data, setData] = useState<TypeData<TableTypeLink>>({data: [], totalPage: 0})
     const api = CallApi()
     const [formData] = Form.useForm()
@@ -24,7 +26,7 @@ export default function Link({ notify, context} : TypePropsMenu) {
     const [loading, setLoading] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const handleLoadingData = useCallback(() => {
-        api.get(URL_LINKS, {page_offset: router.query.page_offset || 1}).then((response) => {
+        api.get(URL_LINKS, {page_offset: router.query.page_offset || 1, search: router.query.search}).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 const data: TypeData<TableTypeLink> = response.body
                 setData({
@@ -48,45 +50,13 @@ export default function Link({ notify, context} : TypePropsMenu) {
                 })
             }
         })
-    }, [])
-    const typeNoti = {success: "success",failed: "failed",info: "info"}
+    }, [router.query.search, router.query.page_offset])
 
-    const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
-        switch (type) {
-            case typeNoti.success: {
-                notify.success({
-                    message: "Thành công",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                })
-                break
-            }
-            case typeNoti.failed: {
-                notify.error({
-                    message: "Thất bại",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                });
-                break
-            }
-            case typeNoti.info: {
-                notify.info({
-                    message: "Thông báo",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                });
-                break
-            }
-        }
-    };
     function handleDeleteLink(id: number) {
         setLoading(true)
         api.deleteApi(URL_LINK,
             {id: id}).then(() => {
-            openNotification(VALIDATE_DELETE_SUCCESS,typeNoti.success)
+            openNotification(VALIDATE_DELETE_SUCCESS,typeNotify.success)
             handleLoadingData()
         }).finally(() => {
             setLoading(false)
@@ -94,7 +64,7 @@ export default function Link({ notify, context} : TypePropsMenu) {
     }
     useEffect(() => {
         handleLoadingData()
-    }, [])
+    }, [router.query.page_offset, router.query.search])
     const column: ColumnsType<TableTypeLink> = [
         {
             key: "stt",
@@ -108,7 +78,12 @@ export default function Link({ notify, context} : TypePropsMenu) {
             dataIndex: "link",
             title: "Link trỏ tới",
             render: (text) => {
-                return <ShortText value={text} click />
+                return <Typography>
+                    <Typography.Paragraph style={{ marginBottom: 'unset', display: 'flex', alignItems: 'center' }}
+                                          copyable={{ text: text, tooltips: true }}>
+                            <ShortText value={text} click />
+                    </Typography.Paragraph>
+                </Typography>
             }
         },
         {
@@ -116,7 +91,12 @@ export default function Link({ notify, context} : TypePropsMenu) {
             dataIndex: "key",
             title: "Key",
             render: (text) => {
-                return <span style={{wordWrap: "break-word", wordBreak: "break-word"}}>{text}</span>;
+                return <Typography>
+                    <Typography.Paragraph style={{ marginBottom: 'unset', display: 'flex', alignItems: 'center' }}
+                                          copyable={{ text: `https://dev-link.aigoox.com/${text}`, tooltips: true }}>
+                        <span style={{wordWrap: "break-word", wordBreak: "break-word"}}>{text}</span>
+                    </Typography.Paragraph>
+                </Typography>
             }
         },
         {
@@ -159,16 +139,16 @@ export default function Link({ notify, context} : TypePropsMenu) {
         api.post(URL_LINK,value).then((response) => {
             if (response?.status === constants.SUCCESS) {
                 if (response?.body.category === "exist") {
-                    openNotification(VALIDATE_EXIST_DATA, typeNoti.info)
+                    openNotification(VALIDATE_EXIST_DATA, typeNotify.info)
                 }else {
                     handleLoadingData()
-                    openNotification(VALIDATE_ADD_SUCCESS, typeNoti.success)
+                    openNotification(VALIDATE_ADD_SUCCESS, typeNotify.success)
                 }
             }else {
-                openNotification(response?.message, typeNoti.failed)
+                openNotification(response?.message, typeNotify.failed)
             }
         }).catch((e: Exception) => {
-            openNotification(e.message, typeNoti.failed)
+            openNotification(e.message, typeNotify.failed)
         }).finally(() => {
             setLoading(false)
         })
@@ -207,8 +187,12 @@ export default function Link({ notify, context} : TypePropsMenu) {
             </Modal>
         </>
     }
-    return <div className={_style.wrapper}>
+
+    return <>
+    <Header title={"Lopte Link - Dashboard"} />
+    <div className={_style.wrapper}>
             <div className={_style.contentAction}>
+                <SearchComponent />
                 <div
                     onClick={() => {
                         setShowModal(true)
@@ -233,4 +217,5 @@ export default function Link({ notify, context} : TypePropsMenu) {
                 show={showModal}
             />
         </div>
+    </>
 }

@@ -5,13 +5,17 @@
 }
 .contentAction {
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
+  justify-items: center;
+  align-items: end;
   .buttonAdd {
     cursor: pointer;
     user-select: none;
     border-radius: 5px;
     border: 1px solid white;
     background-color: #008BB7;
+    color: white;
+    height: fit-content;
     font-size: 20px;
     padding: 5px 20px;
     width: fit-content;

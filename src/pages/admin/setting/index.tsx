@@ -1,26 +1,25 @@
 import {TypePropsMenu} from "~/@type/link";
 import _style from "./style.module.scss"
 import React, {useCallback, useEffect, useState} from "react";
-import {IAPIConfig, IAPIConfigItem, TypeUpdateSetting} from "~/@type/setting";
-import {URL_CONFIG, URL_LINKS} from "~/utils/Urls";
-import {TableTypeLink, TypeData} from "~/@type/table";
+import {IAPIConfig} from "~/@type/setting";
+import {URL_CONFIG} from "~/utils/Urls";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
 import CallApi from "~/utils/apis";
 import ShortText from "~/component/ShortText";
 import {Input, Radio, Select, Spin, Switch} from "antd";
 import {NotificationPlacement} from "antd/es/notification/interface";
-import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
+import {VALIDATE_DELETE_SUCCESS, VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
 import {EditOutlined} from "@ant-design/icons";
-export default function Setting({ notify, context} : TypePropsMenu) {
+export default function Setting({ openNotification, typeNotify} : TypePropsMenu) {
     const router = useRouter()
     const constants = Constants()
     const api = CallApi()
     const [data, setData] = useState<IAPIConfig>([])
     const [selectAd, setSelectAd] = useState<number>(0)
+    const [selectAdTime, setSelectAdTime] = useState<number>()
     const [isMaintenance, setMaintenance] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
-    const [descriptionAd, setDescription] = useState("")
     const [updateAdsDescription,setAdsDescription] = useState(false)
     useEffect(() => {
         handleLoadingData()
@@ -29,141 +28,27 @@ export default function Setting({ notify, context} : TypePropsMenu) {
         api.get(URL_CONFIG, {page_offset: router.query.page_offset || 1}).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 const data: IAPIConfig = response.body
-                const filterAd = data.filter((item) => {
-                    return item.name === "ads"
-                })[0]
-                const filterMaintenance = data.filter((item) => {
-                    return item.name === "maintenance"
-                })[0].value
-                setDescription(filterAd?.description || "")
-                setSelectAd(filterAd?.value === "true" ? 1 : 0)
-                setMaintenance(filterMaintenance === "true")
                 setData(data)
             }else {
                 setData([])
             }
         })
     }, [])
-    const typeNoti = {success: "success",failed: "failed",info: "info"}
-    const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
-        switch (type) {
-            case typeNoti.success: {
-                notify.success({
-                    message: "Thành công",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                })
-                break
-            }
-            case typeNoti.failed: {
-                notify.error({
-                    message: "Thất bại",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                });
-                break
-            }
-            case typeNoti.info: {
-                notify.info({
-                    message: "Thông báo",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                });
-                break
-            }
-        }
-    };
     function handleUpdate() {
-        const filter = data?.filter((item) => {
-            return item.name === "ads"
-        })[0]
-        const filterDes = data?.filter((item) => {
-            return item.name === "ads"
-        })[0]?.description
-        const filterMaintenance = data?.filter((item) => {
-            return item.name === "maintenance"
-        })[0]?.value.toLowerCase()
-        if (selectAd.toString() !== filter?.value.toLowerCase()) {
-            setLoading(true)
-            api.put(URL_CONFIG, {
-                name: "ads",
-                value: selectAd ? "true" : "false"
-            }).then((response) => {
-                if (response?.status === constants.SUCCESS) {
-                    openNotification(typeNoti.success, VALIDATE_UPDATE_SUCCESS)
-                }else {
-                    openNotification(typeNoti.failed, VALIDATE_UPDATE_FAILED)
-                }
-            }).catch(() => {
-                openNotification(typeNoti.failed, VALIDATE_UPDATE_FAILED)
-            }).finally(() => {
-                if (descriptionAd === filterDes && isMaintenance.toString() === filterMaintenance) {
-                    setLoading(false)
-                }
-            })
-        }
-
-        if (descriptionAd !== filterDes) {
-            if (loading) {
-                setLoading(true)
+        setLoading(true)
+        api.put(URL_CONFIG, {
+            data: JSON.stringify(data)
+        }).then((response) => {
+            if (response?.status === constants.SUCCESS) {
+                openNotification(VALIDATE_UPDATE_SUCCESS,typeNotify.success)
+            }else {
+                openNotification(VALIDATE_UPDATE_FAILED,typeNotify.failed)
             }
-            api.put(URL_CONFIG, {
-                name: "ads",
-                description: descriptionAd
-            }).then((response) => {
-                if (response?.status === constants.SUCCESS) {
-                    setData(prevState => {
-                        return [
-                            ...prevState,
-                            {
-                                ...filter,
-                                description: descriptionAd
-                            }
-                        ]
-                    })
-                    openNotification(typeNoti.success, VALIDATE_UPDATE_SUCCESS)
-                }else {
-                    openNotification(typeNoti.failed, VALIDATE_UPDATE_FAILED)
-                }
-            }).catch(() => {
-                openNotification(typeNoti.failed, VALIDATE_UPDATE_FAILED)
-            }).finally(() => {
-                if (isMaintenance.toString() === filterMaintenance) {
-                    setLoading(false)
-                }
-            })
-        }
-        if (isMaintenance.toString() !== filterMaintenance) {
-            if (loading) {
-                setLoading(true)
-            }
-            api.put(URL_CONFIG, {
-                name: "maintenance",
-                value: isMaintenance.toString()
-            }).then((response) => {
-                if (response?.status === constants.SUCCESS) {
-                    setData(prevState => {
-                        return [
-                            ...prevState,
-                            {
-                                ...filter,
-                                value: isMaintenance.toString()
-                            }
-                        ]
-                    })
-                    openNotification(typeNoti.success, VALIDATE_UPDATE_SUCCESS)
-                }else {
-                    openNotification(typeNoti.failed, VALIDATE_UPDATE_FAILED)
-                }
-            }).catch(() => {
-                openNotification(typeNoti.failed, VALIDATE_UPDATE_FAILED)
-            }).finally(() => {
-                setLoading(false)
-            })
-        }
+        }).catch(() => {
+            openNotification(VALIDATE_UPDATE_FAILED, typeNotify.failed)
+        }).finally(() => {
+            setLoading(false)
+        })
     }
 
     return <div className={_style.wrapper}>
@@ -188,40 +73,118 @@ export default function Setting({ notify, context} : TypePropsMenu) {
                             updateAdsDescription ?
                                 <Input
                                     onPressEnter={() => setAdsDescription(false)}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    value={descriptionAd}
+                                    onChange={(e) => {
+                                        const filter =  data.findIndex((item) => {
+                                            return item.name === "ads"
+                                        })
+
+                                        setData(prevState => {
+                                            const value = [...prevState]
+                                            value[filter].description = e.target.value
+                                            return value
+                                        })
+                                    }}
+                                    value={data.filter((_item) => {
+                                        return _item.name == "ads"
+                                    })[0]?.description}
                                     placeholder={"Nhập link ID youtube"} />
                                 :
-                                <a href={`https://www.youtube.com/watch?v=${descriptionAd}`}>{`https://www.youtube.com/watch?v=${descriptionAd}`}</a>
+                                <a href={`https://www.youtube.com/watch?v=${data.filter((_item) => {
+                                    return _item.name == "ads"
+                                })[0]?.description}`}>{`https://www.youtube.com/watch?v=${data.filter((_item) => {
+                                    return _item.name == "ads"
+                                })[0]?.description || ""}`}</a>
                         }
 
                     </div>
                     <div style={{
                         display: "flex",
-                        gap: 20,
-                        alignItems: "center",
-                        justifyItems: "center"
+                        gap: 50,
+                        alignContent: "center",
+                        justifyContent: "space-between",
+                        justifyItems: "center",
+                        alignItems: "center"
                     }}>
-                        <label>Chế độ: </label>
-                        <Select
-                            style={{
-                                width: "200px"
-                            }}
-                            value={selectAd}
-                            onSelect={(item) => {
-                                setSelectAd(item)
-                            }}
-                            options={[
-                                {
-                                    label: "Một quảng cáo",
-                                    value: 1
-                                },
-                                {
-                                    label: "Nhiều quảng cáo",
-                                    value: 0
-                                },
-                            ]}
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 20,
+                            alignItems: "start",
+                            justifyItems: "center"
+                        }}>
+                            <label>Chế độ: </label>
+                            <label>Thời gian quảng cáo : </label>
+                        </div>
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 20,
+                            alignItems: "end",
+                            justifyItems: "center"
+                        }}>
+                            <Select
+                                style={{
+                                    width: "200px"
+                                }}
+                                value={data.filter((item) => {
+                                    return item.name === "ads"
+                                })[0]?.value === "true" ? 1 : 0}
+                                onSelect={(item) => {
+                                    const filter =  data.findIndex((item) => {
+                                        return item.name === "ads"
+                                    })
+
+                                    setData(prevState => {
+                                        const value = [...prevState]
+                                        value[filter].value = item === 1 ? "true" : "false"
+                                        return value
+                                    })
+                                }}
+                                options={[
+                                    {
+                                        label: "Một quảng cáo",
+                                        value: 1
+                                    },
+                                    {
+                                        label: "Nhiều quảng cáo",
+                                        value: 0
+                                    },
+                                ]}
                             />
+                            <Select
+                                style={{
+                                    width: "200px"
+                                }}
+                                value={data.filter((item) => {
+                                    return item.name === "time_ads"
+                                })[0]?.value}
+                                onSelect={(item) => {
+                                    const filter =  data.findIndex((item) => {
+                                        return item.name === "time_ads"
+                                    })
+
+                                    setData(prevState => {
+                                        const value = [...prevState]
+                                        value[filter].value = item.toString()
+                                        return value
+                                    })
+                                }}
+                                options={[
+                                    {
+                                        label: "15 Giây",
+                                        value: "15"
+                                    },
+                                    {
+                                        label: "30 Giây",
+                                        value: "30"
+                                    },
+                                    {
+                                        label: "45 Giây",
+                                        value: "45"
+                                    },
+                                ]}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -233,13 +196,25 @@ export default function Setting({ notify, context} : TypePropsMenu) {
                     <label>Bảo trì</label>
                     <div className={_style.contentItemRight}>
                         <Switch
-                            checked={isMaintenance}
+                            checked={data.filter((item) => {
+                                return item.name === "maintenance"
+                            })[0]?.value.toLowerCase() === "true"}
                             onChange={(item) => {
+                                const filter =  data.findIndex((item) => {
+                                    return item.name === "maintenance"
+                                })
+
+                                setData(prevState => {
+                                    const value = [...prevState]
+                                    value[filter].value = item.toString()
+                                    return value
+                                })
                                 setMaintenance(item)
                         }} />
                     </div>
                 </div>
             </div>
+
             <div style={{
                 display: "flex",
                 justifyContent: "center"

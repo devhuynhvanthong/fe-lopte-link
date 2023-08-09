@@ -10,13 +10,13 @@ import {ColumnsType} from "antd/es/table";
 import ShortText from "~/component/ShortText";
 import {DeleteOutlined} from "@ant-design/icons";
 import {TypePropsModalLink} from "~/@type/modal.d";
-import {URL_ADS, URL_LINK, URL_LINKS} from "~/utils/Urls";
+import {URL_ADS} from "~/utils/Urls";
 import {VALIDATE_ADD_SUCCESS, VALIDATE_DELETE_SUCCESS, VALIDATE_EXIST_DATA} from "~/utils/validate";
 import {Exception} from "sass";
 import {IAPIAddAds, IAPIPropsAddAds} from "~/@type/ads";
 import {NotificationPlacement} from "antd/es/notification/interface";
 
-export default function Ads({ notify, context} : TypePropsMenu) {
+export default function Ads({ openNotification, typeNotify } : TypePropsMenu) {
     const [data, setData] = useState<TypeData<TableTypeAds>>({data: [], totalPage: 0})
     const api = CallApi()
     const [formData] = Form.useForm()
@@ -81,7 +81,7 @@ export default function Ads({ notify, context} : TypePropsMenu) {
         setLoading(true)
         api.deleteApi(URL_ADS,
             {id: id}).then(() => {
-            openNotification(VALIDATE_DELETE_SUCCESS,typeNoti.success)
+            openNotification(VALIDATE_DELETE_SUCCESS,typeNotify.success)
             handleLoadingData()
         }).finally(() => {
             setLoading(false)
@@ -112,56 +112,23 @@ export default function Ads({ notify, context} : TypePropsMenu) {
             }
         })
     }, [router.query])
-    const typeNoti = {success: "success",failed: "failed",info: "info"}
-    const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
-        switch (type) {
-            case typeNoti.success: {
-                notify.success({
-                    message: "Thành công",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                })
-                break
-            }
-            case typeNoti.failed: {
-                notify.error({
-                    message: "Thất bại",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                });
-                break
-            }
-            case typeNoti.info: {
-                notify.info({
-                    message: "Thông báo",
-                    description: <context.Consumer>{() => message}</context.Consumer>,
-                    // @ts-ignore
-                    place,
-                });
-                break
-            }
-        }
-    };
     function handleFinish(value: IAPIPropsAddAds) {
         setShowModal(false)
         setLoading(true)
         api.post(URL_ADS,value).then((response) => {
-            console.log(response)
             if (response?.status === constants.SUCCESS) {
                 if (response?.body.category === "exist") {
-                    openNotification(VALIDATE_EXIST_DATA, typeNoti.info)
+                    openNotification(VALIDATE_EXIST_DATA, typeNotify.info)
                 }else {
                     handleLoadingData()
-                    openNotification(VALIDATE_ADD_SUCCESS, typeNoti.success)
+                    openNotification(VALIDATE_ADD_SUCCESS, typeNotify.success)
                 }
             }else {
-                openNotification(response?.response?.data?.message || response?.message, typeNoti.failed)
+                openNotification(response?.response?.data?.message || response?.message, typeNotify.failed)
             }
         }).catch((e: Exception) => {
             console.log('err',e)
-            openNotification(e.message, typeNoti.failed)
+            openNotification(e.message, typeNotify.failed)
         }).finally(() => {
             setLoading(false)
         })

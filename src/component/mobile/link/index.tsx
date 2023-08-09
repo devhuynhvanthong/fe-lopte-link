@@ -1,12 +1,12 @@
 import {TypePropLink} from "~/@type/link";
 import YoutubeComponent from "~/component/YoutubeComponent";
 import _style from "./style.module.scss"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Spin} from "antd";
 
-export default function LinkMobile ( {info, getLink, isLoadingGetLink} : TypePropLink) {
+export default function LinkMobile ( {info, getLink, isLoadingGetLink, timeConfig} : TypePropLink) {
     const [ready, setReady] = useState(false)
-    const [timeout, setTimeout] = useState(30)
+    const [timeout, setTimeout] = useState(timeConfig)
 
     function handleGetLink() {
         if (timeout <= 0) {
@@ -29,10 +29,10 @@ export default function LinkMobile ( {info, getLink, isLoadingGetLink} : TypePro
                 className={_style.containerYoutube}
                 idVideo={info?.ads || ""}
                 onTime={(time) => {
-                    if (30 - time < 0) {
+                    if (time - timeout < 0) {
                         setReady(true)
                     }else {
-                        setTimeout(30 - time)
+                        setTimeout(time - timeout)
                     }
                 }}
                 isCount={!ready}
@@ -44,8 +44,8 @@ export default function LinkMobile ( {info, getLink, isLoadingGetLink} : TypePro
                 </div>
 
                 <div className={_style.containerCenterNote}>
-                    <span>Vui lòng bấm play video và xem ít nhất 30 giây để mở khóa</span>
-                    <span>Please click play video and watch at least 30 seconds to unlock</span>
+                    <span>Vui lòng bấm play video và xem ít nhất {timeConfig} giây để mở khóa</span>
+                    <span>Please click play video and watch at least {timeConfig} seconds to unlock</span>
                 </div>
                 {
                     ready ?

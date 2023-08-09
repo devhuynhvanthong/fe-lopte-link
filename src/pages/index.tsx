@@ -8,4 +8,5 @@ export default function Home() {
     })
     return <></>
 }
+
 Home.layout = "client"

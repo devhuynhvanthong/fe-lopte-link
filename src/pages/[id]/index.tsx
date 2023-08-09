@@ -9,13 +9,17 @@ import {IAPILink} from "~/@type/link";
 import Library from "~/utils/Library";
 import Constants from "~/utils/Constants";
 import NotFound from "~/component/NotFound";
+interface TypeConfig {
+    time_ads: number,
+    isMaintenance: boolean,
+}
 export default function GetLink() {
     const router = useRouter()
     const [isMobile, setMobile] = useState(false)
     const [loading, setLoading] = useState(true)
     const [loadingGetLink, setLoadingGetLink] = useState(false)
     const [info, setInfo] = useState<IAPILink>()
-    const [isMaintenance, setMaintenance] = useState(false)
+    const [config, setConfig] = useState<TypeConfig>({time_ads: 30, isMaintenance: false})
     const [ready, setReady] = useState(false)
     const api = CallApi()
     const library = Library()
@@ -34,7 +38,9 @@ export default function GetLink() {
             setReady(true)
         })
     }
-
+    useEffect(() => {
+        console.log(config)
+    }, [config])
     function handleGetConfig() {
         api.get(URL_CONFIG_BY_USER,
             {},
@@ -42,14 +48,45 @@ export default function GetLink() {
             false
         ).then((response) => {
             if (response?.status === constants.SUCCESS) {
-                const body = response.body[0]
-                if (body?.value == 'true') {
-                    setMaintenance(true)
+                const body = response.body
+                body.map((item: {
+                    value: string;
+                    name: string;
+                }) => {
+                    if (item.name == "maintenance") {
+                        setConfig(prevState => {
+                            return {
+                                ...prevState,
+                                isMaintenance: item.value === "true"
+                            }
+                        })
+                    } else {
+                        setConfig(prevState => {
+                            return {
+                                ...prevState,
+                                time_ads: Number(item.value)
+                            }
+                        })
+                    }
+                })
+                const filter = body.filter((item: { name: string; }) => {
+                    return item.name === "maintenance"
+                })
+                if (filter.value === "true") {
                     setReady(true)
-                }else {
+                }else  {
                     handleGetAds()
                 }
             }
+        }).catch((e: any) => {
+            setInfo(undefined)
+            setConfig(prevState => {
+                return {
+                    ...prevState,
+                    isMaintenance : true
+                }
+            })
+            setReady(true)
         })
     }
     function handleGetLink() {
@@ -85,7 +122,7 @@ export default function GetLink() {
         ready &&
         <>
             {
-                info ?
+                info && !config.isMaintenance ?
                     <div>
                         {
 
@@ -93,16 +130,20 @@ export default function GetLink() {
                                 <Loading open={loading}/>
                                 : isMobile ?
                                     <LinkMobile
+                                        timeConfig={config.time_ads}
                                         isLoadingGetLink={loadingGetLink}
                                         getLink={handleGetLink}
                                         info={info} />
                                     : <LinkDesktop
+                                        timeConfig={config.time_ads}
                                         isLoadingGetLink={loadingGetLink}
                                         getLink={handleGetLink}
                                         info={info} />
                         }
-                    </div> : <NotFound isMaintenance={isMaintenance}/>
+                    </div> : <NotFound isMaintenance={config.isMaintenance}/>
             }
         </>
     }</>
 }
+
+GetLink.layout = "client"
