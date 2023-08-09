@@ -103,8 +103,8 @@ export default function AdminLayout({ children }: TypePropLayout) {
                             >
                             <div className={styles.menu}>
                                 {
-                                    items.map((_item) => {
-                                        return <div onClick={() => {
+                                    items.map((_item, index) => {
+                                        return <div key={index.toString()} onClick={() => {
                                                 handleClickMenu(_item.key)
                                             }}
                                             className={`${styles.menuItem} ${router.pathname == _item.pathName ? styles.activeMenu: ""}`}>
