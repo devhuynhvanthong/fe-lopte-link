@@ -1,6 +1,6 @@
 const BASE_URL = "https://api-dev-loptelink.aigoox.com/"
 const BASE_URL_DEV = "http://127.0.0.1:8000/"
-const API = BASE_URL_DEV + "api/"
+const API = BASE_URL + "api/"
 
 export const URL_ADS = API + "ads"
 export const URL_AD = API + "ad"
