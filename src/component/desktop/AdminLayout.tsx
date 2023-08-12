@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: TypePropLayout) {
     const [isMobile, setMobile] = useState(false)
     const [isShowModel, setShowModel] = useState(false)
     const [permission_, setPermisiion_] = useState(true)
-    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
+    const urlLogin = `https://accounts.aigoox.com/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
     useEffect(() => {
         if (!library().checkLogin()) {
             router.push(urlLogin)
