@@ -5,7 +5,7 @@ import LinkMobile from "~/component/mobile/link"
 import Loading from "~/component/loading";
 import CallApi from "~/utils/apis";
 import {DOMAIN_LINK, URL_AD, URL_ADS, URL_CONFIG_BY_USER, URL_LINK} from "~/utils/Urls";
-import {IAPILink} from "~/@type/link";
+import {IAPILink, TypePropsLayout} from "~/@type/link";
 import Library from "~/utils/Library";
 import Constants from "~/utils/Constants";
 import NotFound from "~/component/NotFound";
@@ -13,7 +13,7 @@ interface TypeConfig {
     time_ads: number,
     isMaintenance: boolean,
 }
-export default function GetLink() {
+export default function GetLink({ openNotification, typeNotify} : TypePropsLayout) {
     const router = useRouter()
     const [isMobile, setMobile] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -38,9 +38,7 @@ export default function GetLink() {
             setReady(true)
         })
     }
-    useEffect(() => {
-        console.log(config)
-    }, [config])
+
     function handleGetConfig() {
         api.get(URL_CONFIG_BY_USER,
             {},
@@ -100,6 +98,8 @@ export default function GetLink() {
                 if (body) {
                     router.push(body)
                 }
+            } else {
+                openNotification(response?.message, typeNotify.failed)
             }
         }).finally(() => {
             setLoadingGetLink(false)

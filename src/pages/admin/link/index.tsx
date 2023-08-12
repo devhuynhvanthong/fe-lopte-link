@@ -8,7 +8,7 @@ import {URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
 import CallApi from "~/utils/apis";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
-import {IAPILink, IAPIPropsAddLink, TypePropsMenu} from "~/@type/link";
+import {IAPILink, IAPIPropsAddLink, TypePropsLayout} from "~/@type/link";
 import {TypePropsModalLink} from "~/@type/modal.d";
 import ShortText from "~/component/ShortText";
 import { NotificationPlacement } from 'antd/es/notification/interface';
@@ -17,7 +17,7 @@ import {Exception} from "sass";
 import Loading from "~/component/loading";
 import SearchComponent from "~/component/SearchComponent";
 import Header from "~/component/Header";
-export default function Link({ openNotification, typeNotify } : TypePropsMenu) {
+export default function Link({ openNotification, typeNotify } : TypePropsLayout) {
     const [data, setData] = useState<TypeData<TableTypeLink>>({data: [], totalPage: 0})
     const api = CallApi()
     const [formData] = Form.useForm()

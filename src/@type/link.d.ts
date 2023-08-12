@@ -20,7 +20,7 @@ export interface IAPIPropsAddLink {
     source: string
 }
 
-export interface TypePropsMenu {
+export interface TypePropsLayout {
     openNotification: (message: string, type: string) => void,
     typeNotify: typeof typeNotify
 }

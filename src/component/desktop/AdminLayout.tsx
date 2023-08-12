@@ -61,7 +61,11 @@ export default function AdminLayout({ children }: TypePropLayout) {
     }
 
     const RenderChildren = useCallback(() => {
-        return children
+        return <div className={styles.bodyContent}>
+            {
+                children
+            }
+        </div>
     }, [router.pathname])
 
     function handleClickMenu(key: string) {

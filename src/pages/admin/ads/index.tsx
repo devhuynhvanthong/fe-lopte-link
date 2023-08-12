@@ -1,4 +1,4 @@
-import {IAPILink, IAPIPropsAddLink, TypePropsMenu} from "~/@type/link";
+import {IAPILink, IAPIPropsAddLink, TypePropsLayout} from "~/@type/link";
 import _style from "~/pages/admin/link/style.module.scss";
 import {Form, Input, Modal, Popconfirm, Spin, Table, Tooltip} from "antd";
 import React, {useCallback, useEffect, useState} from "react";
@@ -16,7 +16,7 @@ import {Exception} from "sass";
 import {IAPIAddAds, IAPIPropsAddAds} from "~/@type/ads";
 import {NotificationPlacement} from "antd/es/notification/interface";
 
-export default function Ads({ openNotification, typeNotify } : TypePropsMenu) {
+export default function Ads({ openNotification, typeNotify } : TypePropsLayout) {
     const [data, setData] = useState<TypeData<TableTypeAds>>({data: [], totalPage: 0})
     const api = CallApi()
     const [formData] = Form.useForm()

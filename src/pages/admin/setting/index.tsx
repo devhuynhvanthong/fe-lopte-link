@@ -1,4 +1,4 @@
-import {TypePropsMenu} from "~/@type/link";
+import {TypePropsLayout} from "~/@type/link";
 import _style from "./style.module.scss"
 import React, {useCallback, useEffect, useState} from "react";
 import {IAPIConfig} from "~/@type/setting";
@@ -11,7 +11,7 @@ import {Input, Radio, Select, Spin, Switch} from "antd";
 import {NotificationPlacement} from "antd/es/notification/interface";
 import {VALIDATE_DELETE_SUCCESS, VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
 import {EditOutlined} from "@ant-design/icons";
-export default function Setting({ openNotification, typeNotify} : TypePropsMenu) {
+export default function Setting({ openNotification, typeNotify} : TypePropsLayout) {
     const router = useRouter()
     const constants = Constants()
     const api = CallApi()

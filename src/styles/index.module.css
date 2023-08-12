@@ -174,7 +174,7 @@
     width: 100%;
     position: absolute;
     padding-bottom: 50px;
-    background: #0a3646;
+    background: #464646;
     height: 100%;
 }
 
@@ -419,7 +419,7 @@
     flex-direction: column;
     gap: 10px;
     padding: 20px 0;
-    background: #001529;
+    background: #0B232E;
     border-radius: 20px;
 }
 .menuItem {
@@ -444,4 +444,11 @@
     padding: 10px 20px;
     border-radius: 10px;
     color: white;
+}
+
+.bodyContent {
+    padding: 30px;
+    border-radius: 20px;
+    background: #0a3646;
+    min-height: 100%;
 }
