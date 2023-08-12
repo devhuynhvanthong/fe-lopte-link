@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {DOMAIN_LINK_DEV} from "~/utils/Urls";
+import {DOMAIN_ACCOUNT_DEV, DOMAIN_LINK_DEV} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 
 export default function AdminLayout({ children }: TypePropLayout) {
@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: TypePropLayout) {
     const [isMobile, setMobile] = useState(false)
     const [isShowModel, setShowModel] = useState(false)
     const [permission_, setPermisiion_] = useState(true)
-    const urlLogin = `https://devaccounts.aigoox.com/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
+    const urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
     useEffect(() => {
         if (!library().checkLogin()) {
             router.push(urlLogin)
