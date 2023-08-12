@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import styles from '../../styles/index.module.css'
-import {Menu, Modal, notification} from 'antd';
+import {Modal} from 'antd';
 import {
     LogoutOutlined,
     SettingOutlined,
-    OrderedListOutlined,
     AppstoreOutlined,
     KeyOutlined
 } from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {DOMAIN_LINK_DEV} from "~/utils/Urls";
+import {DOMAIN_LINK, DOMAIN_ACCOUNT} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 
 export default function AdminLayout({ children }: TypePropLayout) {
@@ -19,7 +18,7 @@ export default function AdminLayout({ children }: TypePropLayout) {
     const [isMobile, setMobile] = useState(false)
     const [isShowModel, setShowModel] = useState(false)
     const [permission_, setPermisiion_] = useState(true)
-    const urlLogin = `https://accounts.aigoox.com/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
+    const urlLogin = `${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${DOMAIN_LINK}admin`)}==&session=expired`
     useEffect(() => {
         if (!library().checkLogin()) {
             router.push(urlLogin)
