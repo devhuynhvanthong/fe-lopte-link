@@ -18,7 +18,7 @@ export default function AdminLayout({ children }: TypePropLayout) {
     const [isMobile, setMobile] = useState(false)
     const [isShowModel, setShowModel] = useState(false)
     const [permission_, setPermisiion_] = useState(true)
-    const urlLogin = `${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${DOMAIN_LINK}admin`)}==&session=expired`
+    const urlLogin = `${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${DOMAIN_LINK}admin`)}&session=expired`
     useEffect(() => {
         if (!library().checkLogin()) {
             router.push(urlLogin)
