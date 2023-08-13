@@ -14,6 +14,6 @@ export interface TableTypeAds {
 }
 
 export interface TypeData<T> {
-    totalPage: number,
+    total_page: number,
     data: Array<T>
 }
