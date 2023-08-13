@@ -1,10 +1,9 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import styles from '../../styles/index.module.css'
-import {Menu, Modal, notification} from 'antd';
+import {Modal} from 'antd';
 import {
     LogoutOutlined,
     SettingOutlined,
-    OrderedListOutlined,
     AppstoreOutlined,
     KeyOutlined
 } from '@ant-design/icons';

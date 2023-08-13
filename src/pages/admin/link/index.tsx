@@ -4,7 +4,7 @@ import {TableTypeLink, TypeData} from "~/@type/table";
 import {ColumnsType} from "antd/es/table";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
+import {DOMAIN_LINK, URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
 import CallApi from "~/utils/apis";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
@@ -18,19 +18,21 @@ import Loading from "~/component/loading";
 import SearchComponent from "~/component/SearchComponent";
 import Header from "~/component/Header";
 export default function Link({ openNotification, typeNotify } : TypePropsLayout) {
-    const [data, setData] = useState<TypeData<TableTypeLink>>({data: [], totalPage: 0})
+    const [data, setData] = useState<TypeData<TableTypeLink>>({data: [], total_page: 0})
     const api = CallApi()
     const [formData] = Form.useForm()
     const router = useRouter()
     const constants = Constants()
     const [loading, setLoading] = useState(false)
     const [showModal, setShowModal] = useState(false)
-    const handleLoadingData = useCallback(() => {
-        api.get(URL_LINKS, {page_offset: router.query.page_offset || 1, search: router.query.search}).then((response) => {
+    const [currentPage, setCurrentPage] = useState(1)
+    // @ts-ignore
+    const handleLoadingData = () => {
+        api.get(URL_LINKS, {page_offset: currentPage, search: router.query.search}).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 const data: TypeData<TableTypeLink> = response.body
                 setData({
-                    totalPage: data.totalPage,
+                    total_page: data.total_page,
                     // @ts-ignore
                     data: data.data?.map((item, index) => {
                         return {
@@ -50,7 +52,7 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
                 })
             }
         })
-    }, [router.query.search, router.query.page_offset])
+    }
 
     function handleDeleteLink(id: number) {
         setLoading(true)
@@ -64,7 +66,7 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
     }
     useEffect(() => {
         handleLoadingData()
-    }, [router.query.page_offset, router.query.search])
+    }, [currentPage, router.query.search])
     const column: ColumnsType<TableTypeLink> = [
         {
             key: "stt",
@@ -93,7 +95,7 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
             render: (text) => {
                 return <Typography>
                     <Typography.Paragraph style={{ marginBottom: 'unset', display: 'flex', alignItems: 'center' }}
-                                          copyable={{ text: `https://dev-link.aigoox.com/${text}`, tooltips: true }}>
+                                          copyable={{ text: `${DOMAIN_LINK}${text}`, tooltips: true }}>
                         <span style={{wordWrap: "break-word", wordBreak: "break-word"}}>{text}</span>
                     </Typography.Paragraph>
                 </Typography>
@@ -187,6 +189,9 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
             </Modal>
         </>
     }
+    const onChangePagination = (page: number) => {
+        setCurrentPage(page)
+    }
 
     return <>
     <Header title={"Lopte Link - Dashboard"} />
@@ -204,10 +209,14 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
             <div className={_style.body}>
                 <Spin spinning={loading}>
                     <Table
+                        style={{ background: 'white', borderRadius: 20 }}
                         dataSource={data.data}
                         pagination={
                             {
-                                total: data.totalPage,
+                                showSizeChanger: false,
+                                current: currentPage,
+                                total: data.total_page,
+                                onChange: onChangePagination
                             }
                         }
                         columns={column} />
