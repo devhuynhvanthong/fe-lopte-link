@@ -114,6 +114,7 @@ export default function Setting({ openNotification, typeNotify} : TypePropsLayou
                         }}>
                             <label>Chế độ: </label>
                             <label>Thời gian quảng cáo : </label>
+                            <label>Trạng thái:</label>
                         </div>
                         <div style={{
                             display: "flex",
@@ -184,6 +185,29 @@ export default function Setting({ openNotification, typeNotify} : TypePropsLayou
                                     },
                                 ]}
                             />
+                            <div style={{
+                                display: "flex",
+                                gap: 10
+                            }}>
+                                <span>{data.filter((item) => {
+                                    return item.name === "mode_screen"
+                                })[0]?.value == "true" ? 'Bật' : "Tắt"}</span>
+                                <Switch checked={data.filter((item) => {
+                                    return item.name === "mode_screen"
+                                })[0]?.value == "true"}
+                                onChange={(item) => {
+                                    const filter =  data.findIndex((item) => {
+                                        return item.name === "mode_screen"
+                                    })
+
+                                    setData(prevState => {
+                                        const value = [...prevState]
+                                        value[filter].value = item.toString()
+                                        return value
+                                    })
+                                }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
