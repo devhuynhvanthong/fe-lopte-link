@@ -4,7 +4,7 @@ import {TableTypeLink, TypeData} from "~/@type/table";
 import {ColumnsType} from "antd/es/table";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
+import {DOMAIN_LINK, URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
 import CallApi from "~/utils/apis";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
@@ -93,7 +93,7 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
             render: (text) => {
                 return <Typography>
                     <Typography.Paragraph style={{ marginBottom: 'unset', display: 'flex', alignItems: 'center' }}
-                                          copyable={{ text: `https://dev-link.aigoox.com/${text}`, tooltips: true }}>
+                                          copyable={{ text: `${DOMAIN_LINK}${text}`, tooltips: true }}>
                         <span style={{wordWrap: "break-word", wordBreak: "break-word"}}>{text}</span>
                     </Typography.Paragraph>
                 </Typography>
