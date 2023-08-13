@@ -17,13 +17,14 @@ import {IAPIAddAds, IAPIPropsAddAds} from "~/@type/ads";
 import {NotificationPlacement} from "antd/es/notification/interface";
 
 export default function Ads({ openNotification, typeNotify } : TypePropsLayout) {
-    const [data, setData] = useState<TypeData<TableTypeAds>>({data: [], totalPage: 0})
+    const [data, setData] = useState<TypeData<TableTypeAds>>({data: [], total_page: 0})
     const api = CallApi()
     const [formData] = Form.useForm()
     const router = useRouter()
     const constants = Constants()
     const [loading, setLoading] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
     const column: ColumnsType<TableTypeAds> = [
         {
             key: "stt",
@@ -88,11 +89,11 @@ export default function Ads({ openNotification, typeNotify } : TypePropsLayout) 
         })
     }
     const handleLoadingData = useCallback(() => {
-        api.get(URL_ADS, {page_offset: router.query.page_offset || 1}).then((response) => {
+        api.get(URL_ADS, {page_offset: currentPage || 1}).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 const data: TypeData<TableTypeAds> = response.body
                 setData({
-                    totalPage: data.totalPage,
+                    total_page: data.total_page,
                     // @ts-ignore
                     data: data.data?.map((item, index) => {
                         return {
@@ -178,7 +179,9 @@ export default function Ads({ openNotification, typeNotify } : TypePropsLayout) 
             </Modal>
         </>
     }
-
+    const onChangePagination = (page: number) => {
+        setCurrentPage(page)
+    }
     return <div className={_style.wrapper}>
         <div className={_style.contentAction}>
             <div
@@ -195,7 +198,10 @@ export default function Ads({ openNotification, typeNotify } : TypePropsLayout) 
                     dataSource={data.data}
                     pagination={
                         {
-                            total: data.totalPage,
+                            showSizeChanger: false,
+                            current: currentPage,
+                            total: data.total_page,
+                            onChange: onChangePagination
                         }
                     }
                     columns={column} />
