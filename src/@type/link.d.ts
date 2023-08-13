@@ -22,5 +22,6 @@ export interface IAPIPropsAddLink {
 
 export interface TypePropsLayout {
     openNotification: (message: string, type: string) => void,
-    typeNotify: typeof typeNotify
+    typeNotify: typeof typeNotify,
+    domain?: string
 }

@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import ClientLayout from "~/component/ClientLayout";
 import AdminLayout from "~/component/desktop/AdminLayout";
 import {notification} from "antd";
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {NotificationPlacement} from "antd/es/notification/interface";
 
 export const typeNotify = {success: "success",failed: "failed",info: "info"}
@@ -13,6 +13,10 @@ export default function App({ Component, pageProps }: any) {
   const [notify, contextHolder] = notification.useNotification();
   const Context = React.createContext({ name: 'Default' });
   const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
+  const [domain, setDomain] = useState("")
+  useEffect(() => {
+    setDomain(location?.host)
+  },[])
   const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
     switch (type) {
       case typeNotify.success: {
@@ -46,14 +50,18 @@ export default function App({ Component, pageProps }: any) {
   };
   return <Context.Provider value={contextValue}>
     {contextHolder}
-    <Layout>
-      <Component {...pageProps}
-                 notify={notify}
-                 context={Context}
-                 typeNotify={typeNotify}
-                 openNotification={openNotification}
-      />
-    </Layout>
+    {
+      domain &&
+        <Layout domain={domain}>
+          <Component {...pageProps}
+                     notify={notify}
+                     domain={domain}
+                     context={Context}
+                     typeNotify={typeNotify}
+                     openNotification={openNotification}
+          />
+        </Layout>
+    }
   </Context.Provider>
 
 }

@@ -1,23 +1,21 @@
 import _style from './style.module.scss'
-import {Form, Input, Modal, notification, Popconfirm, Spin, Table, Tooltip, Typography} from "antd";
+import {Form, Input, Modal, Popconfirm, Spin, Table, Tooltip, Typography} from "antd";
 import {TableTypeLink, TypeData} from "~/@type/table";
 import {ColumnsType} from "antd/es/table";
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {DOMAIN_LINK, URL_LINK, URL_LINKS, URL_SEARCH_LINK} from "~/utils/Urls";
+import React, {useEffect, useState} from "react";
+import {DeleteOutlined} from "@ant-design/icons";
+import {URL_LINK, URL_LINKS} from "~/utils/Urls";
 import CallApi from "~/utils/apis";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
 import {IAPILink, IAPIPropsAddLink, TypePropsLayout} from "~/@type/link";
 import {TypePropsModalLink} from "~/@type/modal.d";
 import ShortText from "~/component/ShortText";
-import { NotificationPlacement } from 'antd/es/notification/interface';
 import {VALIDATE_ADD_SUCCESS, VALIDATE_DELETE_SUCCESS, VALIDATE_EXIST_DATA} from "~/utils/validate";
 import {Exception} from "sass";
-import Loading from "~/component/loading";
 import SearchComponent from "~/component/SearchComponent";
 import Header from "~/component/Header";
-export default function Link({ openNotification, typeNotify } : TypePropsLayout) {
+export default function Link({ openNotification, typeNotify, domain } : TypePropsLayout) {
     const [data, setData] = useState<TypeData<TableTypeLink>>({data: [], total_page: 0})
     const api = CallApi()
     const [formData] = Form.useForm()
@@ -95,7 +93,7 @@ export default function Link({ openNotification, typeNotify } : TypePropsLayout)
             render: (text) => {
                 return <Typography>
                     <Typography.Paragraph style={{ marginBottom: 'unset', display: 'flex', alignItems: 'center' }}
-                                          copyable={{ text: `${DOMAIN_LINK}${text}`, tooltips: true }}>
+                                          copyable={{ text: `${domain}/${text}`, tooltips: true }}>
                         <span style={{wordWrap: "break-word", wordBreak: "break-word"}}>{text}</span>
                     </Typography.Paragraph>
                 </Typography>

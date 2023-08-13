@@ -4,7 +4,7 @@ import LinkDesktop from "~/component/desktop/link"
 import LinkMobile from "~/component/mobile/link"
 import Loading from "~/component/loading";
 import CallApi from "~/utils/apis";
-import {DOMAIN_LINK, URL_AD, URL_ADS, URL_CONFIG_BY_USER, URL_LINK} from "~/utils/Urls";
+import {URL_AD, URL_CONFIG_BY_USER, URL_LINK} from "~/utils/Urls";
 import {IAPILink, TypePropsLayout} from "~/@type/link";
 import Library from "~/utils/Library";
 import Constants from "~/utils/Constants";
@@ -12,29 +12,35 @@ import NotFound from "~/component/NotFound";
 interface TypeConfig {
     time_ads: number,
     isMaintenance: boolean,
+    mode_screen: boolean
 }
-export default function GetLink({ openNotification, typeNotify} : TypePropsLayout) {
+export default function GetLink({ openNotification, typeNotify, domain} : TypePropsLayout) {
     const router = useRouter()
     const [isMobile, setMobile] = useState(false)
     const [loading, setLoading] = useState(true)
     const [loadingGetLink, setLoadingGetLink] = useState(false)
     const [info, setInfo] = useState<IAPILink>()
-    const [config, setConfig] = useState<TypeConfig>({time_ads: 30, isMaintenance: false})
+    const [config, setConfig] = useState<TypeConfig>({mode_screen: true, time_ads: 30, isMaintenance: false})
     const [ready, setReady] = useState(false)
     const api = CallApi()
     const library = Library()
     const constants = Constants()
     function handleGetAds() {
         api.get(URL_AD,
-            {converted: `${DOMAIN_LINK}${router?.query?.id}`},
+            {converted: `${domain === "localhost:3000" ? "localhost.com" : domain}/${router?.query?.id}`},
             {},
             false
         ).then((response) => {
             if (response?.status === constants.SUCCESS) {
                 const body = response.body
-                setInfo(body)
+                if (body?.source) {
+                    router.push(body?.source)
+                } else {
+                    setInfo(body)
+                    setReady(true)
+                }
             }
-        }).finally(() => {
+        }).catch(() => {
             setReady(true)
         })
     }
@@ -58,11 +64,18 @@ export default function GetLink({ openNotification, typeNotify} : TypePropsLayou
                                 isMaintenance: item.value === "true"
                             }
                         })
-                    } else {
+                    } if (item.name == "time_ads") {
                         setConfig(prevState => {
                             return {
                                 ...prevState,
                                 time_ads: Number(item.value)
+                            }
+                        })
+                    } else {
+                        setConfig(prevState => {
+                            return {
+                                ...prevState,
+                                mode_screen: item.value == "true"
                             }
                         })
                     }
@@ -119,7 +132,7 @@ export default function GetLink({ openNotification, typeNotify} : TypePropsLayou
     }, [router])
 
     return <>{
-        ready &&
+        ready ?
         <>
             {
                 info && !config.isMaintenance ?
@@ -143,6 +156,19 @@ export default function GetLink({ openNotification, typeNotify} : TypePropsLayou
                     </div> : <NotFound isMaintenance={config.isMaintenance}/>
             }
         </>
+            : <div style={{
+                width: '100%',
+                height: '100%',
+                position: "absolute"
+            }}>
+                <label style={{
+                    fontSize: 50,
+                    position: "absolute",
+                    left: '50%',
+                    top: '50%',
+                    transform: "translate(-50%, -50%)"
+                }}>Loading...</label>
+            </div>
     }</>
 }
 

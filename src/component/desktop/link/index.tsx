@@ -6,7 +6,7 @@ import {Spin} from "antd";
 export default function LinkDesktop ( {info, getLink, isLoadingGetLink, timeConfig} : TypePropLink) {
     const [ready, setReady] = useState(false)
     const [timeout, setTimeout] = useState(timeConfig)
-
+    console.log(timeConfig)
     function handleGetLink() {
         if (timeout <= 0) {
             getLink()

@@ -9,16 +9,16 @@ import {
 } from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {DOMAIN_ACCOUNT_DEV, DOMAIN_LINK_DEV} from "~/utils/Urls";
+import {DOMAIN_ACCOUNT_DEV} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 
-export default function AdminLayout({ children }: TypePropLayout) {
+export default function AdminLayout({ children, domain }: TypePropLayout) {
     const router = useRouter()
     const [ready, setReady] = useState(false)
     const [isMobile, setMobile] = useState(false)
     const [isShowModel, setShowModel] = useState(false)
-    const [permission_, setPermisiion_] = useState(true)
-    const urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${DOMAIN_LINK_DEV}admin`)}==&session=expired`
+    const [permission_, setPermission_] = useState(true)
+    const urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${domain}admin`)}==&session=expired`
     useEffect(() => {
         if (!library().checkLogin()) {
             router.push(urlLogin)
