@@ -29,10 +29,10 @@ export default function LinkMobile ( {info, getLink, isLoadingGetLink, timeConfi
                 className={_style.containerYoutube}
                 idVideo={info?.ads || ""}
                 onTime={(time) => {
-                    if (time - timeout < 0) {
+                    if (timeConfig - timeout < 0) {
                         setReady(true)
                     }else {
-                        setTimeout(time - timeout)
+                        setTimeout(timeConfig - timeout)
                     }
                 }}
                 isCount={!ready}
