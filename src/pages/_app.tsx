@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: any) {
   const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
   const [domain, setDomain] = useState("")
   useEffect(() => {
-    setDomain(location?.host)
+    setDomain("https://" + location?.host)
   },[])
   const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
     switch (type) {
