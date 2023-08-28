@@ -27,26 +27,15 @@ export default function Cookies  () {
             if(!isParseJson){
                 return input
             }
-            const output = JSON.parse(input)
+            const output = JSON.parse(library.base64Decode(input))
             return output.access_token
         }else{
             return null
         }
-
-    }
-
-    const Remove = (key: string) => {
-        Cookie.remove(key)
-    }
-
-    const Clear = () => {
-        //Cookie.ge()
     }
     return {
         Set,
         Get,
-        Remove,
-        Clear,
         getAccessToken
     }
 }
