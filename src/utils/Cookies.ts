@@ -18,19 +18,18 @@ export default function Cookies  () {
     }
 
     const getAccessToken = () => {
-        return JSON.parse(Get(constant.KEY_ACCESS_TOKEN, false))?.access_token
+        return Get(constant.KEY_ACCESS_TOKEN)?.access_token
     }
-    const Get = (key: string,isParseJson = true) =>{
+    const Get = (key: string, isParseJson = true) => {
         const input = Cookie.get(key)
-        if(input!=null){
-            if(!isParseJson){
+        if (input != null) {
+            if (!isParseJson) {
                 return input
             }
-            return JSON.parse(input)
-        }else{
+            return JSON.parse(library.base64Decode(input))
+        } else {
             return null
         }
-
     }
 
     const Remove = (key: string) => {
