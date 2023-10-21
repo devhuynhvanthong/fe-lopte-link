@@ -18,8 +18,11 @@ export default function App({ Component, pageProps }: any) {
   const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
 
   useEffect(() => {
+
     if (!cookie.getAccessToken()) {
-       window.location.href = '/not-authen'
+      if (location.pathname != "/not-authen") {
+        window.location.href = '/not-authen'
+      }
     }
   },[])
   const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {

@@ -53,7 +53,6 @@ export default function CallApi() {
             })
             .catch((err) => {
                 if (err.response.status == 401) {
-                    console.log('dsdsd')
                     window.location.href = '/not-authen'
                 }
                 if (err.response.status == 403) {
@@ -79,7 +78,6 @@ export default function CallApi() {
             })
             .catch((err) => {
                 if (err.response.status == 401) {
-                    console.log('dsdsd')
                     window.location.href = '/not-authen'
                 }
                 if (err.response.status == 403) {
@@ -105,7 +103,6 @@ export default function CallApi() {
             })
             .catch((err) => {
                 if (err.response.status == 401) {
-                    console.log('dsdsd')
                     window.location.href = '/not-authen'
                 }
                 if (err.response.status == 403) {

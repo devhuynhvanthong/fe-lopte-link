@@ -76,7 +76,6 @@ export default function Link({openNotification, typeNotify}: TypePropsLayout) {
             key: "stt",
             title: "STT",
             render: (__, value, index) => {
-                console.log(value)
                 return <div style={{
                     display: "flex",
                     gap: 5,
