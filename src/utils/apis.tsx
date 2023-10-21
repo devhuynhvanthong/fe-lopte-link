@@ -4,7 +4,7 @@ import Cookies from "~/utils/Cookies";
 export default function CallApi() {
     const API_URL = process.env.REACT_APP_API_URL
     const cookie = Cookies()
-    const post = async(endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
+    const post = async (endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -23,9 +23,19 @@ export default function CallApi() {
             .catch((err) => {
                 return err
             })
+            .catch((err) => {
+
+                if (err.response.status == 401) {
+                    window.location.href = '/not-authen'
+                }
+
+                if (err.response.status == 403) {
+                    window.location.href = '/account-locked'
+                }
+            })
     }
 
-    const put = async(endpoint: string, body  = {}, header_ = {}, isAuth: boolean = true) => {
+    const put = async (endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -42,10 +52,16 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status == 401) {
+                    console.log('dsdsd')
+                    window.location.href = '/not-authen'
+                }
+                if (err.response.status == 403) {
+                    window.location.href = '/account-locked'
+                }
             })
     }
-    const deleteApi = async(endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
+    const deleteApi = async (endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -62,10 +78,16 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status == 401) {
+                    console.log('dsdsd')
+                    window.location.href = '/not-authen'
+                }
+                if (err.response.status == 403) {
+                    window.location.href = '/account-locked'
+                }
             })
     }
-    const get = async(endpoint: string, params_ = {}, header_ = {}, isAuth: boolean = true) => {
+    const get = async (endpoint: string, params_ = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -82,7 +104,13 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status == 401) {
+                    console.log('dsdsd')
+                    window.location.href = '/not-authen'
+                }
+                if (err.response.status == 403) {
+                    window.location.href = '/account-locked'
+                }
             })
     }
 

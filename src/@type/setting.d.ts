@@ -4,9 +4,8 @@ export interface IAPIConfigItem {
     value: string
 }
 
-export type IAPIConfig = Array<IAPIConfigItem>
-
-export interface TypeUpdateSetting {
-    ads: string,
-    maintenance: string
+export interface IAPIConfig {
+    ads?: number,
+    mode_screen?: boolean,
+    time_ads?: number
 }

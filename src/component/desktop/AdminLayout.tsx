@@ -1,35 +1,24 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import styles from '../../styles/index.module.css'
 import {Modal} from 'antd';
-import {
-    LogoutOutlined,
-    SettingOutlined,
-    AppstoreOutlined,
-    KeyOutlined
-} from '@ant-design/icons';
+import {AppstoreOutlined, KeyOutlined, LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
 import {DOMAIN_ACCOUNT_DEV} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 
-export default function AdminLayout({ children, domain }: TypePropLayout) {
+export default function AdminLayout({children}: TypePropLayout) {
     const router = useRouter()
-    const [ready, setReady] = useState(false)
-    const [isMobile, setMobile] = useState(false)
     const [isShowModel, setShowModel] = useState(false)
-    const [permission_, setPermission_] = useState(true)
-    const urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${domain}admin`)}==&session=expired`
+    let urlLogin = ""
     useEffect(() => {
+        urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}==&session=expired`
         if (!library().checkLogin()) {
             router.push(urlLogin)
         }
 
         if (library().isMobile()) {
-            alert("Trang điều khiển không hỗ trợ phiên bản mobile!")
-            setMobile(true)
-        } else {
-            setReady(true)
-            setMobile(false)
+            router.push('not-support-mobile')
         }
     }, [])
 
@@ -41,23 +30,18 @@ export default function AdminLayout({ children, domain }: TypePropLayout) {
             label,
         };
     }
+
     // @ts-ignore
     const items = [
 
-        getItem("Link", '1', '/admin/link',<KeyOutlined/>),
+        getItem("Link", '1', '/admin/link', <KeyOutlined/>),
 
-        getItem("Quảng Cáo", '2','/admin/ads', <AppstoreOutlined/>),
+        getItem("Quảng Cáo", '2', '/admin/ads', <AppstoreOutlined/>),
 
-        getItem('Cài đặt', '3', '/admin/setting',<SettingOutlined/>),
+        getItem('Cài đặt', '3', '/admin/setting', <SettingOutlined/>),
 
-        getItem('Đăng xuất', '4', '',<LogoutOutlined/>),
+        getItem('Đăng xuất', '4', '', <LogoutOutlined/>),
     ];
-
-    function handleClickLogin() {
-        setTimeout(function () {
-            router.push(urlLogin)
-        }, 300)
-    }
 
     const RenderChildren = useCallback(() => {
         return <div className={styles.bodyContent}>
@@ -92,10 +76,9 @@ export default function AdminLayout({ children, domain }: TypePropLayout) {
 
     return <>
         {
-            ready && <div className={styles.wrapper}>
+            <div className={styles.wrapper}>
                 <div className={styles.wrapperAdmin}>
                     {
-                        !isMobile && permission_ &&
                         <>
                             <div
                                 style={{
@@ -104,61 +87,39 @@ export default function AdminLayout({ children, domain }: TypePropLayout) {
                                     marginLeft: '5px',
                                 }}
                             >
-                            <div className={styles.menu}>
-                                {
-                                    items.map((_item, index) => {
-                                        return <div key={index.toString()} onClick={() => {
+                                <div className={styles.menu}>
+                                    {
+                                        items.map((_item, index) => {
+                                            return <div key={index.toString()} onClick={() => {
                                                 handleClickMenu(_item.key)
                                             }}
-                                            className={`${styles.menuItem} ${router.pathname == _item.pathName ? styles.activeMenu: ""}`}>
-                                            {
-                                                _item.icon
-                                            }
-                                            {
-                                                _item.label
-                                            }
-                                        </div>
-                                    })
-                                }
-                            </div>
+                                                        className={`${styles.menuItem} ${router.pathname == _item.pathName ? styles.activeMenu : ""}`}>
+                                                {
+                                                    _item.icon
+                                                }
+                                                {
+                                                    _item.label
+                                                }
+                                            </div>
+                                        })
+                                    }
+                                </div>
 
                             </div>
                             <div className={styles.bodyAdmin}>
                                 <label style={{
                                     color: 'white',
-                                    fontSize: '2em'
+                                    fontSize: '2em',
+                                    userSelect: "none"
                                 }}>{
                                     items.filter((_item) => {
                                         return _item.pathName == router.pathname
-                                    })[0].label
+                                    })[0]?.label
                                 }</label>
                                 <hr style={{marginTop: '5px', marginBottom: "20px"}}/>
                                 <RenderChildren/>
                             </div>
                         </>
-                    }
-                    {
-                        !permission_ &&
-                        <div>
-                            <img
-                                style={{
-                                    height: '60vh',
-                                    position: 'absolute',
-                                    left: '50%',
-                                    top: '30%',
-                                    transform: 'translate(-50%,-40%)',
-                                    border: '2px solid #B21065',
-                                    borderRadius: 30
-                                }}
-                                src='/permission.jpg' alt={"Accept Permission"}/>
-                            <div>
-                                <button
-                                    onClick={() => handleClickLogin()}
-                                    className={styles.btnLogin}>
-                                    Đăng nhập
-                                </button>
-                            </div>
-                        </div>
                     }
 
                     <Modal

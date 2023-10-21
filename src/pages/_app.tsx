@@ -5,17 +5,22 @@ import AdminLayout from "~/component/desktop/AdminLayout";
 import {notification} from "antd";
 import React, {useEffect, useMemo, useState} from "react";
 import {NotificationPlacement} from "antd/es/notification/interface";
+import Cookies from "~/utils/Cookies";
+import {useRouter} from "next/router";
 
 export const typeNotify = {success: "success",failed: "failed",info: "info"}
 export default function App({ Component, pageProps }: any) {
 
   const Layout: any = Component?.layout || AdminLayout
+  const cookie = Cookies()
   const [notify, contextHolder] = notification.useNotification();
   const Context = React.createContext({ name: 'Default' });
   const contextValue = useMemo(() => ({ name: 'Ant Design' }), []);
-  const [domain, setDomain] = useState("")
+
   useEffect(() => {
-    setDomain(location?.host)
+    if (!cookie.getAccessToken()) {
+       window.location.href = '/not-authen'
+    }
   },[])
   const openNotification = (message: string, type: string, place : NotificationPlacement = 'topRight') => {
     switch (type) {
@@ -51,11 +56,9 @@ export default function App({ Component, pageProps }: any) {
   return <Context.Provider value={contextValue}>
     {contextHolder}
     {
-      domain &&
-        <Layout domain={domain}>
+        <Layout>
           <Component {...pageProps}
                      notify={notify}
-                     domain={domain}
                      context={Context}
                      typeNotify={typeNotify}
                      openNotification={openNotification}

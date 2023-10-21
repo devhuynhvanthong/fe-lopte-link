@@ -1,0 +1,40 @@
+.btnLogin:active{
+  color: #bfceb6;
+  box-shadow:
+          0 0px 0 #0005,
+          0 0px 0 #BD1360,
+          0 0px 0 12px #fff,
+          0 0 30px 20px #893066;
+}
+.btnLogin{
+  color: #ffffff;
+  border: 1px solid #B21065;
+  border-radius: 50px;
+  text-shadow: 0 -1px 0 #EFB7DE;
+  padding: 20px 40px;
+  font-size: 15px;
+  cursor: pointer;
+  background-image:
+          linear-gradient(to bottom,
+                  #fff9,
+                  transparent 50%, transparent 90%,
+                  #f5CBBC99),
+          repeating-linear-gradient(60deg,
+                  #bc058255 0, #bc058255 10px,
+                  transparent 10px, transparent 20px),
+          linear-gradient(to bottom,
+                  #EE08A6, #EE6C8F);
+  box-shadow:
+          0 12px 0 #0005,
+          0 5px 0 #BD1360,
+          0 5px 0 12px #fff,
+          0 0 30px 20px #893066;
+  transition: .4s;
+  position: absolute;
+  margin: 0 auto;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%,-20%);
+  font-family: "Times New Roman", serif;
+  height: fit-content;
+}

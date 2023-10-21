@@ -86,6 +86,9 @@ body {
   background: #F7F7F7;
 }
 
+label {
+    user-select: none;
+}
 body {
   color: rgb(var(--foreground-rgb));
   /*background: linear-gradient(*/

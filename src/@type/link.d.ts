@@ -14,7 +14,8 @@ export interface IAPILink {
     ads: string,
     converted: string,
     created_time: number,
-    code: string
+    code: string,
+    lock: boolean
 }
 export interface IAPIPropsAddLink {
     source: string

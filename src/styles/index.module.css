@@ -175,7 +175,7 @@
     position: absolute;
     padding-bottom: 50px;
     background: #464646;
-    height: 100%;
+    min-height: 100%;
 }
 
 .wrapperAdmin{
@@ -450,5 +450,4 @@
     padding: 30px;
     border-radius: 20px;
     background: #0a3646;
-    min-height: 100%;
 }

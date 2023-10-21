@@ -2,47 +2,65 @@ import {TypePropsLayout} from "~/@type/link";
 import _style from "./style.module.scss"
 import React, {useCallback, useEffect, useState} from "react";
 import {IAPIConfig} from "~/@type/setting";
-import {URL_CONFIG} from "~/utils/Urls";
+import {URL_CONFIG, URL_CONFIG_BY_ADMIN, URL_GROUP_AD} from "~/utils/Urls";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
 import CallApi from "~/utils/apis";
-import ShortText from "~/component/ShortText";
-import {Input, Radio, Select, Spin, Switch} from "antd";
-import {NotificationPlacement} from "antd/es/notification/interface";
-import {VALIDATE_DELETE_SUCCESS, VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
-import {EditOutlined} from "@ant-design/icons";
-export default function Setting({ openNotification, typeNotify} : TypePropsLayout) {
-    const router = useRouter()
+import {Select, Switch} from "antd";
+import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
+import Loading from "~/component/loading";
+import {TableTypeAdsGroup} from "~/@type/table";
+import * as process from "process";
+
+export default function Setting({openNotification, typeNotify}: TypePropsLayout) {
     const constants = Constants()
     const api = CallApi()
-    const [data, setData] = useState<IAPIConfig>([])
-    const [selectAd, setSelectAd] = useState<number>(0)
-    const [selectAdTime, setSelectAdTime] = useState<number>()
-    const [isMaintenance, setMaintenance] = useState<boolean>(false)
+    const [data, setData] = useState<IAPIConfig>({ads: undefined, mode_screen: undefined, time_ads: undefined})
     const [loading, setLoading] = useState(false)
-    const [updateAdsDescription,setAdsDescription] = useState(false)
+    const [dataGroup, setDataGroup] = useState<Array<TableTypeAdsGroup>>([])
+
     useEffect(() => {
         handleLoadingData()
+        handleLoadingDataAdsGroup()
     }, [])
+
+    const handleLoadingDataAdsGroup = useCallback(() => {
+        setLoading(false)
+        api.get(URL_GROUP_AD).then((response) => {
+            if (response?.status == constants.SUCCESS) {
+                setDataGroup(response.body || [])
+            } else {
+                setDataGroup([])
+            }
+        }).finally(() => setLoading(false))
+    }, [])
+
     const handleLoadingData = useCallback(() => {
-        api.get(URL_CONFIG, {page_offset: router.query.page_offset || 1}).then((response) => {
+        api.get(URL_CONFIG_BY_ADMIN).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 const data: IAPIConfig = response.body
                 setData(data)
-            }else {
-                setData([])
+            } else {
+                setData({ads: undefined, mode_screen: undefined, time_ads: undefined})
             }
         })
     }, [])
+
     function handleUpdate() {
+        let _data = {
+            ...data
+        }
+        if (data.ads === undefined) {
+            _data.ads = -1
+        }
         setLoading(true)
         api.put(URL_CONFIG, {
-            data: JSON.stringify(data)
+            data: JSON.stringify(_data)
         }).then((response) => {
             if (response?.status === constants.SUCCESS) {
-                openNotification(VALIDATE_UPDATE_SUCCESS,typeNotify.success)
-            }else {
-                openNotification(VALIDATE_UPDATE_FAILED,typeNotify.failed)
+                openNotification(VALIDATE_UPDATE_SUCCESS, typeNotify.success)
+            } else {
+                openNotification(VALIDATE_UPDATE_FAILED, typeNotify.failed)
             }
         }).catch(() => {
             openNotification(VALIDATE_UPDATE_FAILED, typeNotify.failed)
@@ -51,199 +69,126 @@ export default function Setting({ openNotification, typeNotify} : TypePropsLayou
         })
     }
 
-    return <div className={_style.wrapper}>
-        <div className={_style.contentGroup}>
-            <div className={_style.contentItem}>
-                <label>Quảng cáo</label>
-                <div className={_style.contentItemRight}>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 5
-                    }}>
-                        <div>
-                            <label>Link quảng cáo: </label>
-                            <EditOutlined
-                                onClick={() => setAdsDescription(true)}
-                                style={{
-                                cursor: "pointer"
-                            }}/>
-                        </div>
-                        {
-                            updateAdsDescription ?
-                                <Input
-                                    onPressEnter={() => setAdsDescription(false)}
-                                    onChange={(e) => {
-                                        const filter =  data.findIndex((item) => {
-                                            return item.name === "ads"
-                                        })
-
-                                        setData(prevState => {
-                                            const value = [...prevState]
-                                            value[filter].description = e.target.value
-                                            return value
-                                        })
-                                    }}
-                                    value={data.filter((_item) => {
-                                        return _item.name == "ads"
-                                    })[0]?.description}
-                                    placeholder={"Nhập link ID youtube"} />
-                                :
-                                <a href={`https://www.youtube.com/watch?v=${data.filter((_item) => {
-                                    return _item.name == "ads"
-                                })[0]?.description}`}>{`https://www.youtube.com/watch?v=${data.filter((_item) => {
-                                    return _item.name == "ads"
-                                })[0]?.description || ""}`}</a>
-                        }
-
-                    </div>
-                    <div style={{
-                        display: "flex",
-                        gap: 50,
-                        alignContent: "center",
-                        justifyContent: "space-between",
-                        justifyItems: "center",
-                        alignItems: "center"
-                    }}>
+    return <>
+        <Loading visible={loading}/>
+        <div className={_style.wrapper}>
+            <div className={_style.contentGroup}>
+                <div className={_style.contentItem}>
+                    <div className={_style.contentItemRight}>
                         <div style={{
                             display: "flex",
-                            flexDirection: "column",
-                            gap: 20,
-                            alignItems: "start",
-                            justifyItems: "center"
+                            gap: 50,
+                            alignContent: "center",
+                            justifyContent: "space-between",
+                            justifyItems: "center",
+                            alignItems: "center"
                         }}>
-                            <label>Chế độ: </label>
-                            <label>Thời gian quảng cáo : </label>
-                            <label>Trạng thái:</label>
-                        </div>
-                        <div style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 20,
-                            alignItems: "end",
-                            justifyItems: "center"
-                        }}>
-                            <Select
-                                style={{
-                                    width: "200px"
-                                }}
-                                value={data.filter((item) => {
-                                    return item.name === "ads"
-                                })[0]?.value === "true" ? 1 : 0}
-                                onSelect={(item) => {
-                                    const filter =  data.findIndex((item) => {
-                                        return item.name === "ads"
-                                    })
-
-                                    setData(prevState => {
-                                        const value = [...prevState]
-                                        value[filter].value = item === 1 ? "true" : "false"
-                                        return value
-                                    })
-                                }}
-                                options={[
-                                    {
-                                        label: "Một quảng cáo",
-                                        value: 1
-                                    },
-                                    {
-                                        label: "Nhiều quảng cáo",
-                                        value: 0
-                                    },
-                                ]}
-                            />
-                            <Select
-                                style={{
-                                    width: "200px"
-                                }}
-                                value={data.filter((item) => {
-                                    return item.name === "time_ads"
-                                })[0]?.value}
-                                onSelect={(item) => {
-                                    const filter =  data.findIndex((item) => {
-                                        return item.name === "time_ads"
-                                    })
-
-                                    setData(prevState => {
-                                        const value = [...prevState]
-                                        value[filter].value = item.toString()
-                                        return value
-                                    })
-                                }}
-                                options={[
-                                    {
-                                        label: "15 Giây",
-                                        value: "15"
-                                    },
-                                    {
-                                        label: "30 Giây",
-                                        value: "30"
-                                    },
-                                    {
-                                        label: "45 Giây",
-                                        value: "45"
-                                    },
-                                ]}
-                            />
                             <div style={{
                                 display: "flex",
-                                gap: 10
+                                flexDirection: "column",
+                                gap: 20,
+                                alignItems: "start",
+                                justifyItems: "center"
                             }}>
-                                <span>{data.filter((item) => {
-                                    return item.name === "mode_screen"
-                                })[0]?.value == "true" ? 'Bật' : "Tắt"}</span>
-                                <Switch checked={data.filter((item) => {
-                                    return item.name === "mode_screen"
-                                })[0]?.value == "true"}
-                                onChange={(item) => {
-                                    const filter =  data.findIndex((item) => {
-                                        return item.name === "mode_screen"
-                                    })
-
-                                    setData(prevState => {
-                                        const value = [...prevState]
-                                        value[filter].value = item.toString()
-                                        return value
-                                    })
-                                }}
+                                <label>Quảng cáo: </label>
+                                <label>Thời gian quảng cáo : </label>
+                                <label>Trạng thái:</label>
+                            </div>
+                            <div style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 20,
+                                alignItems: "end",
+                                justifyItems: "center"
+                            }}>
+                                <Select
+                                    style={{
+                                        width: "200px",
+                                        userSelect: "none"
+                                    }}
+                                    value={data?.ads}
+                                    placeholder={"Nhóm quảng cáo"}
+                                    onSelect={(item) => {
+                                        setData(prevState => {
+                                            return {
+                                                ...prevState,
+                                                ads: item
+                                            }
+                                        })
+                                    }}
+                                    allowClear
+                                    onClear={() => {
+                                        setData(prevState => {
+                                            return {
+                                                ...prevState,
+                                                ads: undefined
+                                            }
+                                        })
+                                    }}
+                                    options={dataGroup.map((item) => {
+                                        return {
+                                            value: item.id,
+                                            label: item.name
+                                        }
+                                    })}
                                 />
+                                <Select
+                                    style={{
+                                        width: "200px",
+                                        userSelect: "none"
+                                    }}
+                                    placeholder={'Thời gian quảng cáo'}
+                                    value={data?.time_ads}
+                                    onSelect={(item) => {
+                                        setData(prevState => {
+                                            return {
+                                                ...prevState,
+                                                time_ads: item
+                                            }
+                                        })
+                                    }}
+                                    options={[
+                                        {
+                                            label: "15 Giây",
+                                            value: 15
+                                        },
+                                        {
+                                            label: "30 Giây",
+                                            value: 30
+                                        },
+                                        {
+                                            label: "45 Giây",
+                                            value: 45
+                                        },
+                                    ]}
+                                />
+                                <div style={{
+                                    display: "flex",
+                                    gap: 10
+                                }}>
+                                    <span>{data?.mode_screen ? 'Bật' : "Tắt"}</span>
+                                    <Switch checked={data?.mode_screen}
+                                            onChange={(item) => {
+                                                setData(prevState => {
+                                                    return {
+                                                        ...prevState,
+                                                        mode_screen: item
+                                                    }
+                                                })
+                                            }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-            </div>
-            <hr/>
-            <div>
+                <hr/>
+
                 <div style={{
-                    justifyContent: "space-between"
-                }} className={_style.contentItem}>
-                    <label>Bảo trì</label>
-                    <div className={_style.contentItemRight}>
-                        <Switch
-                            checked={data.filter((item) => {
-                                return item.name === "maintenance"
-                            })[0]?.value.toLowerCase() === "true"}
-                            onChange={(item) => {
-                                const filter =  data.findIndex((item) => {
-                                    return item.name === "maintenance"
-                                })
-
-                                setData(prevState => {
-                                    const value = [...prevState]
-                                    value[filter].value = item.toString()
-                                    return value
-                                })
-                                setMaintenance(item)
-                        }} />
-                    </div>
-                </div>
-            </div>
-
-            <div style={{
-                display: "flex",
-                justifyContent: "center"
-            }}>
-                <Spin spinning={loading}>
+                    display: "flex",
+                    justifyContent: "center"
+                }}>
                     <div
                         onClick={handleUpdate}
                         style={{
@@ -255,10 +200,10 @@ export default function Setting({ openNotification, typeNotify} : TypePropsLayou
                             cursor: "pointer",
                             userSelect: "none"
                         }}>
-                        <span>Cập nhật</span>
+                        Cập Nhật
                     </div>
-                </Spin>
+                </div>
             </div>
         </div>
-    </div>
+    </>
 }

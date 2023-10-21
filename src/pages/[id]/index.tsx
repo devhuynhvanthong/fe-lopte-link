@@ -8,104 +8,80 @@ import {URL_AD, URL_CONFIG_BY_USER, URL_LINK} from "~/utils/Urls";
 import {IAPILink, TypePropsLayout} from "~/@type/link";
 import Library from "~/utils/Library";
 import Constants from "~/utils/Constants";
-import NotFound from "~/component/NotFound";
+import {Exception} from "sass";
+
 interface TypeConfig {
     time_ads: number,
-    isMaintenance: boolean,
+    ads?: number,
     mode_screen: boolean
 }
-export default function GetLink({ openNotification, typeNotify, domain} : TypePropsLayout) {
+
+export default function GetLink({openNotification, typeNotify}: TypePropsLayout) {
     const router = useRouter()
     const [isMobile, setMobile] = useState(false)
     const [loading, setLoading] = useState(true)
     const [loadingGetLink, setLoadingGetLink] = useState(false)
     const [info, setInfo] = useState<IAPILink>()
-    const [config, setConfig] = useState<TypeConfig>({mode_screen: true, time_ads: 30, isMaintenance: false})
+    const [config, setConfig] = useState<TypeConfig>()
     const [ready, setReady] = useState(false)
     const api = CallApi()
     const library = Library()
     const constants = Constants()
+    let domain = ""
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        domain = location.host
+    }, [])
+
     function handleGetAds() {
         api.get(URL_AD,
-            {converted: `${domain === "localhost:3000" ? "localhost.com" : domain}/${router?.query?.id}`},
+            {converted: `${domain === "localhost:3000" ? "https://localhost.com" : domain}/${router?.query?.id}`},
             {},
             false
-        ).then((response) => {
-            if (response?.status === constants.SUCCESS) {
-                const body = response.body
-                if (body?.source) {
-                    router.push(body?.source)
-                } else {
-                    setInfo(body)
-                    setReady(true)
+        )
+            .then((response) => {
+                if (response?.status === constants.SUCCESS) {
+                    const body = response.body
+                    if (body?.source) {
+                        router.push(body?.source)
+                    } else {
+                        setInfo(body)
+                        setReady(true)
+                    }
                 }
-            }
-        }).catch(() => {
-            setReady(true)
-        })
+            })
+            .catch(() => {
+                setReady(true)
+            })
     }
 
     function handleGetConfig() {
         api.get(URL_CONFIG_BY_USER,
-            {},
+            {converted: `${domain === "localhost:3000" ? "https://localhost.com" : domain}/${router?.query?.id}`},
             {},
             false
         ).then((response) => {
+            if (response == undefined) {
+                router.push("not-found")
+            }
             if (response?.status === constants.SUCCESS) {
                 const body = response.body
-                body.map((item: {
-                    value: string;
-                    name: string;
-                }) => {
-                    if (item.name == "maintenance") {
-                        setConfig(prevState => {
-                            return {
-                                ...prevState,
-                                isMaintenance: item.value === "true"
-                            }
-                        })
-                    } if (item.name == "time_ads") {
-                        setConfig(prevState => {
-                            return {
-                                ...prevState,
-                                time_ads: Number(item.value)
-                            }
-                        })
-                    } else {
-                        setConfig(prevState => {
-                            return {
-                                ...prevState,
-                                mode_screen: item.value == "true"
-                            }
-                        })
-                    }
-                })
-                const filter = body.filter((item: { name: string; }) => {
-                    return item.name === "maintenance"
-                })
-                if (filter.value === "true") {
-                    setReady(true)
-                }else  {
-                    handleGetAds()
-                }
+                setConfig(body)
+                handleGetAds()
             }
-        }).catch((e: any) => {
+        }).catch(() => {
             setInfo(undefined)
-            setConfig(prevState => {
-                return {
-                    ...prevState,
-                    isMaintenance : true
-                }
-            })
             setReady(true)
         })
     }
+
     function handleGetLink() {
         setLoadingGetLink(true)
         api.get(URL_LINK,
             {code: info?.code},
-            {},false
-            ).then((response) => {
+            {}, false
+        ).then((response) => {
             if (response.status) {
                 const body = response.body
                 if (body) {
@@ -122,8 +98,7 @@ export default function GetLink({ openNotification, typeNotify, domain} : TypePr
 
     useEffect(() => {
         if (router.isReady) {
-            if (typeof router.query?.id == "string")
-            {
+            if (typeof router.query?.id == "string") {
                 handleGetConfig()
             }
             setLoading(false)
@@ -133,29 +108,29 @@ export default function GetLink({ openNotification, typeNotify, domain} : TypePr
 
     return <>{
         ready ?
-        <>
-            {
-                info && !config.isMaintenance ?
+            <>
+                {
+                    info &&
                     <div>
                         {
 
                             loading ?
-                                <Loading open={loading}/>
+                                <Loading visible={loading}/>
                                 : isMobile ?
                                     <LinkMobile
-                                        timeConfig={config.time_ads}
+                                        timeConfig={config?.time_ads || 30}
                                         isLoadingGetLink={loadingGetLink}
                                         getLink={handleGetLink}
-                                        info={info} />
+                                        info={info}/>
                                     : <LinkDesktop
-                                        timeConfig={config.time_ads}
+                                        timeConfig={config?.time_ads || 30}
                                         isLoadingGetLink={loadingGetLink}
                                         getLink={handleGetLink}
-                                        info={info} />
+                                        info={info}/>
                         }
-                    </div> : <NotFound isMaintenance={config.isMaintenance}/>
-            }
-        </>
+                    </div>
+                }
+            </>
             : <div style={{
                 width: '100%',
                 height: '100%',
