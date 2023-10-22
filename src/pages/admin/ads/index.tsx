@@ -24,7 +24,7 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     const [formAddGroup] = Form.useForm()
     const router = useRouter()
     const constants = Constants()
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [showModalAds, setShowModalAds] = useState(false)
     const [showModalAdsGroup, setShowModalAdsGroup] = useState<number>()
     const [updateGroup, setShowUpdateGroup] = useState<number>()
@@ -195,30 +195,24 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     }, [])
 
     function handleDeleteAds(id: number) {
-        setLoading(true)
         api.deleteApi(URL_ADS,
             {id: id}).then(() => {
             openNotification(VALIDATE_DELETE_SUCCESS, typeNotify.success)
             handleLoadingDataAds()
-        }).finally(() => {
-            setLoading(false)
         })
     }
 
     function handleDeleteAdsGroup(id: number) {
-        setLoading(true)
         api.deleteApi(URL_GROUP_AD,
             {id: id}).then(() => {
             openNotification(VALIDATE_DELETE_SUCCESS, typeNotify.success)
             handleLoadingDataAdsGroup()
-        }).finally(() => {
-            setLoading(false)
         })
     }
 
     const handleLoadingDataAds = useCallback(() => {
 
-        setLoading(false)
+        setLoading(true)
         api.get(URL_ADS_BY_USER, {page_offset: currentPage || 1}).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 const data: TypeData<TableTypeAds> = response.body
@@ -246,7 +240,7 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     }, [router.query])
 
     const handleLoadingDataAdsGroup = useCallback(() => {
-        setLoading(false)
+        setLoading(true)
         api.get(URL_GROUP_AD).then((response) => {
             if (response?.status == constants.SUCCESS) {
                 setDataGroup(response.body || [])
