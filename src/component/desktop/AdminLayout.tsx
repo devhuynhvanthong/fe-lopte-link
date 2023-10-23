@@ -1,22 +1,26 @@
 import React, {useCallback, useEffect, useState} from "react";
 import styles from '../../styles/index.module.scss'
-import {Image, Modal, Typography} from 'antd';
+import {Modal, Typography} from 'antd';
 import {AppstoreOutlined, KeyOutlined, LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {DOMAIN_ACCOUNT_DEV, URL_ADS, URL_INFO} from "~/utils/Urls";
+import {DOMAIN_ACCOUNT_DEV, URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
 import Constants from "~/utils/Constants";
-import ShortText from "~/component/ShortText";
+import {useDispatch, useSelector} from "react-redux";
+import {selectInfos} from "~/redux/info/info.selector";
+import {updateInfo} from "~/redux/info/info.action";
 
 export default function AdminLayout({children}: TypePropLayout) {
     const router = useRouter()
     const [isShowModel, setShowModel] = useState(false)
     let urlLogin = ""
+    const useSelect = useSelector(selectInfos())
     const [info, setInfo] = useState<TypeInfo>()
     const constant = Constants()
+    const dispatch = useDispatch()
     const api = CallApi()
     useEffect(() => {
         urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}==&session=expired`
@@ -27,17 +31,23 @@ export default function AdminLayout({children}: TypePropLayout) {
         if (library().isMobile()) {
             router.push('not-support-mobile')
         }
-        handleLoadingAccount()
+        if (useSelect.code == '') {
+            handleLoadingAccount()
+        }
     }, [])
 
     function handleLoadingAccount() {
         api.get(URL_INFO).then((response) => {
             if (response?.status == constant.SUCCESS) {
-                setInfo({
+                const data = {
                     code: response?.body?.info?.code,
                     name: response?.body?.info?.name,
                     avatar: response?.body?.info?.avatar
-                })
+                }
+                setInfo(data)
+                dispatch(updateInfo({
+                    info: data
+                }))
             }
         })
     }
@@ -122,7 +132,8 @@ export default function AdminLayout({children}: TypePropLayout) {
                                     </Typography.Paragraph>
                                 </Typography>
 
-                                <hr /><br/>
+                                <hr/>
+                                <br/>
                                 <label className={styles.titleCategory}>Danh mục</label>
                                 <div className={styles.menu}>
                                     {
