@@ -9,9 +9,10 @@ import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
 import Constants from "~/utils/Constants";
-import {useDispatch, useSelector} from "react-redux";
+import {Provider, useDispatch, useSelector} from "react-redux";
 import {selectInfos} from "~/redux/info/info.selector";
 import {updateInfo} from "~/redux/info/info.action";
+import {store} from "~/redux/store";
 
 export default function AdminLayout({children}: TypePropLayout) {
     const router = useRouter()
@@ -31,13 +32,14 @@ export default function AdminLayout({children}: TypePropLayout) {
         if (library().isMobile()) {
             router.push('not-support-mobile')
         }
-        if (useSelect.code === undefined || useSelect.code === '') {
-            handleLoadingAccount()
-        }else {
+        if (useSelect.code !== undefined && useSelect.code !== '') {
             if (!info) {
                 setInfo(useSelect)
             }
+        } else {
+            handleLoadingAccount()
         }
+
     }, [])
 
     function handleLoadingAccount() {

@@ -6,13 +6,11 @@ import { initialState as reduxInfo } from '~/redux/info/info.reducer'
 const bindMiddleware = (middleware: Array<ThunkMiddleware>): any => {
     return [...middleware, thunk]
 }
-const preload: any = {
-    info: reduxInfo,
-}
+
 const makeStore = (): any => {
     return configureStore({
         reducer: rootReducer,
-        preloadedState: preload as any,
+        preloadedState: reduxInfo as any,
         middleware: bindMiddleware([thunk]),
     })
 }
