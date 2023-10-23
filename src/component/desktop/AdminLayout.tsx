@@ -101,7 +101,7 @@ export default function AdminLayout({children}: TypePropLayout) {
                     {
                         <>
                             <div className={styles.wrapperMenu}>
-                                <label className={styles.titlePage}>QUẢN TRỊ NGƯỜI DÙNG</label>
+                                <label className={styles.titlePage}>NGƯỜI DÙNG</label>
                                 <div className={styles.info}>
                                     <img src={info?.avatar || "/logo.png"} className={styles.avatar}/>
                                     <div className={styles.code}>
@@ -121,6 +121,8 @@ export default function AdminLayout({children}: TypePropLayout) {
                                         <span className={styles.codeAccount}>{`Code Account: ${info?.code}`}</span>
                                     </Typography.Paragraph>
                                 </Typography>
+
+                                <hr /><br/>
                                 <label className={styles.titleCategory}>Danh mục</label>
                                 <div className={styles.menu}>
                                     {
