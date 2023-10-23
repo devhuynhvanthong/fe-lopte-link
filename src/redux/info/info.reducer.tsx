@@ -1,15 +1,11 @@
 import * as types from './info.constants'
 import {TypeInfo} from "~/@type/info";
 import {TypeActionRedux} from "~/redux/info/info.action";
-export interface ReduxPayload {
-    info: TypeInfo
-}
-export const initialState: ReduxPayload = {
-    info: {
-        avatar: undefined,
-        code: '',
-        name: undefined
-    }
+
+export const initialState: TypeInfo = {
+    avatar: undefined,
+    code: '',
+    name: undefined
 }
 export const InfoReducer = (state = initialState, action: TypeActionRedux) => {
     if (action.payload) {

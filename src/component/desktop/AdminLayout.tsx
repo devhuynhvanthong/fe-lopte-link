@@ -31,8 +31,12 @@ export default function AdminLayout({children}: TypePropLayout) {
         if (library().isMobile()) {
             router.push('not-support-mobile')
         }
-        if (useSelect.code == '') {
+        if (useSelect.code === undefined || useSelect.code === '') {
             handleLoadingAccount()
+        }else {
+            if (!info) {
+                setInfo(useSelect)
+            }
         }
     }, [])
 
@@ -45,9 +49,7 @@ export default function AdminLayout({children}: TypePropLayout) {
                     avatar: response?.body?.info?.avatar
                 }
                 setInfo(data)
-                dispatch(updateInfo({
-                    info: data
-                }))
+                dispatch(updateInfo(data))
             }
         })
     }

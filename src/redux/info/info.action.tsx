@@ -2,15 +2,11 @@ import * as types from './info.constants'
 import {TypeInfo} from "~/@type/info";
 
 export interface TypeActionRedux {
-    payload: any,
+    payload: TypeInfo,
     type: string
 }
 
-export interface TypeReduxPayload {
-    info: TypeInfo
-}
-
-export const updateInfo = (payload: TypeReduxPayload) => ({
+export const updateInfo = (payload: TypeInfo) => ({
     type: types.UPDATE,
     payload,
 })
