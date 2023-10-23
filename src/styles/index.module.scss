@@ -25,9 +25,63 @@
     transition: .4s;
     font-family: "Times New Roman", sans-serif;
 }
-.wrapperAdmin{
-    display: flex;
+
+.titlePage {
+    color: white;
+    font-weight: 700;
+    font-size: 25px;
+    padding: 10px;
+    text-align: center;
+}
+.info {
+    gap: 10px;
     width: 100%;
+    justify-items: center;
+    align-items: center;
+    padding: 20px 20px 5px 20px;
+    display: flex;
+    color: white;
+}
+.code {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    label {
+        user-select: none;
+    }
+    span {
+        word-break: break-word;
+        font-weight: bold;
+    }
+}
+.avatar {
+    width: 40%;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+.codeAccount {
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    position: relative;
+}
+.wrapperMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #0B232E;
+    position: relative;
+    min-width: 256px;
+    width: 256px;
+    min-height: 100%;
+}
+.titleCategory {
+    color: white;
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 .bodyAdmin{
     margin: 20px;
@@ -173,15 +227,15 @@
 .wrapper{
     width: 100%;
     position: absolute;
-    padding-bottom: 50px;
     background: #464646;
     min-height: 100%;
 }
 
 .wrapperAdmin{
+    display: flex;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding-right: 20px;
     position: relative;
 }
 .wrapperAdminBody {
@@ -418,9 +472,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-height: 100vh;
+    height: 100%;
     padding: 20px 0;
-    background: #0B232E;
-    border-radius: 20px;
 }
 .menuItem {
     padding: 10px 30px;

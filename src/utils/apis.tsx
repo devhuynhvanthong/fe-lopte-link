@@ -102,10 +102,10 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                if (err.response.status == 401) {
+                if (err.response?.status == 401) {
                     window.location.href = '/not-authen'
                 }
-                if (err.response.status == 403) {
+                if (err.response?.status == 403) {
                     window.location.href = '/account-locked'
                 }
             })
