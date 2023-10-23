@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
-import {ReduxPayload} from "~/redux/info/info.reducer";
+import {TypeInfo} from "~/@type/info";
 
-const selectInfo = (state: ReduxPayload) => state.info
+const selectInfo = (state: TypeInfo) => state
 
 const selectInfos = () => createSelector(selectInfo, state => state)
 
