@@ -1,8 +1,8 @@
-import { InfoReducer } from './info/info.reducer'
-import { combineReducers } from 'redux'
+import {combineReducers} from 'redux'
+import {InfoReducer} from "~/redux/info/info.reducer";
 
 const rootReducer = combineReducers({
-    info: InfoReducer,
+    info: InfoReducer
 })
 
 export default rootReducer

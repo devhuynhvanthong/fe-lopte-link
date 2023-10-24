@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import styles from '../../styles/index.module.scss'
+import styles from '../../styles/admin.module.scss'
 import {Modal, Typography} from 'antd';
 import {AppstoreOutlined, KeyOutlined, LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import library from "../../utils/Library";
@@ -9,10 +9,9 @@ import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
 import Constants from "~/utils/Constants";
-import {Provider, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectInfos} from "~/redux/info/info.selector";
 import {updateInfo} from "~/redux/info/info.action";
-import {store} from "~/redux/store";
 
 export default function AdminLayout({children}: TypePropLayout) {
     const router = useRouter()
@@ -110,6 +109,7 @@ export default function AdminLayout({children}: TypePropLayout) {
 
     return <>
         {
+            typeof window != undefined &&
             <div className={styles.wrapper}>
                 <div className={styles.wrapperAdmin}>
                     {
@@ -132,7 +132,7 @@ export default function AdminLayout({children}: TypePropLayout) {
                                         paddingRight: 20,
                                     }}
                                                           copyable={{text: info?.code, tooltips: true}}>
-                                        <span className={styles.codeAccount}>{`Code Account: ${info?.code}`}</span>
+                                        <span className={styles.codeAccount}>{`Code Account: ${info?.code || ''}`}</span>
                                     </Typography.Paragraph>
                                 </Typography>
 

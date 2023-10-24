@@ -1,6 +1,5 @@
-import * as types from './info.constants'
 import {TypeInfo} from "~/@type/info";
-
+import * as types from './info.constants'
 export interface TypeActionRedux {
     payload: TypeInfo,
     type: string

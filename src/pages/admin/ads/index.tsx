@@ -464,13 +464,13 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
                 <Table
                     style={{background: 'white', borderRadius: 20}}
                     dataSource={data.data}
-                    pagination={
+                    pagination={data.data.length ?
                         {
                             showSizeChanger: false,
                             current: currentPage,
                             total: data.total_page * 10,
                             onChange: onChangePagination
-                        }
+                        } : false
                     }
                     columns={column}/>
             </div>,

@@ -7,12 +7,13 @@ import {NotificationPlacement} from "antd/es/notification/interface";
 import Cookies from "~/utils/Cookies";
 import {Provider} from "react-redux";
 import {store} from "~/redux/store";
+import DashboardLayout from "~/component/desktop/DashboardLayout";
 
 export const typeNotify = {success: "success", failed: "failed", info: "info"}
 
 function App({Component, pageProps}: any) {
 
-    const Layout: any = Component?.layout || AdminLayout
+    const Layout: any = Component?.layout === "dashboard" ? DashboardLayout : (Component?.layout || AdminLayout)
     const cookie = Cookies()
     const [notify, contextHolder] = notification.useNotification();
     const Context = React.createContext({name: 'Default'});
