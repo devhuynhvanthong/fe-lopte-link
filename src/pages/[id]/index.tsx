@@ -31,7 +31,7 @@ export default function GetLink({openNotification, typeNotify}: TypePropsLayout)
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        domain = location.host
+        domain = location.origin
     }, [])
 
     function handleGetAds() {
