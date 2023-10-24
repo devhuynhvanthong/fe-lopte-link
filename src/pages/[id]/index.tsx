@@ -36,7 +36,7 @@ export default function GetLink({openNotification, typeNotify}: TypePropsLayout)
 
     function handleGetAds() {
         api.get(URL_AD,
-            {converted: `${domain === "localhost:3000" ? "https://localhost.com" : domain}/${router?.query?.id}`},
+            {converted: `${domain === "http://localhost:3000" ? "https://localhost.com" : domain}/${router?.query?.id}`},
             {},
             false
         )
@@ -58,7 +58,7 @@ export default function GetLink({openNotification, typeNotify}: TypePropsLayout)
 
     function handleGetConfig() {
         api.get(URL_CONFIG_BY_USER,
-            {converted: `${domain === "localhost:3000" ? "https://localhost.com" : domain}/${router?.query?.id}`},
+            {converted: `${domain === "http://localhost:3000" ? "https://localhost.com" : domain}/${router?.query?.id}`},
             {},
             false
         ).then((response) => {
