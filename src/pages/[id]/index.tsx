@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import LinkDesktop from "~/component/desktop/link"
 import LinkMobile from "~/component/mobile/link"
@@ -9,6 +9,7 @@ import {IAPILink, TypePropsLayout} from "~/@type/link";
 import Library from "~/utils/Library";
 import Constants from "~/utils/Constants";
 import {Exception} from "sass";
+import Header from "~/component/Header";
 
 interface TypeConfig {
     time_ads: number,
@@ -106,7 +107,9 @@ export default function GetLink({openNotification, typeNotify}: TypePropsLayout)
         }
     }, [router])
 
-    return <>{
+    return <>
+        <Header title={"Lopte Link - " + router.query?.id}/>
+        {
         ready ?
             <>
                 {

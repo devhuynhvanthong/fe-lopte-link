@@ -13,6 +13,7 @@ import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate"
 import {IAPIDashboardUsers} from "~/@type/user";
 import Loading from "~/component/loading";
 import {IAPIDashboardAccountITem, IAPIDashboardAds, IAPIDashboardAdsGroup, IAPIPropsAddAdsGroup} from "~/@type/ads";
+import Header from "~/component/Header";
 
 export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     const [data, setData] = useState<TypeData<IAPIDashboardAds>>()
@@ -113,6 +114,7 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     }
 
     return <div>
+        <Header title={"Lopte Dashboard - Quảng cáo"}/>
         <Loading visible={loading}/>
         <Table
             style={{background: 'white', borderRadius: 20}}

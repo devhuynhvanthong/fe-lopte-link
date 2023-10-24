@@ -11,6 +11,7 @@ import Constants from "~/utils/Constants";
 import Loading from "~/component/loading";
 import {IAPIDashboardAccountITem, IAPIDashboardAdsGroup} from "~/@type/ads";
 import {IAPIDashboardConfig} from "~/@type/config";
+import Header from "~/component/Header";
 
 export default function Configs({openNotification, typeNotify}: TypePropsLayout) {
     const [data, setData] = useState<TypeData<IAPIDashboardConfig>>()
@@ -98,6 +99,7 @@ export default function Configs({openNotification, typeNotify}: TypePropsLayout)
     }
 
     return <div>
+        <Header title={"Lopte Dashboard - Cấu hình"}/>
         <Loading visible={loading}/>
         <Table
             style={{background: 'white', borderRadius: 20}}

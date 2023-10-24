@@ -8,6 +8,8 @@ import Cookies from "~/utils/Cookies";
 import {Provider} from "react-redux";
 import {store} from "~/redux/store";
 import DashboardLayout from "~/component/desktop/DashboardLayout";
+import Header from "~/component/Header";
+import Head from "next/head";
 
 export const typeNotify = {success: "success", failed: "failed", info: "info"}
 
@@ -63,6 +65,15 @@ function App({Component, pageProps}: any) {
         {
 
             <Provider store={store}>
+                <Head>
+                    <title>{'Lopte link'}</title>
+                    <link rel="icon" href={'/logo.png'} />
+                    <meta name="description" content="Lopte link" />
+                    <meta charSet="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    <meta name="keywords" content="aigoox" />
+                    <link href={'https://fonts.googleapis.com/css2?family=Source+Serif+Pro&display=swap'} rel="stylesheet" type="text/css" />
+                </Head>
                 <Layout>
                     <Component {...pageProps}
                                notify={notify}

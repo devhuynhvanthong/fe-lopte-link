@@ -14,6 +14,7 @@ import {VALIDATE_ADD_SUCCESS, VALIDATE_DELETE_SUCCESS, VALIDATE_EXIST_DATA} from
 import {Exception} from "sass";
 import {IAPIAddAds, IAPIPropsAddAds, IAPIPropsAddAdsGroup, IAPIPropsAddAdsToGroup} from "~/@type/ads";
 import Loading from "~/component/loading";
+import Header from "~/component/Header";
 
 export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     const [data, setData] = useState<TypeData<TableTypeAds>>({data: [], total_page: 0})
@@ -507,7 +508,7 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     }
 
     return <div className={_style.wrapper}>
-
+        <Header title={"Lopte Admin - Quảng cáo"}/>
         <Loading visible={loading}/>
         <div className={_style.body}>
             <Tabs

@@ -223,7 +223,7 @@ export default function Link({openNotification, typeNotify}: TypePropsLayout) {
     }
 
     return <>
-        <Header title={"Lopte Link - Dashboard"}/>
+        <Header title={"Lopte Admin - Links"}/>
         <div className={_style.wrapper}>
             <Loading visible={loading}/>
             <div className={_style.contentAction}>

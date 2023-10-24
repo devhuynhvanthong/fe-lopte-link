@@ -12,6 +12,7 @@ import Constants from "~/utils/Constants";
 import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
 import {IAPIDashboardUsers} from "~/@type/user";
 import Loading from "~/component/loading";
+import Header from "~/component/Header";
 
 export default function User({openNotification, typeNotify}: TypePropsLayout) {
     const [data, setData] = useState<TypeData<IAPIDashboardUsers>>()
@@ -137,6 +138,7 @@ export default function User({openNotification, typeNotify}: TypePropsLayout) {
     }
 
     return <div>
+        <Header title={"Lopte Dashboard - Người dùng"}/>
         <Loading visible={loading}/>
         <Table
             style={{background: 'white', borderRadius: 20}}

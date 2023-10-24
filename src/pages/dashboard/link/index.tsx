@@ -12,6 +12,7 @@ import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
 import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
 import Loading from "~/component/loading";
+import Header from "~/component/Header";
 
 export default function Link({openNotification, typeNotify}: TypePropsLayout) {
     const [dataLink, setDataLink] = useState<TypeData<IAPIDashboardLinks>>()
@@ -167,6 +168,7 @@ export default function Link({openNotification, typeNotify}: TypePropsLayout) {
     }
 
     return <div>
+        <Header title={"Lopte Dashboard - Links"}/>
         <Loading visible={loading}/>
         <Table
             style={{background: 'white', borderRadius: 20}}
