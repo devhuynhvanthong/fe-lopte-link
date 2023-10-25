@@ -23,6 +23,7 @@ import {updateInfo} from "~/redux/info/info.action";
 import {IAPIDataAnalytic, PropsItemAnalytics} from "~/@type/layout";
 import SearchComponent from "~/component/SearchComponent";
 import Cookies from "~/utils/Cookies";
+import Library from "../../utils/Library";
 
 export default function DashboardLayout({children}: TypePropLayout) {
     const router = useRouter()
@@ -30,6 +31,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
     const cookie = Cookies()
     const useSelectInfo = useSelector(selectInfos())
     const constant = Constants()
+    const library = Library()
     const dispatch = useDispatch()
     const [analytics, setAnalytics] = useState<IAPIDataAnalytic>()
     const [info, setInfo] = useState<TypeInfo>()
@@ -37,11 +39,11 @@ export default function DashboardLayout({children}: TypePropLayout) {
     useEffect(() => {
         if (!cookie.getAccessToken()) {
             if (location.pathname != "/not-authen") {
-                window.location.href = '/not-authen'
+                window.location.href = '/not-authen?c=' + library.base64Encode("dashboard")
             }
         }
 
-        if (library().isMobile()) {
+        if (library.isMobile()) {
             router.push('not-support-mobile')
         }
         handleLoadingAnalytic()
@@ -280,7 +282,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(`${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/dashboard`)}&session=expired`)
+                            router.push(`${DOMAIN_ACCOUNT_DEV}/login?domain=${library.base64Encode(`${location?.origin}/dashboard`)}&session=expired`)
                         }}
                         onCancel={() => setShowModel(false)}
                     >

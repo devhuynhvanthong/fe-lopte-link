@@ -1,14 +1,19 @@
 import styles from './style.module.scss'
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN} from "~/utils/Urls";
+import {BASE_URL_LOGIN_ADMIN, BASE_URL_LOGIN_DASHBOARD} from "~/utils/Urls";
 import Header from "~/component/Header";
 import React from "react";
+import Library from "~/utils/Library";
 export default function NotAuthentication() {
     const router = useRouter()
-
+    const library = Library()
     function handleClickLogin() {
         setTimeout(function() {
-            router.push(BASE_URL_LOGIN)
+            if (library.base64Decode((router.query?.c || "").toString()).toLowerCase() == "dashboard") {
+                router.push(BASE_URL_LOGIN_DASHBOARD)
+            }else {
+                router.push(BASE_URL_LOGIN_DASHBOARD)
+            }
         }, 300)
     }
     return <>
