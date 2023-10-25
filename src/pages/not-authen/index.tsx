@@ -12,7 +12,7 @@ export default function NotAuthentication() {
             if (library.base64Decode((router.query?.c || "").toString()).toLowerCase() == "dashboard") {
                 router.push(BASE_URL_LOGIN_DASHBOARD)
             }else {
-                router.push(BASE_URL_LOGIN_DASHBOARD)
+                router.push(BASE_URL_LOGIN_ADMIN)
             }
         }, 300)
     }
