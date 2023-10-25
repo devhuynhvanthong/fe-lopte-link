@@ -8,7 +8,6 @@ import {URL_AD, URL_CONFIG_BY_USER, URL_LINK} from "~/utils/Urls";
 import {IAPILink, TypePropsLayout} from "~/@type/link";
 import Library from "~/utils/Library";
 import Constants from "~/utils/Constants";
-import {Exception} from "sass";
 import Header from "~/component/Header";
 
 interface TypeConfig {
@@ -110,44 +109,44 @@ export default function GetLink({openNotification, typeNotify}: TypePropsLayout)
     return <>
         <Header title={"Lopte Link - " + router.query?.id}/>
         {
-        ready ?
-            <>
-                {
-                    info &&
-                    <div>
-                        {
+            ready ?
+                <>
+                    {
+                        info &&
+                        <div>
+                            {
 
-                            loading ?
-                                <Loading visible={loading}/>
-                                : isMobile ?
-                                    <LinkMobile
-                                        timeConfig={config?.time_ads || 30}
-                                        isLoadingGetLink={loadingGetLink}
-                                        getLink={handleGetLink}
-                                        info={info}/>
-                                    : <LinkDesktop
-                                        timeConfig={config?.time_ads || 30}
-                                        isLoadingGetLink={loadingGetLink}
-                                        getLink={handleGetLink}
-                                        info={info}/>
-                        }
-                    </div>
-                }
-            </>
-            : <div style={{
-                width: '100%',
-                height: '100%',
-                position: "absolute"
-            }}>
-                <label style={{
-                    fontSize: 50,
-                    position: "absolute",
-                    left: '50%',
-                    top: '50%',
-                    transform: "translate(-50%, -50%)"
-                }}>Loading...</label>
-            </div>
-    }</>
+                                loading ?
+                                    <Loading visible={loading}/>
+                                    : isMobile ?
+                                        <LinkMobile
+                                            timeConfig={config?.time_ads || 30}
+                                            isLoadingGetLink={loadingGetLink}
+                                            getLink={handleGetLink}
+                                            info={info}/>
+                                        : <LinkDesktop
+                                            timeConfig={config?.time_ads || 30}
+                                            isLoadingGetLink={loadingGetLink}
+                                            getLink={handleGetLink}
+                                            info={info}/>
+                            }
+                        </div>
+                    }
+                </>
+                : <div style={{
+                    width: '100%',
+                    height: '100%',
+                    position: "absolute"
+                }}>
+                    <label style={{
+                        fontSize: 50,
+                        position: "absolute",
+                        left: '50%',
+                        top: '50%',
+                        transform: "translate(-50%, -50%)"
+                    }}>Loading...</label>
+                </div>
+        }</>
 }
 
 GetLink.layout = "client"
