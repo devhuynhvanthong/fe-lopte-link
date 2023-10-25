@@ -22,11 +22,12 @@ import {selectInfos} from "~/redux/info/info.selector";
 import {updateInfo} from "~/redux/info/info.action";
 import {IAPIDataAnalytic, PropsItemAnalytics} from "~/@type/layout";
 import SearchComponent from "~/component/SearchComponent";
+import Cookies from "~/utils/Cookies";
 
 export default function DashboardLayout({children}: TypePropLayout) {
     const router = useRouter()
     const [isShowModel, setShowModel] = useState(false)
-    let urlLogin = ""
+    const cookie = Cookies()
     const useSelectInfo = useSelector(selectInfos())
     const constant = Constants()
     const dispatch = useDispatch()
@@ -34,9 +35,10 @@ export default function DashboardLayout({children}: TypePropLayout) {
     const [info, setInfo] = useState<TypeInfo>()
     const api = CallApi()
     useEffect(() => {
-        urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/dashboard`)}==&session=expired`
-        if (!library().checkLogin()) {
-            router.push(urlLogin)
+        if (!cookie.getAccessToken()) {
+            if (location.pathname != "/not-authen") {
+                window.location.href = '/not-authen'
+            }
         }
 
         if (library().isMobile()) {

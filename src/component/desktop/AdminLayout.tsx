@@ -12,20 +12,22 @@ import Constants from "~/utils/Constants";
 import {useDispatch, useSelector} from "react-redux";
 import {selectInfos} from "~/redux/info/info.selector";
 import {updateInfo} from "~/redux/info/info.action";
+import Cookies from "~/utils/Cookies";
 
 export default function AdminLayout({children}: TypePropLayout) {
     const router = useRouter()
     const [isShowModel, setShowModel] = useState(false)
-    let urlLogin = ""
+    const cookie = Cookies()
     const useSelect = useSelector(selectInfos())
     const [info, setInfo] = useState<TypeInfo>()
     const constant = Constants()
     const dispatch = useDispatch()
     const api = CallApi()
     useEffect(() => {
-        urlLogin = `${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}==&session=expired`
-        if (!library().checkLogin()) {
-            router.push(urlLogin)
+        if (!cookie.getAccessToken()) {
+            if (location.pathname != "/not-authen") {
+                window.location.href = '/not-authen'
+            }
         }
 
         if (library().isMobile()) {
