@@ -181,7 +181,7 @@ export default function AdminLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(`${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}==&session=expired`)
+                            router.push(`${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}&session=expired`)
                         }}
                         onCancel={() => setShowModel(false)}
                     >

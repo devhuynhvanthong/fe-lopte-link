@@ -280,7 +280,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(`${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/dashboard`)}==&session=expired`)
+                            router.push(`${DOMAIN_ACCOUNT_DEV}/login?domain=${library().base64Encode(`${location?.origin}/dashboard`)}&session=expired`)
                         }}
                         onCancel={() => setShowModel(false)}
                     >
