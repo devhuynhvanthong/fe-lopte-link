@@ -1,8 +1,11 @@
 import Header from "~/component/Header";
 import React from "react";
+import {useRouter} from "next/router";
+import {Typography} from "antd";
+import Library from "~/utils/Library";
 
 export default function NotFound() {
-
+    const router = useRouter()
     return <>
         <Header title={"Lopte Link - Tài khoản bị khóa"}/>
         <div style={{
@@ -26,6 +29,10 @@ export default function NotFound() {
             <label style={{
                 position: "absolute",
                 borderRadius: 20,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 10,
                 background: "white",
                 padding: 20,
                 backgroundColor: "red",
@@ -35,7 +42,21 @@ export default function NotFound() {
                 fontSize: 25,
                 fontWeight: "bold",
                 textAlign: "center"
-            }}>Tài khoản của bạn đã bị khóa</label>
+            }}>
+                <span>Tài khoản của bạn đã bị khóa</span>
+                {
+                    Library().base64Decode((router.query.code || '').toString()) &&
+                    <Typography>
+                        <Typography.Paragraph style={{marginBottom: 'unset', display: 'flex', alignItems: 'center'}}
+                                              copyable={{text: Library().base64Decode((router.query.code || '').toString()), tooltips: true}}>
+                            <span style={{
+                                color: "#ffffff",
+                            }}>{`Code: ${Library().base64Decode((router.query.code || '').toString())}`}</span>
+                        </Typography.Paragraph>
+                    </Typography>
+                }
+            </label>
+
         </div>
     </>
 }

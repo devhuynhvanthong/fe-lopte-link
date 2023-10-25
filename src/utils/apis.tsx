@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookies from "~/utils/Cookies";
+import Library from "~/utils/Library";
 
 export default function CallApi() {
     const API_URL = process.env.REACT_APP_API_URL
@@ -29,8 +30,12 @@ export default function CallApi() {
                     window.location.href = '/not-authen'
                 }
 
-                if (err.response.status == 403) {
-                    window.location.href = '/account-locked'
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
                 }
             })
     }
@@ -55,8 +60,13 @@ export default function CallApi() {
                 if (err.response.status == 401) {
                     window.location.href = '/not-authen'
                 }
-                if (err.response.status == 403) {
-                    window.location.href = '/account-locked'
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
                 }
             })
     }
@@ -80,8 +90,13 @@ export default function CallApi() {
                 if (err.response.status == 401) {
                     window.location.href = '/not-authen'
                 }
-                if (err.response.status == 403) {
-                    window.location.href = '/account-locked'
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
                 }
             })
     }
@@ -105,8 +120,13 @@ export default function CallApi() {
                 if (err.response?.status == 401) {
                     window.location.href = '/not-authen'
                 }
-                if (err.response?.status == 403) {
-                    window.location.href = '/account-locked'
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
                 }
             })
     }

@@ -13,7 +13,7 @@ export const URL_GROUP_AD = API + "group_ad"
 export const BASE_URL_LOGIN = 'https://devaccounts.aigoox.com/login?domain=aHR0cHM6Ly9saW5rLmFpZ29veC5jb20vYWRtaW4=&session=expired'
 export const URL_AD = API + "ad"
 export const URL_LINK = API + "link"
-export const URL_SEARCH_LINK = API + "search_links"
+export const URL_CREATE = API + "create"
 export const URL_LINKS = API + "links"
 export const URL_USERS = API + "users"
 export const URL_LOCK_LINK = API + "lock_link"

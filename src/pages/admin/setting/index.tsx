@@ -10,7 +10,6 @@ import {Select, Switch} from "antd";
 import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
 import Loading from "~/component/loading";
 import {TableTypeAdsGroup} from "~/@type/table";
-import * as process from "process";
 import Header from "~/component/Header";
 
 export default function Setting({openNotification, typeNotify}: TypePropsLayout) {
