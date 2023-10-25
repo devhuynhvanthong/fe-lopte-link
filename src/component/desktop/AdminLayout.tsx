@@ -4,7 +4,7 @@ import {Modal, Typography} from 'antd';
 import {AppstoreOutlined, KeyOutlined, LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN_ADMIN, DOMAIN_ACCOUNT, URL_INFO} from "~/utils/Urls";
+import {BASE_URL_LOGIN_ADMIN, URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";

@@ -1,25 +1,26 @@
 import styles from './style.module.scss'
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN_ADMIN, URL_ADS, URL_CREATE} from "~/utils/Urls";
-import React, {useEffect, useState} from "react";
-import library from "~/utils/Library";
+import {URL_CREATE} from "~/utils/Urls";
+import React, {useState} from "react";
 import Header from "~/component/Header";
 import Loading from "~/component/loading";
 import CallApi from "~/utils/apis";
 import Constants from "~/utils/Constants";
 import {TypePropsLayout} from "~/@type/link";
+
 export default function CreateRepository({openNotification, typeNotify}: TypePropsLayout) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const api = CallApi()
     const constant = Constants()
+
     function handleRegister() {
         setLoading(true)
         api.post(URL_CREATE).then((response) => {
             if (response.status == constant.SUCCESS) {
                 openNotification(response.body.message, typeNotify.success)
                 router.push('/admin')
-            }else {
+            } else {
                 setLoading(false)
                 openNotification(response?.message, typeNotify.failed)
             }
@@ -30,7 +31,7 @@ export default function CreateRepository({openNotification, typeNotify}: TypePro
     }
 
     return <>
-        <Loading visible={loading} />
+        <Loading visible={loading}/>
         <Header title={"Lopte Link - Đăng ký"}/>
         <div style={{
             background: '#022533',

@@ -10,9 +10,9 @@ import {
     SettingOutlined,
     UserOutlined
 } from '@ant-design/icons';
-import library from "../../utils/Library";
+import Library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN_DASHBOARD, DOMAIN_ACCOUNT, URL_ANALYSIS, URL_INFO} from "~/utils/Urls";
+import {BASE_URL_LOGIN_DASHBOARD, URL_ANALYSIS, URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
@@ -23,7 +23,6 @@ import {updateInfo} from "~/redux/info/info.action";
 import {IAPIDataAnalytic, PropsItemAnalytics} from "~/@type/layout";
 import SearchComponent from "~/component/SearchComponent";
 import Cookies from "~/utils/Cookies";
-import Library from "../../utils/Library";
 
 export default function DashboardLayout({children}: TypePropLayout) {
     const router = useRouter()
