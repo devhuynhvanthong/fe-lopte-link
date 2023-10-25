@@ -6,7 +6,7 @@ export default function Loading({visible}: TypePropsLoading) {
         {visible &&
             <div className={_style.wrapper}>
                 <div className={_style.borderLoading}>
-                    <label className={_style.loading}>Waiting...</label>
+                    <label className={_style.loading}>Xin chờ...</label>
                 </div>
             </div>}
     </>

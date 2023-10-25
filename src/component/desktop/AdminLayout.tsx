@@ -4,7 +4,7 @@ import {Modal, Typography} from 'antd';
 import {AppstoreOutlined, KeyOutlined, LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {DOMAIN_ACCOUNT, URL_INFO} from "~/utils/Urls";
+import {BASE_URL_LOGIN_ADMIN, DOMAIN_ACCOUNT, URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
@@ -23,10 +23,6 @@ export default function AdminLayout({children}: TypePropLayout) {
     const dispatch = useDispatch()
     const api = CallApi()
     const cookie = Cookies()
-    useEffect(() => {
-
-
-    }, [])
     useEffect(() => {
         if (!cookie.getAccessToken()) {
             if (location.pathname != "/not-authen") {
@@ -186,7 +182,7 @@ export default function AdminLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(`${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}&session=expired`)
+                            router.push(BASE_URL_LOGIN_ADMIN)
                         }}
                         onCancel={() => setShowModel(false)}
                     >

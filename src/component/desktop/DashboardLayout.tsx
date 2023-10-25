@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {DOMAIN_ACCOUNT, URL_ANALYSIS, URL_INFO} from "~/utils/Urls";
+import {BASE_URL_LOGIN_DASHBOARD, DOMAIN_ACCOUNT, URL_ANALYSIS, URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
@@ -23,30 +23,27 @@ import {updateInfo} from "~/redux/info/info.action";
 import {IAPIDataAnalytic, PropsItemAnalytics} from "~/@type/layout";
 import SearchComponent from "~/component/SearchComponent";
 import Cookies from "~/utils/Cookies";
+import Library from "../../utils/Library";
 
 export default function DashboardLayout({children}: TypePropLayout) {
     const router = useRouter()
     const [isShowModel, setShowModel] = useState(false)
-    let urlLogin = ""
+    const cookie = Cookies()
     const useSelectInfo = useSelector(selectInfos())
     const constant = Constants()
+    const library = Library()
     const dispatch = useDispatch()
     const [analytics, setAnalytics] = useState<IAPIDataAnalytic>()
     const [info, setInfo] = useState<TypeInfo>()
     const api = CallApi()
-    const cookie = Cookies()
     useEffect(() => {
         if (!cookie.getAccessToken()) {
             if (location.pathname != "/not-authen") {
-                window.location.href = '/not-authen'
+                window.location.href = '/not-authen?c=' + library.base64Encode("dashboard")
             }
         }
-        // urlLogin = `${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${location?.origin}/dashboard`)}==&session=expired`
-        // if (!library().checkLogin()) {
-        //     router.push(urlLogin)
-        // }
 
-        if (library().isMobile()) {
+        if (library.isMobile()) {
             router.push('not-support-mobile')
         }
         handleLoadingAnalytic()
@@ -285,7 +282,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(`${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${location?.origin}/dashboard`)}&session=expired`)
+                            router.push(BASE_URL_LOGIN_DASHBOARD)
                         }}
                         onCancel={() => setShowModel(false)}
                     >
