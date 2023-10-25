@@ -33,10 +33,6 @@ export default function AdminLayout({children}: TypePropLayout) {
                 window.location.href = '/not-authen'
             }
         }
-        // urlLogin = `${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}==&session=expired`
-        // if (!library().checkLogin()) {
-        //     router.push(urlLogin)
-        // }
 
         if (library().isMobile()) {
             router.push('not-support-mobile')
@@ -190,7 +186,7 @@ export default function AdminLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(`${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}==&session=expired`)
+                            router.push(`${DOMAIN_ACCOUNT}/login?domain=${library().base64Encode(`${location?.origin}/admin`)}&session=expired`)
                         }}
                         onCancel={() => setShowModel(false)}
                     >
