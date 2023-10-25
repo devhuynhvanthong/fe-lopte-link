@@ -1,3 +1,5 @@
+import Library from "~/utils/Library";
+
 const BASE_URL = "https://api-link.aigoox.com/"
 const BASE_URL_DEV = "https://api-dev-loptelink.aigoox.com/"
 const BASE_URL_LOCAL = "http://127.0.0.1:8000/"
@@ -10,7 +12,7 @@ export const URL_INFO = BASE_ACCOUNT_DEV + "/api/info"
 export const URL_ANALYSIS = API + "analysis"
 export const URL_ADS_BY_USER = API + "ads_by_user"
 export const URL_GROUP_AD = API + "group_ad"
-export const BASE_URL_LOGIN = 'https://devaccounts.aigoox.com/login?domain=aHR0cHM6Ly9saW5rLmFpZ29veC5jb20vYWRtaW4=&session=expired'
+export const BASE_URL_LOGIN = `https://devaccounts.aigoox.com/login?domain==${Library().base64Decode(window.location.origin + "/admin")}&session=expired`
 export const URL_AD = API + "ad"
 export const URL_LINK = API + "link"
 export const URL_CREATE = API + "create"
