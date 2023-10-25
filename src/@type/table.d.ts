@@ -5,12 +5,24 @@ export interface TableTypeLink {
     source: string,
     converted: string,
     created_at: any
+    view: number,
+    lock: boolean
 }
 
+export interface TypeGroupAds {
+    id: number,
+    name: string
+}
 export interface TableTypeAds {
-    id: string,
+    id: int,
     name: string,
-    link: string
+    link: string,
+    group: TypeGroupAds
+}
+
+export interface TableTypeAdsGroup {
+    id: int,
+    name: string,
 }
 
 export interface TypeData<T> {

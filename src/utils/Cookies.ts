@@ -1,4 +1,3 @@
-
 import Cookie from "js-cookie"
 import Library from "./Library"
 import Constants from "~/utils/Constants";
@@ -19,23 +18,32 @@ export default function Cookies  () {
     }
 
     const getAccessToken = () => {
-        return Get(constant.KEY_ACCESS_TOKEN)
+        return Get(constant.KEY_ACCESS_TOKEN)?.access_token
     }
-    const Get = (key: string,isParseJson = true) =>{
+    const Get = (key: string, isParseJson = true) => {
         const input = Cookie.get(key)
-        if(input!=null){
-            if(!isParseJson){
+        if (input != null) {
+            if (!isParseJson) {
                 return input
             }
-            const output = JSON.parse(library.base64Decode(input))
-            return output.access_token
-        }else{
+            return JSON.parse(library.base64Decode(input))
+        } else {
             return null
         }
+    }
+
+    const Remove = (key: string) => {
+        Cookie.remove(key)
+    }
+
+    const Clear = () => {
+        //Cookie.ge()
     }
     return {
         Set,
         Get,
+        Remove,
+        Clear,
         getAccessToken
     }
 }

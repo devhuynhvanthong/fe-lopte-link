@@ -1,10 +1,11 @@
 import axios from 'axios'
 import Cookies from "~/utils/Cookies";
+import Library from "~/utils/Library";
 
 export default function CallApi() {
     const API_URL = process.env.REACT_APP_API_URL
     const cookie = Cookies()
-    const post = async(endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
+    const post = async (endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -23,9 +24,23 @@ export default function CallApi() {
             .catch((err) => {
                 return err
             })
+            .catch((err) => {
+
+                if (err.response.status == 401) {
+                    window.location.href = '/not-authen'
+                }
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
+                }
+            })
     }
 
-    const put = async(endpoint: string, body  = {}, header_ = {}, isAuth: boolean = true) => {
+    const put = async (endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -42,10 +57,20 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status == 401) {
+                    window.location.href = '/not-authen'
+                }
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
+                }
             })
     }
-    const deleteApi = async(endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
+    const deleteApi = async (endpoint: string, body = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -62,10 +87,20 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status == 401) {
+                    window.location.href = '/not-authen'
+                }
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
+                }
             })
     }
-    const get = async(endpoint: string, params_ = {}, header_ = {}, isAuth: boolean = true) => {
+    const get = async (endpoint: string, params_ = {}, header_ = {}, isAuth: boolean = true) => {
         if (cookie.getAccessToken() && isAuth) {
             axios.defaults.headers.common.Authorization = `Bearer ${cookie.getAccessToken()}`
         }
@@ -82,7 +117,17 @@ export default function CallApi() {
                 return res.data
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response?.status == 401) {
+                    window.location.href = '/not-authen'
+                }
+
+                if (err.response.status == 423) {
+                    window.location.href = '/account-locked?code=' + Library().base64Encode(err.response.data?.body?.data?.code)
+                }
+
+                if (err.response.status == 503) {
+                    window.location.href = '/create-repository'
+                }
             })
     }
 

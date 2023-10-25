@@ -8,13 +8,22 @@ export interface TypePropLink {
     isLoadingGetLink: boolean,
     timeConfig: number
 }
-
+export interface IAPIDashboardLinks {
+    id: number,
+    source: string,
+    converted: string,
+    created_time: number,
+    code_account: string,
+    view: number,
+    lock: boolean
+}
 export interface IAPILink {
     id: number,
     ads: string,
     converted: string,
     created_time: number,
-    code: string
+    code: string,
+    lock: boolean
 }
 export interface IAPIPropsAddLink {
     source: string

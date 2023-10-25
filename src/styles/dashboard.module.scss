@@ -25,13 +25,70 @@
     transition: .4s;
     font-family: "Times New Roman", sans-serif;
 }
-.wrapperAdmin{
-    display: flex;
+
+.titlePage {
     width: 100%;
+    background-color: #01262a;
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+}
+.info {
+    gap: 10px;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+    padding: 20px 20px 5px 20px;
+    display: flex;
+    color: white;
+}
+.code {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    label {
+        user-select: none;
+    }
+    span {
+        word-break: break-word;
+        font-weight: bold;
+    }
+}
+.avatar {
+    width: 40%;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+.codeAccount {
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    position: relative;
+}
+.wrapperMenu {
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #2A3F54;
+    position: relative;
+    min-width: 256px;
+    width: 256px;
+}
+.titleCategory {
+    color: white;
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
 }
 .bodyAdmin{
     margin: 20px;
     width: 100%;
+    color: black;
 }
 .textNoti{
     color: white;
@@ -72,6 +129,12 @@
     height: max-content;
     top: 50%;
     transform: translate(0%,-50%);
+}
+
+.containerItemAnalytics {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .buttonChooseGame:hover{
@@ -164,7 +227,8 @@
 
 .inputKey{
     width: 100%;
-    height: 100px;
+    height: 100%;
+    min-height: 100vh;
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 20px;
@@ -173,15 +237,15 @@
 .wrapper{
     width: 100%;
     position: absolute;
-    padding-bottom: 50px;
-    background: #464646;
-    height: 100%;
+    background: #EFEFEF;
+    min-height: 100%;
 }
 
 .wrapperAdmin{
+    display: flex;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding-right: 20px;
     position: relative;
 }
 .wrapperAdminBody {
@@ -419,8 +483,6 @@
     flex-direction: column;
     gap: 10px;
     padding: 20px 0;
-    background: #0B232E;
-    border-radius: 20px;
 }
 .menuItem {
     padding: 10px 30px;
@@ -428,7 +490,7 @@
     display: flex;
     align-content: center;
     gap: 5px;
-    color: #8c8c8c;
+    color: #e0dfdf;
     cursor: pointer;
 }
 .menuItem:hover {
@@ -447,8 +509,8 @@
 }
 
 .bodyContent {
+    margin-top: 20px;
     padding: 30px;
-    border-radius: 20px;
-    background: #0a3646;
-    min-height: 100%;
+    border-radius: 10px;
+    background: #ffffff;
 }

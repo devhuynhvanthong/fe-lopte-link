@@ -1,0 +1,45 @@
+.contentADs {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+
+  .buttonAdd {
+    cursor: pointer;
+    user-select: none;
+    border-radius: 5px;
+    border: 1px solid white;
+    background-color: #008BB7;
+    color: white;
+    height: fit-content;
+    font-size: 20px;
+    padding: 5px 20px;
+    width: fit-content;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+  }
+  .title {
+    font-size: 25px;
+    font-weight: bold;
+    text-shadow: 5px 5px 8px #030303;
+  }
+}
+
+.wrapper {
+  height: 100%;
+}
+
+.styleButton {
+  display: flex;
+  gap: 10px;
+  .styleIconButton {
+    cursor: pointer;
+  }
+}

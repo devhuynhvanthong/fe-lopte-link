@@ -1,3 +1,3 @@
 export interface TypePropsLoading {
-    open?: boolean
+    visible?: boolean
 }
