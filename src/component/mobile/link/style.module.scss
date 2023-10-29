@@ -11,12 +11,12 @@
     background: #987808;
     position: relative;
     width: 100%;
-    height: 80px;
+    height: max-content;
     gap: 5px;
     display: flex;
     img {
-      width: 80px;
-      height: 80px;
+      width: auto;
+      height: 50px;
     }
     .headerContext {
       justify-content: space-between;
@@ -25,12 +25,12 @@
       flex-direction: column;
       label {
         font-weight: bold;
-        font-size: 25px;
+        font-size: 15px;
         color: white;
       }
       span {
         color: #67F386;
-        font-size: 12px;
+        font-size: 8px;
       }
     }
   }
@@ -46,7 +46,7 @@
       display: flex;
       gap: 20px;
       img {
-        height: 120px;
+        height: 50px;
       }
       .contactInfo {
         margin-top: 10px;
@@ -67,9 +67,12 @@
             align-items: center;
             justify-items: center;
             gap: 5px;
+            label {
+              cursor: pointer;
+            }
             img {
               width: 20px;
-              height: 15px;
+              height: 20px;
             }
           }
         }

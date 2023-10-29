@@ -17,15 +17,12 @@ export default function LinkDesktop ( {info, getLink, isLoadingGetLink, timeConf
         <div className={_style.header}>
             <img src={'logo.png'}/>
             <div className={_style.headerContext}>
-                <label>LopteLink</label>
+                <label>LopteYT</label>
                 <hr/>
-                <span>TRANG WEB CHIA SẺ CÁC BẢN MOD APP & GAME</span>
+                <span>Phát Triển Kênh, Tăng Đề Xuất</span>
             </div>
         </div>
         <div className={_style.container}>
-            <div className={`${_style.containerQC} ${_style.leftQC}`}>
-                <img src={'qc_test.png'} />
-            </div>
             <div className={_style.containerCenter}>
                 <YoutubeComponent
                     className={_style.containerCenterYoutube}
@@ -62,50 +59,23 @@ export default function LinkDesktop ( {info, getLink, isLoadingGetLink, timeConf
                         </div>
                 }
             </div>
-            <div className={`${_style.containerQC} ${_style.rightQC}`}>
-                <img src={'qc_test.png'} />
-            </div>
         </div>
         <div className={_style.footer}>
-            <img
-                className={_style.iconAigooX}
-                src={'/logo_aigoox.png'}/>
+            <label className={_style.coppyRight}>Copyright by Lopte</label>
             <div className={_style.contact}>
-                <img
-                    src={'/logo.png'}/>
+                <img src={'/logo.png'}/>
                 <div className={_style.contactInfo}>
-                    <label className={_style.contactInfoTitle}>
-                        <a target={"_blank"}
-                        href={'https://gamelopte.com'} rel="noreferrer">GameLopte.com</a> </label>
                     <div className={_style.itemContact}>
                         <a target={"_blank"}
-                            href={"https://www.youtube.com/@gamelopte1799"} rel="noreferrer">
-                            <div className={_style.itemContactBody}>
-                                <img src={"/icon_youtube.png"}/>
-                                <label>GameLopte</label>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div className={_style.itemContact}>
-                        <a target={"_blank"}
-                           href={"https://t.me/ModGameAppTrick"} rel="noreferrer">
+                           href={"https://t.me/loptegroup"} rel="noreferrer">
                             <div className={_style.itemContactBody}>
                                 <img src={"/icon_telegram.webp"}/>
-                                <label>ModGameAppTrick</label>
+                                <label>Group Support Telegram</label>
                             </div>
                         </a>
                     </div>
 
-                    <div className={_style.itemContact}>
-                        <a target={"_blank"}
-                           href={"https://www.facebook.com/cnlopte"} rel="noreferrer">
-                            <div className={_style.itemContactBody}>
-                                <img src={"/icon_facebook.png"}/>
-                                <label>Lopte Game và Công Nghệ</label>
-                            </div>
-                        </a>
-                    </div>
+
                 </div>
 
             </div>
