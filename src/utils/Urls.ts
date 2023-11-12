@@ -1,6 +1,6 @@
 const BASE_URL = "https://api-link.aigoox.com/"
 const BASE_URL_DEV = "https://api-dev-loptelink.aigoox.com/"
-const API = BASE_URL_DEV + "api/"
+const API = BASE_URL + "api/"
 export const URL_ADS = API + "ads"
 export const URL_INFO = API + "info"
 export const URL_ANALYSIS = API + "analysis"
