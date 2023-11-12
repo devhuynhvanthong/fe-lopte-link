@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import styles from '../../styles/dashboard.module.scss'
-import {Modal, Typography} from 'antd';
+import {Modal} from 'antd';
 import {
     AppstoreOutlined,
     EyeOutlined,
@@ -12,7 +12,7 @@ import {
 } from '@ant-design/icons';
 import Library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN_DASHBOARD, URL_ANALYSIS, URL_INFO} from "~/utils/Urls";
+import {URL_ANALYSIS, URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
@@ -46,7 +46,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
             router.push('not-support-mobile')
         }
         handleLoadingAnalytic()
-        if (useSelectInfo.code !== undefined && useSelectInfo.code !== '') {
+        if (useSelectInfo.username !== undefined && useSelectInfo.username !== '') {
             if (!info) {
                 setInfo(useSelectInfo)
             }
@@ -74,9 +74,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
         api.get(URL_INFO).then((response) => {
             if (response?.status == constant.SUCCESS) {
                 const data = {
-                    code: response?.body?.info?.code,
-                    name: response?.body?.info?.name,
-                    avatar: response?.body?.info?.avatar
+                    username: response?.body?.username
                 }
                 setInfo(data)
                 dispatch(updateInfo(data))
@@ -142,7 +140,7 @@ export default function DashboardLayout({children}: TypePropLayout) {
     function getPlaceholder() {
         switch (router?.pathname) {
             case "/dashboard/user":
-                return "Nhập code người dùng"
+                return "Nhập username người dùng"
             case "/dashboard/link":
                 return "Nhập link trỏ tới, key"
             case "/dashboard/ad":
@@ -183,25 +181,12 @@ export default function DashboardLayout({children}: TypePropLayout) {
                             <div className={styles.wrapperMenu}>
                                 <label className={styles.titlePage}>QUẢN TRỊ VIÊN</label>
                                 <div className={styles.info}>
-                                    <img src={info?.avatar || "/logo.png"} className={styles.avatar}/>
+                                    <img src={"/logo.png"} className={styles.avatar}/>
                                     <div className={styles.code}>
                                         <label>Xin chào</label>
-                                        <span>{info?.name || "NO NAME"}</span>
+                                        <span>{info?.username || "NO NAME"}</span>
                                     </div>
                                 </div>
-                                <Typography>
-                                    <Typography.Paragraph style={{
-                                        marginBottom: '20px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        paddingLeft: 20,
-                                        paddingRight: 20,
-                                    }}
-                                                          copyable={{text: info?.code, tooltips: true}}>
-                                        <span className={styles.codeAccount}>{`Code Account: ${info?.code}`}</span>
-                                    </Typography.Paragraph>
-                                </Typography>
-
                                 <hr/>
                                 <br/>
                                 <label className={styles.titleCategory}>Danh mục</label>
@@ -281,7 +266,8 @@ export default function DashboardLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(BASE_URL_LOGIN_DASHBOARD)
+                            cookie.Remove()
+                            window.location.href = '/not-authen?c=' + library.base64Encode("dashboard")
                         }}
                         onCancel={() => setShowModel(false)}
                     >

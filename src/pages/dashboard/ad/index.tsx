@@ -1,18 +1,15 @@
 import {ColumnsType} from "antd/es/table";
 import {TypeData} from "~/@type/table";
-import {Popconfirm, Table, Tooltip} from "antd";
-import {QuestionOutlined, StopOutlined} from "@ant-design/icons";
+import {Table} from "antd";
+import {QuestionOutlined} from "@ant-design/icons";
 import {TypePropsLayout} from "~/@type/link";
-import _style from "~/pages/admin/link/style.module.scss";
 import React, {useEffect, useState} from "react";
 import CallApi from "~/utils/apis";
-import {URL_ADS, URL_LOCK_USER, URL_USERS} from "~/utils/Urls";
+import {URL_ADS} from "~/utils/Urls";
 import {useRouter} from "next/router";
 import Constants from "~/utils/Constants";
-import {VALIDATE_UPDATE_FAILED, VALIDATE_UPDATE_SUCCESS} from "~/utils/validate";
-import {IAPIDashboardUsers} from "~/@type/user";
 import Loading from "~/component/loading";
-import {IAPIDashboardAccountITem, IAPIDashboardAds, IAPIDashboardAdsGroup, IAPIPropsAddAdsGroup} from "~/@type/ads";
+import {IAPIDashboardAccountITem, IAPIDashboardAds, IAPIDashboardAdsGroup} from "~/@type/ads";
 import Header from "~/component/Header";
 
 export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
@@ -45,20 +42,6 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
     useEffect(() => {
         handleLoadingDataLink()
     }, [router.query?.page_offset, router.query?.search])
-
-    function handleLockUser(code: string, type: boolean) {
-        api.post(URL_LOCK_USER, {
-            code_account: code,
-            category: type ? "unlock" : "lock"
-        }).then((response) => {
-            if (response.status == constant.SUCCESS) {
-                handleLoadingDataLink()
-                openNotification(VALIDATE_UPDATE_SUCCESS, typeNotify.success)
-            } else {
-                openNotification(VALIDATE_UPDATE_FAILED, typeNotify.failed)
-            }
-        })
-    }
 
     const column: ColumnsType<IAPIDashboardAds> = [
         {
@@ -97,9 +80,9 @@ export default function Ads({openNotification, typeNotify}: TypePropsLayout) {
         {
             key: "account",
             dataIndex: "account",
-            title: "Người dùng",
+            title: "Chủ sở hữu",
             render: (value: IAPIDashboardAccountITem) => {
-                return <span>{value.code}</span>;
+                return <span>{value?.username}</span>;
             }
         }
     ]

@@ -12,7 +12,7 @@ export interface IAPIDashboardAdsGroup {
 }
 export interface IAPIDashboardAccountITem {
     id: number,
-    code: string,
+    username: string,
 }
 export interface IAPIDashboardAds {
     id: number

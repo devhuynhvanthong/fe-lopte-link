@@ -3,9 +3,7 @@ import {TypeInfo} from "~/@type/info";
 import {TypeActionRedux} from "~/redux/info/info.action";
 
 export const initialState: TypeInfo = {
-    avatar: undefined,
-    code: '',
-    name: undefined
+    username: undefined
 }
 export const InfoReducer = (state = initialState, action: TypeActionRedux) => {
     if (action.payload) {

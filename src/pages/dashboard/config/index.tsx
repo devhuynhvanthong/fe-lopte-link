@@ -84,7 +84,7 @@ export default function Configs({openNotification, typeNotify}: TypePropsLayout)
             dataIndex: "account",
             title: "Người dùng",
             render: (value: IAPIDashboardAccountITem) => {
-                return <span>{value.code}</span>;
+                return <span>{value.username}</span>;
             }
         }
     ]

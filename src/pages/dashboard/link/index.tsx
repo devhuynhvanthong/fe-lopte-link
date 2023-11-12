@@ -124,8 +124,8 @@ export default function Link({openNotification, typeNotify}: TypePropsLayout) {
             }
         },
         {
-            key: "code_account",
-            dataIndex: "code_account",
+            key: "username",
+            dataIndex: "username",
             title: "Chủ sở hữu",
             render: (text) => {
                 return <span>{text}</span>;

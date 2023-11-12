@@ -1,9 +1,8 @@
-import styles from './style.module.scss'
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN_ADMIN} from "~/utils/Urls";
 import React, {useEffect} from "react";
 import library from "~/utils/Library";
 import Header from "~/component/Header";
+
 export default function NotSupportMobile() {
     const router = useRouter()
 

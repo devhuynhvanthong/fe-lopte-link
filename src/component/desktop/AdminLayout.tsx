@@ -4,7 +4,7 @@ import {Modal, Typography} from 'antd';
 import {AppstoreOutlined, KeyOutlined, LogoutOutlined, SettingOutlined} from '@ant-design/icons';
 import library from "../../utils/Library";
 import {useRouter} from "next/router";
-import {BASE_URL_LOGIN_ADMIN, URL_INFO} from "~/utils/Urls";
+import {URL_INFO} from "~/utils/Urls";
 import {TypePropLayout} from "~/@type/main";
 import CallApi from "~/utils/apis";
 import {TypeInfo} from "~/@type/info";
@@ -33,7 +33,8 @@ export default function AdminLayout({children}: TypePropLayout) {
         if (library().isMobile()) {
             router.push('not-support-mobile')
         }
-        if (useSelect.code !== undefined && useSelect.code !== '') {
+        console.log(useSelect)
+        if (useSelect.username !== undefined && useSelect.username !== '') {
             if (!info) {
                 setInfo(useSelect)
             }
@@ -47,9 +48,7 @@ export default function AdminLayout({children}: TypePropLayout) {
         api.get(URL_INFO).then((response) => {
             if (response?.status == constant.SUCCESS) {
                 const data = {
-                    code: response?.body?.info?.code,
-                    name: response?.body?.info?.name,
-                    avatar: response?.body?.info?.avatar
+                    username: response?.body?.username
                 }
                 setInfo(data)
                 dispatch(updateInfo(data))
@@ -119,25 +118,12 @@ export default function AdminLayout({children}: TypePropLayout) {
                             <div className={styles.wrapperMenu}>
                                 <label className={styles.titlePage}>NGƯỜI DÙNG</label>
                                 <div className={styles.info}>
-                                    <img src={info?.avatar || "/logo.png"} className={styles.avatar}/>
+                                    <img src={"/logo.png"} className={styles.avatar}/>
                                     <div className={styles.code}>
                                         <label>Xin chào</label>
-                                        <span>{info?.name || "NO NAME"}</span>
+                                        <span>{info?.username || "NO NAME"}</span>
                                     </div>
                                 </div>
-                                <Typography>
-                                    <Typography.Paragraph style={{
-                                        marginBottom: '20px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        paddingLeft: 20,
-                                        paddingRight: 20,
-                                    }}
-                                                          copyable={{text: info?.code, tooltips: true}}>
-                                        <span
-                                            className={styles.codeAccount}>{`Code Account: ${info?.code || ''}`}</span>
-                                    </Typography.Paragraph>
-                                </Typography>
 
                                 <hr/>
                                 <br/>
@@ -182,7 +168,8 @@ export default function AdminLayout({children}: TypePropLayout) {
                         centered
                         open={isShowModel}
                         onOk={() => {
-                            router.push(BASE_URL_LOGIN_ADMIN)
+                            cookie.Remove()
+                            window.location.href = '/not-authen'
                         }}
                         onCancel={() => setShowModel(false)}
                     >

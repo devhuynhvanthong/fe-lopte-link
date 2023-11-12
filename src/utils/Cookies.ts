@@ -12,8 +12,7 @@ export default function Cookies  () {
         Cookie.set(key,encrypt,{
             expires:30,
             secure: true,
-            sameSite:'strict',
-            domain: 'aigoox.com'
+            sameSite:'strict'
         })
     }
 
@@ -26,13 +25,18 @@ export default function Cookies  () {
             if (!isParseJson) {
                 return input
             }
-            return JSON.parse(library.base64Decode(input))
+            return library.base64Decode(input) ? JSON.parse(library.base64Decode(input)) : null
         } else {
             return null
         }
     }
 
-    const Remove = (key: string) => {
+    const Remove = (key: string = constant.KEY_ACCESS_TOKEN) => {
+        Cookie.set(key,'',{
+            expires:30,
+            secure: true,
+            sameSite:'strict'
+        })
         Cookie.remove(key)
     }
 

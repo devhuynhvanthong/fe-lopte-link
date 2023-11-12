@@ -45,9 +45,9 @@ export default function User({openNotification, typeNotify}: TypePropsLayout) {
         handleLoadingDataLink()
     }, [router.query?.page_offset, router.query?.search])
 
-    function handleLockUser(code: string, type: boolean) {
+    function handleLockUser(username: string, type: boolean) {
         api.post(URL_LOCK_USER, {
-            code_account: code,
+            username: username,
             category: type ? "unlock" : "lock"
         }).then((response) => {
             if (response.status == constant.SUCCESS) {
@@ -89,8 +89,8 @@ export default function User({openNotification, typeNotify}: TypePropsLayout) {
             }
         },
         {
-            key: "code",
-            dataIndex: "code",
+            key: "username",
+            dataIndex: "username",
             title: "Người dùng",
             render: (text) => {
                 return <Typography>
@@ -113,7 +113,7 @@ export default function User({openNotification, typeNotify}: TypePropsLayout) {
                                 title={"Cảnh báo"}
                                 description={`Bạn thật sự muốn ${value.lock ? "mở khóa" : "khóa"} người dùng này?`}
                                 onConfirm={() => {
-                                    handleLockUser(value.code, value.lock)
+                                    handleLockUser(value.username, value.lock)
                                 }}
                                 okText="Đồng ý"
                                 cancelText="Từ chối"

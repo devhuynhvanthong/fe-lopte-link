@@ -1,5 +1,5 @@
 export interface IAPIDashboardUsers {
     created_time: number,
-    code: string,
+    username: string,
     lock: boolean
 }
